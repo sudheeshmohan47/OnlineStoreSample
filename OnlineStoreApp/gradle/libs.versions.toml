@@ -1,0 +1,94 @@
+[versions]
+accompanistPermissions = "0.36.0"
+agp = "8.7.2"
+animation = "1.7.5"
+coilVersion = "2.7.0"
+constraintlayoutCompose = "1.1.0"
+converterGson = "2.11.0"
+datastorePreferences = "1.1.1"
+detektGradlePlugin = "1.23.7"
+detektVersion = "0.4.17"
+haze = "1.0.0"
+hiltNavigationComposeVersion = "1.2.0"
+kotlin = "2.0.21"
+coreKtx = "1.15.0"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+kotlinStdlib = "2.0.21"
+kotlinxCoroutinesAndroid = "1.9.0"
+kotlinxSerializationJson = "1.7.3"
+lifecycleRuntimeCompose = "2.8.7"
+activityCompose = "1.9.3"
+composeBom = "2024.10.01"
+appcompat = "1.7.0"
+mapsCompose = "6.2.1"
+mapsComposeUtils = "6.2.1"
+detekt = "1.23.7"
+immutableCollections = "0.3.8"
+navigationCompose = "2.8.3"
+ktlint = "11.1.0"
+kotlinSerialization = "2.0.21"
+playServicesMaps = "19.0.0"
+hilt = "2.52"
+ksp = "2.0.21-1.0.27"
+savedstateKtx = "1.2.1"
+timber = "5.0.1"
+places = "4.0.0"
+calendarCompose = "2.6.0"
+material = "1.12.0"
+
+[libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
+androidx-compose-ui-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-compose-ui-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-material3-material3 = { module = "androidx.compose.material3:material3" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
+androidx-lifecycle-runtime-compose-v270 = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+androidx-navigation-compose-v280alpha08 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-savedstate-ktx = { module = "androidx.savedstate:savedstate-ktx", version.ref = "savedstateKtx" }
+coil = { module = "io.coil-kt:coil", version.ref = "coilVersion" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektVersion" }
+detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detektGradlePlugin" }
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+kotlin-stdlib-v1924 = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinStdlib" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", version.ref = "mapsComposeUtils" }
+immutable-collections = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "immutableCollections" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+google-dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+google-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
+kizitonwoseCalendarCompose = { module = "com.kizitonwose.calendar:compose", version.ref = "calendarCompose" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
+google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlincompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
