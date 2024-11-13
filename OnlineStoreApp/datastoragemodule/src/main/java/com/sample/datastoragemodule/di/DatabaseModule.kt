@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.sample.datastoragemodule.data.database.OnlineStoreAppDatabase
 import com.sample.datastoragemodule.data.database.dao.CartDao
+import com.sample.datastoragemodule.data.database.dao.SelectedCategoryDao
 import com.sample.datastoragemodule.data.database.dao.WishlistDao
 import dagger.Module
 import dagger.Provides
@@ -33,4 +34,10 @@ object DatabaseModule {
     fun provideCartDao(database: OnlineStoreAppDatabase): CartDao {
         return database.cartDao()
     }
+
+    @Provides
+    fun provideSelectedCategoryDao(database: OnlineStoreAppDatabase): SelectedCategoryDao {
+        return database.selectedCategoryDao()
+    }
+
 }

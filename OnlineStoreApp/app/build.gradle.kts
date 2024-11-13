@@ -2,10 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlincompose)
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.detekt)
     alias(libs.plugins.roomPlugin)
 }
 

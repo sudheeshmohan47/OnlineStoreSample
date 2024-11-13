@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">commonmodule</string>
+
+    // Error
+    <string name="error_server_not_available">Server Not Available, Please try after sometime.</string>
+    <string name="error_input_field_values">Please check the input field values.</string>
+    <string name="error_no_internet">Error! Please check the internet connection!</string>
+    <string name="error_record_not_found">Error! Record not found.</string>
+    <string name="error_something_went_wrong">Something went wrong. Please try again.</string>
+    <string name="error_rate_exceeded">You have made too many requests recently. Developer accounts are limited to 100 requests over a 24 hour period (50 requests available every 12 hours). Please upgrade to a paid plan if you need more requests
+</string>
+</resources>

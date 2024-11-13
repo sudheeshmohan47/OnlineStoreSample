@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlincompose)
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.detekt)
     alias(libs.plugins.roomPlugin)
 }
 
@@ -14,12 +14,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.sample.wishlistmodule"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -48,6 +43,7 @@ dependencies {
 
     implementation(project(":designsystem"))
     implementation(project(":datastoragemodule"))
+    implementation(project(":commonmodule"))
 
     // kotlin core
     implementation(libs.androidx.core.ktx)
