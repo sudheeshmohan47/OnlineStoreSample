@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.sample.onlinestore"
+    namespace = "com.sample.wishlistmodule"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.sample.onlinestore"
+        applicationId = "com.sample.wishlistmodule"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -39,10 +39,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        buildConfig = true
-        compose = true
-    }
     room {
         schemaDirectory ("$projectDir/schemas")
     }
@@ -51,6 +47,7 @@ android {
 dependencies {
 
     implementation(project(":designsystem"))
+    implementation(project(":datastoragemodule"))
 
     // kotlin core
     implementation(libs.androidx.core.ktx)

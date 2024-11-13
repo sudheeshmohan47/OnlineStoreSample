@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ktlint) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.google.dagger.hilt) apply false
+    alias(libs.plugins.roomPlugin) apply false
 }
 
 buildscript {

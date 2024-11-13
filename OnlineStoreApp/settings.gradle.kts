@@ -23,3 +23,4 @@ rootProject.name = "OnlineStore App"
 include(":app")
 include(":designsystem")
 include(":datastoragemodule")
+include(":wishlistmodule")

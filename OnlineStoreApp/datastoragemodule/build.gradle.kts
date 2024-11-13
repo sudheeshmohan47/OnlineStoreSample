@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
     alias(libs.plugins.google.dagger.hilt)
     id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.roomPlugin)
 }
 
 android {
@@ -32,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    room {
+        schemaDirectory ("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -57,6 +61,11 @@ dependencies {
 
     // Detekt compose rules
     detektPlugins(libs.detekt)
+
+    // room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
