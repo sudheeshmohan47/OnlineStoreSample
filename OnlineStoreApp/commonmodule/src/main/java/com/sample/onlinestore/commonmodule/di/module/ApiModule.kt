@@ -1,4 +1,4 @@
-package com.sample.onlinestore.commonmodule.di.module
+package com.sample.onlinestore.networkmodule.di.module
 
 
 import com.sample.onlinestore.commonmodule.BuildConfig

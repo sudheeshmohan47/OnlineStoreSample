@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.dagger.hilt)
+    alias(libs.plugins.kotlincompose)
 }
 
 android {
@@ -51,7 +52,16 @@ android {
 
 dependencies {
 
+    // kotlin core
     implementation(libs.androidx.core.ktx)
+    // compose
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui.ui)
+    implementation(libs.androidx.compose.ui.ui.graphics)
+    implementation(libs.androidx.compose.ui.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3.material3)
+    implementation(libs.androidx.lifecycle.runtime.compose.v270)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.compose.v270)
@@ -67,6 +77,8 @@ dependencies {
 
     // hilt
     implementation(libs.google.dagger.hilt)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose.v280alpha08)
     ksp(libs.google.dagger.hilt.compiler)
 
     testImplementation(libs.junit)

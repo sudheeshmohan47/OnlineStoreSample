@@ -12,6 +12,9 @@ data class Cart(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val price: Double,
-    val quantity: Int,
-    val productId: String
+    val productId: String,
+    val category: String,
+    val description: String,
+    val image: String,
+    val quantity: Int
 )

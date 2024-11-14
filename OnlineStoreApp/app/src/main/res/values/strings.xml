@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">OnlineStore App</string>
+    <string name="label_bottomnav_home">Home</string>
+    <string name="label_bottomnav_categories">Categories</string>
+    <string name="label_bottomnav_wishlist">Wishlist</string>
+
+    // Exit confirmation Dialog
+    <string name="exit_confirmation_title">Confirm Exit</string>
+    <string name="exit_confirmation_message">Are you sure you want to exit?</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_cancel">Cancel</string>
 </resources>

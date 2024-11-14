@@ -51,6 +51,10 @@ android {
 dependencies {
 
     implementation(project(":designsystem"))
+    implementation(project(":commonmodule"))
+    implementation(project(":cartmodule"))
+    implementation(project(":wishlistmodule"))
+    implementation(project(":datastoragemodule"))
 
     // kotlin core
     implementation(libs.androidx.core.ktx)

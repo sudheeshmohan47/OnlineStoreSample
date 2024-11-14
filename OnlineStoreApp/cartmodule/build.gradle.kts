@@ -40,6 +40,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":designsystem"))
+    implementation(project(":datastoragemodule"))
+    implementation(project(":commonmodule"))
+
     // kotlin core
     implementation(libs.androidx.core.ktx)
     // compose

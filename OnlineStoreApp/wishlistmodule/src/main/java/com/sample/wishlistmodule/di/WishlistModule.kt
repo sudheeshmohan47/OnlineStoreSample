@@ -1,6 +1,7 @@
 package com.sample.wishlistmodule.di
 
 import com.sample.datastoragemodule.data.database.dao.WishlistDao
+import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.wishlistmodule.data.WishlistService
 import com.sample.wishlistmodule.domain.WishlistRepository
 import com.sample.wishlistmodule.domain.WishlistUseCase
@@ -18,7 +19,10 @@ class WishlistModule {
     }
 
     @Provides
-    fun provideWishlistUseCase(wishlistRepository: WishlistRepository): WishlistUseCase {
-        return WishlistUseCase(wishlistRepository)
+    fun provideWishlistUseCase(
+        wishlistRepository: WishlistRepository,
+        cartRepository: CartRepository
+    ): WishlistUseCase {
+        return WishlistUseCase(wishlistRepository, cartRepository)
     }
 }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a1c348262acf29261d0b01633a226210",
+    "identityHash": "52ca567bd631b0b2ff22b5c0d0b50938",
     "entities": [
       {
         "tableName": "wishlist",
@@ -72,7 +72,7 @@
       },
       {
         "tableName": "cart",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `price` REAL NOT NULL, `quantity` INTEGER NOT NULL, `productId` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `price` REAL NOT NULL, `productId` TEXT NOT NULL, `category` TEXT NOT NULL, `description` TEXT NOT NULL, `image` TEXT NOT NULL, `quantity` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -93,15 +93,33 @@
             "notNull": true
           },
           {
-            "fieldPath": "quantity",
-            "columnName": "quantity",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "productId",
             "columnName": "productId",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantity",
+            "columnName": "quantity",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -164,7 +182,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a1c348262acf29261d0b01633a226210')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '52ca567bd631b0b2ff22b5c0d0b50938')"
     ]
   }
 }

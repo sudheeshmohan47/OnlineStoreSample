@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlincompose)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.roomPlugin)
 }
 
 android {
@@ -34,9 +33,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    room {
-        schemaDirectory ("$projectDir/schemas")
-    }
 }
 
 dependencies {
@@ -44,6 +40,7 @@ dependencies {
     implementation(project(":designsystem"))
     implementation(project(":datastoragemodule"))
     implementation(project(":commonmodule"))
+    implementation(project(":cartmodule"))
 
     // kotlin core
     implementation(libs.androidx.core.ktx)
