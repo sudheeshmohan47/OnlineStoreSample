@@ -14,7 +14,6 @@ fun NavGraphBuilder.splashAndAppIntroGraph(
 
     // Splash Screen
     splashScreenComposable(startupNavigationManager)
-
 }
 
 private fun NavGraphBuilder.splashScreenComposable(

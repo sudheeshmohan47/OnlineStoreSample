@@ -1,7 +1,5 @@
 package com.sample.wishlistmodule.domain.model
 
-import androidx.room.PrimaryKey
-
 data class WishlistItem(
     val name: String,
     val price: Double,

@@ -1,8 +1,8 @@
 package com.sample.onlinestore.productsmodule.di
 
 import com.sample.onlinestore.productsmodule.data.ProductsService
-import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 import com.sample.onlinestore.productsmodule.data.api.ProductsApiService
+import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
 import dagger.Module
 import dagger.Provides
@@ -32,5 +32,4 @@ class ProductsModule {
     ): ProductsApiService {
         return retrofit.create(ProductsApiService::class.java)
     }
-
 }

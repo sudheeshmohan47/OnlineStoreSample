@@ -35,7 +35,7 @@ android {
         jvmTarget = "11"
     }
     room {
-        schemaDirectory ("$projectDir/schemas")
+        schemaDirectory("$projectDir/schemas")
     }
     buildFeatures {
         compose = true

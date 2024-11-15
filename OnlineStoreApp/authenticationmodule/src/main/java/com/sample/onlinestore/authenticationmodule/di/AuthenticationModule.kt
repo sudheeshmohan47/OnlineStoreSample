@@ -1,10 +1,10 @@
 package com.sample.onlinestore.authenticationmodule.di
 
 import com.sample.datastoragemodule.domain.PreferenceManagerRepository
+import com.sample.onlinestore.authenticationmodule.data.LoginService
 import com.sample.onlinestore.authenticationmodule.data.api.AuthenticationApiService
 import com.sample.onlinestore.authenticationmodule.domain.LoginRepository
 import com.sample.onlinestore.authenticationmodule.domain.LoginUseCase
-import com.sample.onlinestore.authenticationmodule.data.LoginService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

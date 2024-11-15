@@ -25,8 +25,8 @@ import com.sample.onlinestore.presentation.main.MainActivityUiModel
 @Composable
 fun BottomNavigationSection(
     mainUiState: UiState<MainActivityUiModel>,
-    modifier: Modifier = Modifier,
     onAction: (MainActivityAction) -> Unit,
+    modifier: Modifier = Modifier,
     switchToScreen: (BottomNavItem) -> Unit
 ) {
     val context = LocalContext.current

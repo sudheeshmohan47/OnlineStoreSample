@@ -1,6 +1,5 @@
 package com.sample.onlinestore.foundation.appstate
 
-import android.content.res.Resources
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -10,10 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
@@ -27,6 +24,7 @@ import com.sample.onlinestore.presentation.main.MainActivityAction
 import com.sample.onlinestore.presentation.main.MainActivityUiModel
 
 const val BottomNavAnimDuration = 1000
+
 @Composable
 fun OnlineStoreApp(
     uiState: UiState<MainActivityUiModel>,
@@ -77,7 +75,3 @@ fun OnlineStoreApp(
         }
     }
 }
-
-@Composable
-@ReadOnlyComposable
-fun resources(): Resources = LocalContext.current.resources

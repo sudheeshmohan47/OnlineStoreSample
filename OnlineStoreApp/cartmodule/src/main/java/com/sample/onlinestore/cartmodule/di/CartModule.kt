@@ -1,7 +1,6 @@
 package com.sample.onlinestore.cartmodule.di
 
 import com.sample.datastoragemodule.data.database.dao.CartDao
-import com.sample.datastoragemodule.data.database.dao.WishlistDao
 import com.sample.onlinestore.cartmodule.data.CartService
 import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.onlinestore.cartmodule.domain.CartUseCase

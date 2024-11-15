@@ -17,4 +17,3 @@ data class Wishlist(
     val description: String,
     val image: String
 )
-

@@ -1,7 +1,6 @@
 package com.sample.datastoragemodule.data.preference
 
 import com.sample.datastoragemodule.domain.PreferenceManagerRepository
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class PreferenceManagerService @Inject constructor(private val preferenceManager: PreferenceManager) :

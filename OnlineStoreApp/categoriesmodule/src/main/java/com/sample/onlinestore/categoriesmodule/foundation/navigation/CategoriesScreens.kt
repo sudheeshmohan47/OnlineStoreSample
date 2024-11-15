@@ -4,7 +4,7 @@ import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import kotlinx.serialization.Serializable
 
 // Sealed class for different screens in the navigation
-@kotlinx.serialization.Serializable
+@Serializable
 sealed class CategoriesScreens : BaseScreen() {
 
     @Serializable

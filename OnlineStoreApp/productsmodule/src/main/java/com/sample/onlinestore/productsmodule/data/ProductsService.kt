@@ -15,7 +15,6 @@ class ProductsService @Inject constructor(
     private val productsApiService: ProductsApiService
 ) : ProductsRepository {
 
-
     override suspend fun getProducts(onCompletion: (Boolean, DomainResponse<List<ProductResponse>>) -> Unit) {
         try {
             val response = productsApiService.getProducts()

@@ -4,4 +4,3 @@ data class UserStatus(
     val isAppIntroFinished: Boolean,
     val sessionToken: String?
 )
-

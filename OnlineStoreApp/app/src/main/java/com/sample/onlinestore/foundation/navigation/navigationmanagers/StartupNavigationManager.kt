@@ -1,24 +1,20 @@
 package com.sample.onlinestore.foundation.navigation.navigationmanagers
 
-import com.sample.onlinestore.authenticationmodule.foundation.navigation.AuthenticationScreens
 import com.sample.onlinestore.domain.splash.model.UserStatus
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
-import com.sample.onlinestore.foundation.appstate.navigateWithPopBackstack
-import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
-import com.sample.onlinestore.presentation.dashboard.BottomNavItem
 
 class StartupNavigationManager(private val appState: OnlineStoreAppState) {
 
     val gotoLoginScreen: () -> Unit = {
-        //appState.navigateWithPopBackstack(AuthenticationScreens.LoginScreen)
+        // appState.navigateWithPopBackstack(AuthenticationScreens.LoginScreen)
     }
 
     val goToAppIntroScreen: () -> Unit = {
-        //appState.navigateWithPopBackstack(OnlineStoreScreens.AppIntroScreen)
+        // appState.navigateWithPopBackstack(OnlineStoreScreens.AppIntroScreen)
     }
 
     val goToDashboardScreen: () -> Unit = {
-       // appState.navigateWithPopBackstack(BottomNavItem.Home)
+        // appState.navigateWithPopBackstack(BottomNavItem.Home)
     }
 
     /**

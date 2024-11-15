@@ -44,7 +44,7 @@ android {
         compose = true
     }
     room {
-        schemaDirectory ("$projectDir/schemas")
+        schemaDirectory("$projectDir/schemas")
     }
 }
 
@@ -112,5 +112,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 }

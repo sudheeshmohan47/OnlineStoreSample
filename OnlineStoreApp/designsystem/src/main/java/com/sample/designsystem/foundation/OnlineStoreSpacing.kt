@@ -2,13 +2,13 @@ package com.sample.designsystem.foundation
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.sample.designsystem.foundation.OnlineStoreSpacing.EXTRA_LARGE
+import com.sample.designsystem.foundation.OnlineStoreSpacing.EXTRA_SMALL
 import com.sample.designsystem.foundation.OnlineStoreSpacing.LARGE
 import com.sample.designsystem.foundation.OnlineStoreSpacing.MEDIUM
 import com.sample.designsystem.foundation.OnlineStoreSpacing.MEDIUM_PLUS
 import com.sample.designsystem.foundation.OnlineStoreSpacing.NONE
 import com.sample.designsystem.foundation.OnlineStoreSpacing.SMALL
-import com.sample.designsystem.foundation.OnlineStoreSpacing.EXTRA_LARGE
-import com.sample.designsystem.foundation.OnlineStoreSpacing.EXTRA_SMALL
 
 // Enum class representing different spacing options
 enum class OnlineStoreSpacing {

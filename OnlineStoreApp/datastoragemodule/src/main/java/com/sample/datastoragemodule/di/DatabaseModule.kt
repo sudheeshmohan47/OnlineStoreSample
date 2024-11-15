@@ -39,5 +39,4 @@ object DatabaseModule {
     fun provideSelectedCategoryDao(database: OnlineStoreAppDatabase): SelectedCategoryDao {
         return database.selectedCategoryDao()
     }
-
 }

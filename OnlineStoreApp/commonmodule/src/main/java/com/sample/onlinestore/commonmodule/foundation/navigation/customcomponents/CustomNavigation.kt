@@ -29,7 +29,7 @@ fun NavHostController.navigateWithLifecycle(screen: BaseScreen) {
 fun NavHostController.navigateWithPopBackstack(screen: BaseScreen) {
     if (this.isLifecycleResumed) {
         this.popBackStack()
-        this.navigate(screen){
+        this.navigate(screen) {
             launchSingleTop = true
         }
     }

@@ -18,5 +18,4 @@ class CategoriesUseCase @Inject constructor(
     suspend fun fetchCategories(onCompletion: (Boolean, DomainResponse<List<String>>) -> Unit) {
         categoriesRepository.fetchCategories(onCompletion)
     }
-
 }
