@@ -51,7 +51,11 @@ class MainActivity : ComponentActivity() {
                     val uiState by mainActivityViewModel.uiState.collectAsStateWithLifecycle()
 
                     OnlineStoreApp(
-                        appState = appState
+                        appState = appState,
+                        uiState = uiState,
+                        onAction = {
+                            mainActivityViewModel.sendAction(it)
+                        }
                     )
 
                     // For handling back press

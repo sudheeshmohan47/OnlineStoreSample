@@ -6,7 +6,7 @@ import com.sample.onlinestore.R
 import kotlinx.serialization.Serializable
 import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import com.sample.onlinestore.commonmodule.foundation.base.getBaseRoute
-import com.sample.onlinestore.foundation.navigation.OnlineStoreScreen
+import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
 
 @kotlinx.serialization.Serializable
 open class BottomNavItem(
@@ -51,5 +51,5 @@ open class BottomNavItem(
  * @return List<String> A list of screen routes excluding any routes associated with the bottom navigation.
  */
 fun getScreenRoutesWithoutBottomNav(): List<String> = listOf(
-    OnlineStoreScreen.Splash.getBaseRoute()
+    OnlineStoreScreens.Splash.getBaseRoute()
 )

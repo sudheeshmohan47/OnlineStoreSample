@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 
 // Sealed class for different screens in the navigation
 @Serializable
-sealed class OnlineStoreScreen : BaseScreen() {
+sealed class OnlineStoreScreens : BaseScreen() {
 
     // App Initial Screens
     @Serializable
-    data object Splash : OnlineStoreScreen()
+    data object Splash : OnlineStoreScreens()
 }

@@ -52,9 +52,12 @@ dependencies {
 
     implementation(project(":designsystem"))
     implementation(project(":commonmodule"))
+    implementation(project(":datastoragemodule"))
     implementation(project(":cartmodule"))
     implementation(project(":wishlistmodule"))
-    implementation(project(":datastoragemodule"))
+    implementation(project(":authenticationmodule"))
+    implementation(project(":productsmodule"))
+    implementation(project(":categoriesmodule"))
 
     // kotlin core
     implementation(libs.androidx.core.ktx)

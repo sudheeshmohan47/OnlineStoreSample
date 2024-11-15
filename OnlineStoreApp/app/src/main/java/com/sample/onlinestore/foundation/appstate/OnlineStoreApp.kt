@@ -18,7 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.utils.getBaseRoute
-import com.sample.onlinestore.foundation.navigation.OnlineStoreScreen
+import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
+import com.sample.onlinestore.foundation.navigation.navgraph.rootGraph
 import com.sample.onlinestore.foundation.navigation.navigationmanagers.MainActivityNavigationManager
 import com.sample.onlinestore.presentation.dashboard.getScreenRoutesWithoutBottomNav
 import com.sample.onlinestore.presentation.dashboard.screen.BottomNavigationSection
@@ -69,9 +70,9 @@ fun OnlineStoreApp(
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = appState.navController,
-                startDestination = OnlineStoreScreen.Splash,
+                startDestination = OnlineStoreScreens.Splash,
             ) {
-                appScreenGraph(appState)
+                rootGraph(appState)
             }
         }
     }

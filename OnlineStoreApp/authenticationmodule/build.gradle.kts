@@ -6,16 +6,17 @@ plugins {
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlincompose)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.roomPlugin)
 }
 
 android {
-    namespace = "com.sample.onlinestore.cartmodule"
-    compileSdk = 35
+    namespace = "com.sample.onlinestore.authenticationmodule"
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -33,9 +34,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    room {
-        schemaDirectory ("$projectDir/schemas")
     }
     buildFeatures {
         compose = true
@@ -75,11 +73,6 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-
-    // room
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
 
     // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
