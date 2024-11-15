@@ -9,21 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
@@ -67,7 +64,6 @@ fun OnlineStoreButton(
     spinningLoaderDashesCount: Int = 8,
     spinningLoaderDashesColor: Color = MaterialTheme.colorScheme.primaryContainer,
     enabled: Boolean = true,
-    icon: ImageVector? = null,
     onClick: () -> Unit
 ) {
     Row(
@@ -77,40 +73,31 @@ fun OnlineStoreButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Button(
+        AnimatedBorderCard(
+            shape = RoundedCornerShape(buttonCornerShapeSize),
             modifier = Modifier
                 .fillMaxSize()
                 .border(
-                    width = 1.dp,
-                    color = getBorderColorWithAlpha(variant, buttonBorderColor, enabled),
-                    shape = RoundedCornerShape(buttonCornerShapeSize)
-                ),
-            enabled = enabled,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = buttonBackground ?: getButtonBackgroundColor(variant),
-                disabledContainerColor = (buttonBackground ?: getButtonBackgroundColor(variant))
-                    .copy(alpha = DisabledButtonAlpha)
-            ),
-            shape = RoundedCornerShape(buttonCornerShapeSize),
-            onClick = { if (!isLoadingEnabled) onClick() }, // Disable click when loading in progress
+                    width = if(isLoadingEnabled) 2.dp else 0.dp,
+                    color = getBorderColorWithAlpha(variant, buttonBorderColor, enabled))
         ) {
-            if (isLoadingEnabled) {
-                OnlineStoreProgressIndicator(
-                    modifier = Modifier.size(spinningLoaderSize),
-                    dashCount = spinningLoaderDashesCount,
-                    dashColor = spinningLoaderDashesColor,
-                    dashTrailingColor = MaterialTheme.colorScheme.primary
-                )
-            } else {
-                icon?.let {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = "Button Icon",
-                        tint = buttonTextColor ?: getButtonTextColor(variant),
-                        modifier = Modifier.size(OnlineStoreSpacing.EXTRA_LARGE.dp())
-                    )
-                    Spacer(modifier = Modifier.width(OnlineStoreSpacing.SMALL.dp()))
-                }
+            Button(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(
+                        width = 1.dp,
+                        color = getBorderColorWithAlpha(variant, buttonBorderColor, enabled),
+                        shape = RoundedCornerShape(buttonCornerShapeSize)
+                    ),
+                enabled = enabled,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = buttonBackground ?: getButtonBackgroundColor(variant),
+                    disabledContainerColor = (buttonBackground ?: getButtonBackgroundColor(variant))
+                        .copy(alpha = DisabledButtonAlpha)
+                ),
+                shape = RoundedCornerShape(buttonCornerShapeSize),
+                onClick = { if (!isLoadingEnabled) onClick() }, // Disable click when loading in progress
+            ) {
                 Text(
                     text = label,
                     style = buttonStyle,
@@ -185,8 +172,7 @@ private fun PreviewOnlineStoreButton() {
                 variant = OnlineStoreButtonVariant.PRIMARY,
                 modifier = Modifier.weight(1f),
                 onClick = {
-                },
-                icon = Icons.AutoMirrored.Filled.ExitToApp
+                }
             )
             Spacer(modifier = Modifier.width(16.dp))
             OnlineStoreButton(
@@ -194,8 +180,7 @@ private fun PreviewOnlineStoreButton() {
                 variant = OnlineStoreButtonVariant.OUTLINED,
                 modifier = Modifier.weight(1f),
                 onClick = {
-                },
-                icon = Icons.AutoMirrored.Filled.ExitToApp
+                }
             )
         }
     }

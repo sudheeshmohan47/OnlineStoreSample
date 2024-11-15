@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_enter_username">Enter Username</string>
+    <string name="label_username">Username</string>
+    <string name="label_enter_password">Enter Password\n</string>
+    <string name="label_password">Password\n</string>
+    <string name="label_login">Login</string>
+
+    <string name="error_empty_username">Username cannot be empty</string>
+    <string name="error_empty_password">Password cannot be empty</string>
+    <string name="error_password_min_length">Password must be at least 6 characters long</string>
+</resources>
