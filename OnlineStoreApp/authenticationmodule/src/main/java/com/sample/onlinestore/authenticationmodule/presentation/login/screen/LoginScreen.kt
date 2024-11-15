@@ -26,7 +26,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sample.designsystem.components.ShowCircularProgressIndicator
 import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
@@ -119,7 +118,7 @@ fun HandleUiState(
         }
 
         is UiState.Loading -> {
-            ShowCircularProgressIndicator()
+            // ShowDashedProgressIndicator()
         }
 
         is UiState.Error -> {}

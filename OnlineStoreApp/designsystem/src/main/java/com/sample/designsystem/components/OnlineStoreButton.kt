@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -73,31 +74,31 @@ fun OnlineStoreButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        AnimatedBorderCard(
-            shape = RoundedCornerShape(buttonCornerShapeSize),
+        Button(
             modifier = Modifier
                 .fillMaxSize()
                 .border(
-                    width = if(isLoadingEnabled) 2.dp else 0.dp,
-                    color = getBorderColorWithAlpha(variant, buttonBorderColor, enabled))
-        ) {
-            Button(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .border(
-                        width = 1.dp,
-                        color = getBorderColorWithAlpha(variant, buttonBorderColor, enabled),
-                        shape = RoundedCornerShape(buttonCornerShapeSize)
-                    ),
-                enabled = enabled,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = buttonBackground ?: getButtonBackgroundColor(variant),
-                    disabledContainerColor = (buttonBackground ?: getButtonBackgroundColor(variant))
-                        .copy(alpha = DisabledButtonAlpha)
+                    width = 1.dp,
+                    color = getBorderColorWithAlpha(variant, buttonBorderColor, enabled),
+                    shape = RoundedCornerShape(buttonCornerShapeSize)
                 ),
-                shape = RoundedCornerShape(buttonCornerShapeSize),
-                onClick = { if (!isLoadingEnabled) onClick() }, // Disable click when loading in progress
-            ) {
+            enabled = enabled,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = buttonBackground ?: getButtonBackgroundColor(variant),
+                disabledContainerColor = (buttonBackground ?: getButtonBackgroundColor(variant))
+                    .copy(alpha = DisabledButtonAlpha)
+            ),
+            shape = RoundedCornerShape(buttonCornerShapeSize),
+            onClick = { if (!isLoadingEnabled) onClick() }, // Disable click when loading in progress
+        ) {
+            if (isLoadingEnabled) {
+                OnlineStoreProgressIndicator(
+                    modifier = Modifier.size(spinningLoaderSize),
+                    dashCount = spinningLoaderDashesCount,
+                    dashColor = spinningLoaderDashesColor,
+                    dashTrailingColor = MaterialTheme.colorScheme.primary
+                )
+            } else {
                 Text(
                     text = label,
                     style = buttonStyle,
