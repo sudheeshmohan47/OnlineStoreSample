@@ -7,8 +7,8 @@ package com.sample.onlinestore.commonmodule.utils
  * and returns the base route by extracting the portion of the string before the "?" character.
  *
  * Example:
- * - Input: "com.carelo.android.Screen.Splash?deepLinkData=true"
- * - Output: "com.carelo.android.Screen.Splash"
+ * - Input: "com.onlinestore.android.Screen.Splash?deepLinkData=true"
+ * - Output: "com.onlinestore.android.Screen.Splash"
  *
  * @receiver String The route string which may contain query parameters.
  * @return String The base route without query parameters.

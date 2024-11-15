@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">OnlineStore App</string>
-    <string name="label_bottomnav_home">Home</string>
-    <string name="label_bottomnav_categories">Categories</string>
-    <string name="label_bottomnav_wishlist">Wishlist</string>
+    <string name="label_bottom_nav_home">Home</string>
+    <string name="label_bottom_nav_categories">Categories</string>
+    <string name="label_bottom_nav_wishlist">Wishlist</string>
 
     // Exit confirmation Dialog
     <string name="exit_confirmation_title">Confirm Exit</string>
@@ -11,4 +11,16 @@
     <string name="dialog_yes">Yes</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="label_splash_online_store">Online Store</string>
+
+    // App Intro
+    <string name="app_intro_title_1">Quick &amp; Easy Shopping</string>
+    <string name="app_intro_subtitle_1">Find everything you need at your fingertips.</string>
+
+    <string name="app_intro_title_2">Fast &amp; Secure Checkout</string>
+    <string name="app_intro_subtitle_2">Enjoy quick processing and secure payments.</string>
+
+    <string name="app_intro_title_3">All in One Place</string>
+    <string name="app_intro_subtitle_3">Explore products across diverse categories, all in one app.</string>
+    <string name="label_next">Next</string>
+
 </resources>

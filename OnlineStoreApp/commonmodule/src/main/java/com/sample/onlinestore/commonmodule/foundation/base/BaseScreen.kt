@@ -12,7 +12,7 @@ open class BaseScreen
  * This function converts the class name to a route format by replacing
  * the dollar sign ('$') with a period ('.').
  *
- * Example: "com.carelo.android.Screen$DetailScreen" becomes "com.carelo.android.Screen.DetailScreen".
+ * Example: "com.onlinestore.android.Screen$DetailScreen" becomes "com.onlinestore.android.Screen.DetailScreen".
  *
  * @receiver BaseScreen The instance of BaseScreen.
  * @return String The formatted base route.

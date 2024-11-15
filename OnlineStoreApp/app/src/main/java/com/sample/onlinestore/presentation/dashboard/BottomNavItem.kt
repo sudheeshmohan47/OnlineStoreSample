@@ -11,25 +11,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 open class BottomNavItem(
     @DrawableRes val image: Int = R.drawable.ic_bottom_nav_home,
-    @StringRes val labelResource: Int = R.string.label_bottomnav_home
+    @StringRes val labelResource: Int = R.string.label_bottom_nav_home
 ) :
     BaseScreen() {
     @Serializable
     object Home : BottomNavItem(
         R.drawable.ic_bottom_nav_home,
-        R.string.label_bottomnav_home
+        R.string.label_bottom_nav_home
     )
 
     @Serializable
     object Categories : BottomNavItem(
         R.drawable.ic_bottom_nav_categories,
-        R.string.label_bottomnav_categories
+        R.string.label_bottom_nav_categories
     )
 
     @Serializable
     object Wishlist : BottomNavItem(
         R.drawable.ic_bottom_nav_favourite,
-        R.string.label_bottomnav_wishlist
+        R.string.label_bottom_nav_wishlist
     )
 
     fun dashBoardScreens(): List<BottomNavItem> {
@@ -49,5 +49,6 @@ open class BottomNavItem(
  * @return List<String> A list of screen routes excluding any routes associated with the bottom navigation.
  */
 fun getScreenRoutesWithoutBottomNav(): List<String> = listOf(
-    OnlineStoreScreens.Splash.getBaseRoute()
+    OnlineStoreScreens.Splash.getBaseRoute(),
+    OnlineStoreScreens.AppIntroScreen.getBaseRoute()
 )

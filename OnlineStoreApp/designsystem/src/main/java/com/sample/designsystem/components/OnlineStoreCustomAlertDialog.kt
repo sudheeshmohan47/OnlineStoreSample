@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.sample.designsystem.foundation.OnlineStoreSize
+import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 
 private const val DialogWidthPercentage = 0.9f
@@ -86,10 +86,10 @@ private fun OnlineStoreCustomAlertDialog(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(OnlineStoreSize.LARGE.dp()))
+                    .clip(RoundedCornerShape(OnlineStoreSpacing.LARGE.dp()))
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(OnlineStoreSize.LARGE.dp())
+                    .padding(OnlineStoreSpacing.LARGE.dp())
             ) {
                 // Title
                 Text(
@@ -98,7 +98,7 @@ private fun OnlineStoreCustomAlertDialog(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
-                Spacer(modifier = Modifier.height(OnlineStoreSize.MEDIUM.dp()))
+                Spacer(modifier = Modifier.height(OnlineStoreSpacing.MEDIUM.dp()))
 
                 // Description
                 Text(
@@ -108,7 +108,7 @@ private fun OnlineStoreCustomAlertDialog(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                 )
-                Spacer(modifier = Modifier.height(OnlineStoreSize.LARGE.dp()))
+                Spacer(modifier = Modifier.height(OnlineStoreSpacing.LARGE.dp()))
 
                 // Button Section
                 Row {
@@ -120,7 +120,7 @@ private fun OnlineStoreCustomAlertDialog(
                             onDismiss()
                         }
                     )
-                    Spacer(modifier = Modifier.width(OnlineStoreSize.MEDIUM.dp()))
+                    Spacer(modifier = Modifier.width(OnlineStoreSpacing.MEDIUM.dp()))
                     OnlineStoreButton(
                         label = positiveButtonLabel,
                         variant = OnlineStoreButtonVariant.PRIMARY,
