@@ -15,7 +15,6 @@ fun mapErrors(code: Int, message: String? = ""): DomainException =
         ApiExceptionCodes.NOT_AVAILABLE.errorCode -> ServerNotAvailableException(message)
         ApiExceptionCodes.UNAUTHORIZED_ERROR.errorCode -> UnauthorizedException(message)
         ApiExceptionCodes.NOT_FOUND_ERROR.errorCode -> NotFoundException(message)
-        ApiExceptionCodes.RATE_EXCEEDED.errorCode -> RateLimitedException(message)
         ApiExceptionCodes.VALIDATION_FAILED.errorCode -> ServerValidationException(message)
         else -> GenericException(message)
     }
@@ -23,7 +22,6 @@ fun mapErrors(code: Int, message: String? = ""): DomainException =
 fun mapErrorMessage(e: DomainException): ErrorMessage {
     return when (e) {
         is ServerNotAvailableException -> ErrorMessage(R.string.error_server_not_available)
-        is RateLimitedException -> ErrorMessage(R.string.error_rate_exceeded)
         is NetworkException -> ErrorMessage(R.string.error_no_internet)
         else -> ErrorMessage(R.string.error_something_went_wrong)
     }
