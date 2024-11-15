@@ -8,27 +8,27 @@ import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import com.sample.onlinestore.commonmodule.foundation.base.getBaseRoute
 import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
 
-@kotlinx.serialization.Serializable
+@Serializable
 open class BottomNavItem(
-    @DrawableRes val image: Int = R.drawable.ic_dashboard_home,
+    @DrawableRes val image: Int = R.drawable.ic_bottom_nav_home,
     @StringRes val labelResource: Int = R.string.label_bottomnav_home
 ) :
     BaseScreen() {
     @Serializable
     object Home : BottomNavItem(
-        R.drawable.ic_bottomnav_home,
+        R.drawable.ic_bottom_nav_home,
         R.string.label_bottomnav_home
     )
 
     @Serializable
     object Categories : BottomNavItem(
-        R.drawable.ic_bottomnav_favourite,
+        R.drawable.ic_bottom_nav_categories,
         R.string.label_bottomnav_categories
     )
 
     @Serializable
     object Wishlist : BottomNavItem(
-        R.drawable.ic_bottomnav_post_request,
+        R.drawable.ic_bottom_nav_favourite,
         R.string.label_bottomnav_wishlist
     )
 

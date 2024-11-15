@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -25,16 +26,16 @@ class PreferenceManager @Inject constructor(@ApplicationContext private val cont
 
     }
 
-    fun getAppIntroStatus(): Flow<Boolean> {
+    suspend fun getAppIntroStatus(): Boolean {
         return dataStore.data.map { preferences ->
-            preferences[booleanPreferencesKey(APP_INTRO_STATUS)] ?: false
-        }
+            preferences[booleanPreferencesKey(APP_INTRO_STATUS)]  ?: false
+        }.first()
     }
 
-    fun getSessionToken(): Flow<String?> {
+    suspend fun getSessionToken(): String? {
         return dataStore.data.map { preferences ->
             preferences[stringPreferencesKey(SESSION_TOKEN)].orEmpty()
-        }
+        }.first()
     }
 
     suspend fun storeSessionToken(token: String) {
