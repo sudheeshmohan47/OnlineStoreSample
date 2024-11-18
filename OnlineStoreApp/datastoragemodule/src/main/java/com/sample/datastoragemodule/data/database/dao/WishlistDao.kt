@@ -8,7 +8,7 @@ import com.sample.datastoragemodule.data.database.model.Wishlist
 @Dao
 interface WishlistDao {
     @Insert
-    suspend fun addToWishlist(item: Wishlist)
+    suspend fun addToWishlist(productId: String)
 
     @Query("DELETE FROM wishlist WHERE wishlist.productId = :productId")
     suspend fun removeFromWishlist(productId: String): Int

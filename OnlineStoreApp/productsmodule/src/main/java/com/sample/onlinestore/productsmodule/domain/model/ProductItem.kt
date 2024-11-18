@@ -5,6 +5,7 @@ data class ProductItem(
     val name: String,
     val price: Double,
     val productId: String,
+    val isWishListed: Boolean,
     val category: String,
     val description: String,
     val image: String

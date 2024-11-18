@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class WishlistService @Inject constructor(private val wishlistDao: WishlistDao) :
     WishlistRepository {
-    override suspend fun addToWishlist(item: Wishlist) {
-        wishlistDao.addToWishlist(item = item)
+    override suspend fun addToWishlist(productId: String) {
+        wishlistDao.addToWishlist(productId = productId)
     }
 
     override suspend fun getWishlistItems(onCompletion: (List<Wishlist>) -> Unit) {

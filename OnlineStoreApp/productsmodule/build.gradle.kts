@@ -46,6 +46,7 @@ dependencies {
     implementation(project(":datastoragemodule"))
     implementation(project(":commonmodule"))
     implementation(project(":cartmodule"))
+    implementation(project(":wishlistmodule"))
 
     // kotlin core
     implementation(libs.androidx.core.ktx)
@@ -81,6 +82,7 @@ dependencies {
 
     // hilt
     implementation(libs.google.dagger.hilt)
+    implementation(libs.play.services.analytics.impl)
     ksp(libs.google.dagger.hilt.compiler)
     // timber
     implementation(libs.timber)

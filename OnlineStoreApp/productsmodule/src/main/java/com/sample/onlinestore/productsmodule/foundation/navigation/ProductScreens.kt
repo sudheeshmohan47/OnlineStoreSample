@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 sealed class ProductScreens : BaseScreen() {
 
     @Serializable
-    data object ProductScreen : ProductScreens()
+    data object ProductDetailScreen : ProductScreens()
 }

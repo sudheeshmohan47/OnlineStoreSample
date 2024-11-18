@@ -1,5 +1,6 @@
 package com.sample.onlinestore.productsmodule.di
 
+import com.sample.datastoragemodule.data.database.dao.WishlistDao
 import com.sample.onlinestore.productsmodule.data.ProductsService
 import com.sample.onlinestore.productsmodule.data.api.ProductsApiService
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
@@ -16,9 +17,10 @@ class ProductsModule {
 
     @Provides
     fun provideProductsRepository(
-        productsApiService: ProductsApiService
+        productsApiService: ProductsApiService,
+        wishlistDao: WishlistDao
     ): ProductsRepository {
-        return ProductsService(productsApiService)
+        return ProductsService(productsApiService, wishlistDao)
     }
 
     @Provides
