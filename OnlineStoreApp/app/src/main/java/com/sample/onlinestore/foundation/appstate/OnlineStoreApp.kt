@@ -34,7 +34,11 @@ fun OnlineStoreApp(
 ) {
     val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route?.getBaseRoute()
+
+    // List of screens without bottom navigation
     val screensWithoutBottomNav = getScreenRoutesWithoutBottomNav()
+
+    // We will hide bottom navigation for the screens without bottom navigation
     val showBottomBar = currentRoute != null && !screensWithoutBottomNav.contains(currentRoute)
     val mainActivityNavigationManager = MainActivityNavigationManager(appState)
 

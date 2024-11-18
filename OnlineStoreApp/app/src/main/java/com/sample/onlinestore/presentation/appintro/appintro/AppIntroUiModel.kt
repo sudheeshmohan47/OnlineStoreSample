@@ -7,7 +7,9 @@ data class AppIntroUiModel(val appIntroPages: List<AppIntroPage> = emptyList())
 
 sealed class AppIntroAction : Action {
     data object LoadIntroPages : AppIntroAction()
-    data object OnNextButtonTapped : AppIntroAction()
+    data object LoadNextScreen : AppIntroAction()
 }
 
-sealed class AppIntroEvent : Event
+sealed class AppIntroEvent : Event {
+    data object LoadNextScreen : AppIntroEvent()
+}

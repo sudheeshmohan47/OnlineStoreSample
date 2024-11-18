@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.designsystem.foundation.OnlineStoreSize
 import com.sample.designsystem.foundation.OnlineStoreSpacing
@@ -33,6 +32,7 @@ import com.sample.onlinestore.domain.splash.model.UserStatus
 import com.sample.onlinestore.presentation.splash.SplashUiModel
 import com.sample.onlinestore.presentation.splash.SplashViewModel
 import com.sample.onlinestore.presentation.splash.splashViewModelCreationCallback
+import timber.log.Timber
 
 @Composable
 fun SplashScreen(
@@ -43,11 +43,8 @@ fun SplashScreen(
     val uiState: UiState<SplashUiModel> =
         splashViewModel.uiState.collectAsStateWithLifecycle().value
 
-    LifecycleResumeEffect(Unit, uiState) {
-        if (uiState is UiState.Result && uiState.data?.initialDataLoaded == true) {
-            navigateToScreens(uiState.data?.userStatus)
-        }
-        onPauseOrDispose { }
+    if (uiState is UiState.Result && uiState.data?.initialDataLoaded == true) {
+        navigateToScreens(uiState.data?.userStatus)
     }
 
     Box(modifier = modifier.fillMaxSize()) {

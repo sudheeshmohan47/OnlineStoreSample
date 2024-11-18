@@ -9,11 +9,11 @@ import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
 class StartupNavigationManager(private val appState: OnlineStoreAppState) {
 
     val gotoLoginScreen: () -> Unit = {
-         appState.navigateWithPopBackstack(AuthenticationScreens.LoginScreen)
+        appState.navigateWithPopBackstack(AuthenticationScreens.LoginScreen)
     }
 
     val goToAppIntroScreen: () -> Unit = {
-         appState.navigateWithPopBackstack(OnlineStoreScreens.AppIntroScreen)
+        appState.navigateWithPopBackstack(OnlineStoreScreens.AppIntroScreen)
     }
 
     val goToDashboardScreen: () -> Unit = {

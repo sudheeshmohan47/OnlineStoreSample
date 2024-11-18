@@ -1,7 +1,6 @@
 package com.sample.onlinestore.presentation.appintro.appintro.screens
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,18 +14,17 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.sample.onlinestore.presentation.appintro.appintro.AppIntroAction
-import com.sample.onlinestore.presentation.appintro.appintro.AppIntroUiModel
-import com.sample.onlinestore.presentation.appintro.appintro.AppIntroViewModel
-import com.sample.onlinestore.presentation.appintro.appintro.appIntroViewModelCreationCallback
 import com.sample.designsystem.components.OnlineStoreButton
 import com.sample.designsystem.foundation.OnlineStoreSize
 import com.sample.designsystem.foundation.OnlineStoreSpacing
@@ -34,9 +32,16 @@ import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.R
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.SlidingDotsPagerIndicator
+import com.sample.onlinestore.presentation.appintro.appintro.AppIntroAction
+import com.sample.onlinestore.presentation.appintro.appintro.AppIntroEvent
 import com.sample.onlinestore.presentation.appintro.appintro.AppIntroPage
+import com.sample.onlinestore.presentation.appintro.appintro.AppIntroUiModel
+import com.sample.onlinestore.presentation.appintro.appintro.AppIntroViewModel
+import com.sample.onlinestore.presentation.appintro.appintro.appIntroViewModelCreationCallback
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 const val AppIntroPageCount = 3
 
@@ -53,19 +58,21 @@ fun AppIntroScreen(
         }
     )
     val uiState: UiState<AppIntroUiModel> = appIntroViewModel.uiState.collectAsState().value
-    when (uiState) {
-        is UiState.Result -> {
-            LoadIntroContent(
-                modifier = modifier,
-                uiModel = uiState.data,
-                coroutineScope = coroutineScope,
-                pagerState = pagerState,
-                navigateToNextScreen = {
-                    goToLoginScreen()
-                }
-            )
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        LoadIntroContent(
+            modifier = Modifier,
+            uiModel = uiState.data,
+            coroutineScope = coroutineScope,
+            pagerState = pagerState
+        ){
+            appIntroViewModel.sendAction(it)
         }
-        else -> Unit
+        HandleUiState(goToLoginScreen = goToLoginScreen)
     }
 }
 
@@ -75,7 +82,7 @@ fun LoadIntroContent(
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
-    navigateToNextScreen: () -> Unit
+    onAction: (AppIntroAction) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -103,6 +110,7 @@ fun LoadIntroContent(
                 pagerState = pagerState
             )
             Spacer(modifier = Modifier.height(OnlineStoreSpacing.LARGE.dp()))
+
             // Action button for navigating through pages and for submitting
             OnlineStoreButton(
                 buttonTextColor = MaterialTheme.colorScheme.onPrimary,
@@ -118,7 +126,24 @@ fun LoadIntroContent(
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 } else {
-                    navigateToNextScreen()
+                    onAction(AppIntroAction.LoadNextScreen)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HandleUiState(
+    goToLoginScreen: () -> Unit,
+    appIntroViewModel: AppIntroViewModel = hiltViewModel(creationCallback = appIntroViewModelCreationCallback)
+) {
+    val goToLoginScreenState by rememberUpdatedState(goToLoginScreen)
+    LaunchedEffect(Unit) {
+        appIntroViewModel.uiEvent.collectLatest { event ->
+            when (event) {
+                is AppIntroEvent.LoadNextScreen -> {
+                    goToLoginScreenState()
                 }
             }
         }
@@ -147,9 +172,8 @@ private fun LoadDummyContent(modifier: Modifier = Modifier) {
             pageCount = {
                 AppIntroPageCount
             }
-        ),
-        navigateToNextScreen = {}
-    )
+        )
+    ){}
 }
 
 private fun getDummyList(): List<AppIntroPage> = listOf(

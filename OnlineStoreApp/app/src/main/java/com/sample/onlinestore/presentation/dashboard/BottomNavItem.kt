@@ -3,6 +3,7 @@ package com.sample.onlinestore.presentation.dashboard
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.sample.onlinestore.R
+import com.sample.onlinestore.authenticationmodule.foundation.navigation.AuthenticationScreens
 import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import com.sample.onlinestore.commonmodule.foundation.base.getBaseRoute
 import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
@@ -50,5 +51,6 @@ open class BottomNavItem(
  */
 fun getScreenRoutesWithoutBottomNav(): List<String> = listOf(
     OnlineStoreScreens.Splash.getBaseRoute(),
-    OnlineStoreScreens.AppIntroScreen.getBaseRoute()
+    OnlineStoreScreens.AppIntroScreen.getBaseRoute(),
+    AuthenticationScreens.LoginScreen.getBaseRoute()
 )

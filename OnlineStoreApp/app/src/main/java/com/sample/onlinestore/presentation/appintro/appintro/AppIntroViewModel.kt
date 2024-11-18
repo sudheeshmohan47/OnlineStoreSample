@@ -10,6 +10,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 val appIntroViewModelCreationCallback = { factory: AppIntroViewModel.AppIntroViewModelFactory ->
     factory.create()
@@ -58,10 +59,11 @@ class AppIntroViewModel @AssistedInject constructor(
      */
     override fun runSideEffect(action: AppIntroAction, currentState: UiState<AppIntroUiModel>) {
         when (action) {
-            is AppIntroAction.OnNextButtonTapped -> {
+            is AppIntroAction.LoadNextScreen -> {
+                // Save app intro finished status to preference
                 saveAppIntroStatus()
+                sendEvent(AppIntroEvent.LoadNextScreen)
             }
-
             else -> Unit
         }
     }
