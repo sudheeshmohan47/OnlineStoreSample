@@ -5,7 +5,6 @@ import timber.log.Timber
 
 class AuthenticationNavigationManager(private val appState: OnlineStoreAppState) {
     val goToDashboardScreen: () -> Unit = {
-        Timber.d("Login Success: goToDashboardScreen")
         // appState.navigateWithPopBackstack(BottomNavItem.Home)
     }
 }

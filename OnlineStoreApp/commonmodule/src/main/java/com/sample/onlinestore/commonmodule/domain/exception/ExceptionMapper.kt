@@ -23,6 +23,7 @@ fun mapErrorMessage(e: DomainException): ErrorMessage {
     return when (e) {
         is ServerNotAvailableException -> ErrorMessage(R.string.error_server_not_available)
         is NetworkException -> ErrorMessage(R.string.error_no_internet)
+        is UnauthorizedException -> ErrorMessage(R.string.error_unauthorized)
         else -> ErrorMessage(R.string.error_something_went_wrong)
     }
 }

@@ -18,7 +18,7 @@ const val ErrorFieldTypeUsername = "username"
 const val ErrorFieldTypePassword = "password"
 const val PasswordMinLength = 6
 
-@SuppressWarnings("MagicNumber", "UnusedPrivateProperty") // To be removed
+@SuppressWarnings("MagicNumber")
 @HiltViewModel(assistedFactory = LoginViewModel.LoginViewModelFactory::class)
 class LoginViewModel @AssistedInject constructor(
     loginUseCase: LoginUseCase,

@@ -1,6 +1,7 @@
 package com.sample.onlinestore.authenticationmodule.presentation.login.screen
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.sample.designsystem.components.OnlineStoreButton
 import com.sample.designsystem.components.OnlineStoreOutlinedTextField
 import com.sample.designsystem.foundation.OnlineStoreSpacing
@@ -29,6 +31,8 @@ fun UserFields(
 ) {
     Column(modifier = modifier) {
         loginUiState.data?.let { uiModel ->
+            val usernameError = getStringFromId(context, uiModel.username?.errorMessageResId ?: 0)
+            val passwordError = getStringFromId(context, uiModel.password?.errorMessageResId ?: 0)
             OnlineStoreOutlinedTextField(
                 text = uiModel.username?.value ?: "",
                 hint = stringResource(R.string.label_enter_username),
@@ -36,7 +40,8 @@ fun UserFields(
                 onValueChange = {
                     onAction(LoginAction.OnUsernameChanged(it))
                 },
-                errorMessage = getStringFromId(context, uiModel.username?.errorMessageResId ?: 0),
+                isError = usernameError.isNotEmpty(),
+                errorMessage = usernameError,
             )
             Spacer(modifier = Modifier.height(OnlineStoreSpacing.SMALL.dp()))
             OnlineStoreOutlinedTextField(
@@ -46,7 +51,9 @@ fun UserFields(
                 onValueChange = {
                     onAction(LoginAction.OnPasswordChanged(it))
                 },
-                errorMessage = getStringFromId(context, uiModel.password?.errorMessageResId ?: 0),
+                isError = passwordError.isNotEmpty(),
+                errorMessage = passwordError,
+                visualTransformation = PasswordVisualTransformation()
             )
         }
     }

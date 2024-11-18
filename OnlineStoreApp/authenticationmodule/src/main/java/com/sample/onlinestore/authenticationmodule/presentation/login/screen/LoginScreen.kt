@@ -3,9 +3,11 @@ package com.carelo.android.presentation.authentication.login.screen
 import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,12 +22,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sample.designsystem.foundation.OnlineStoreSize
 import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
@@ -49,7 +54,8 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = hiltViewModel(creationCallback = loginViewModelCreationCallback)
 ) {
-    val loginUiState: UiState<LoginUiModel> = loginViewModel.uiState.collectAsState().value
+    val loginUiState: UiState<LoginUiModel> =
+        loginViewModel.uiState.collectAsStateWithLifecycle().value
     val isKeyboardVisible by keyboardVisibility()
     val snackBarHostState = remember { SnackbarHostState() }
     val listState: LazyListState = rememberLazyListState()
@@ -65,34 +71,39 @@ fun LoginScreen(
             }
         }
     }
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.onPrimary)
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        LoginScreenContents(
-            modifier = Modifier.weight(1f),
-            loginUiState = loginUiState,
-            onAction = { loginAction ->
-                loginViewModel.sendAction(loginAction)
-            },
-            listState = listState,
-            context = context
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.onPrimary)
+                .align(Alignment.Center)
+        ) {
+            LoginScreenContents(
+                loginUiState = loginUiState,
+                onAction = { loginAction ->
+                    loginViewModel.sendAction(loginAction)
+                },
+                listState = listState,
+                context = context
+            )
+
+        }
         OnlineStoreSnackBarHost(
+            modifier = Modifier.align(Alignment.BottomCenter),
             hostState = snackBarHostState,
         )
+        HandleUiState(
+            uiState = loginUiState,
+            snackbarHostState = snackBarHostState,
+            gotoHomeScreen = gotoHomeScreen,
+            coroutineScope = coroutineScope
+        )
     }
-
-    HandleUiState(
-        uiState = loginUiState,
-        snackbarHostState = snackBarHostState,
-        gotoHomeScreen = gotoHomeScreen,
-        coroutineScope = coroutineScope
-    )
 }
 
-@SuppressWarnings("UnusedParameter")
 @Composable
 fun HandleUiState(
     uiState: UiState<LoginUiModel>,
@@ -148,9 +159,9 @@ fun LoginScreenContents(
         state = listState,
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp)
+            .padding(OnlineStoreSpacing.EXTRA_LARGE.dp())
     ) {
-        item { Spacer(modifier = Modifier.height(OnlineStoreSpacing.EXTRA_LARGE.dp())) }
+        item { Spacer(modifier = Modifier.height(200.dp)) }
         item {
             UserFields(
                 onAction = onAction,
@@ -158,7 +169,7 @@ fun LoginScreenContents(
                 context = context
             )
         }
-        item { Spacer(modifier = Modifier.height(OnlineStoreSpacing.SMALL.dp())) }
+        item { Spacer(modifier = Modifier.height(OnlineStoreSpacing.MEDIUM.dp())) }
         item {
             ContinueButton(
                 onAction = onAction,
