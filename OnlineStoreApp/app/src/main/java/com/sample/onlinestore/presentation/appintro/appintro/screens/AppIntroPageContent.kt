@@ -29,7 +29,6 @@ import com.sample.onlinestore.R
 import com.sample.onlinestore.commonmodule.utils.getStringFromId
 import com.sample.onlinestore.presentation.appintro.appintro.AppIntroPage
 
-
 @Composable
 fun AppIntroPageContent(
     appIntroPage: AppIntroPage,
@@ -62,8 +61,7 @@ private fun BackgroundImage(imageId: Int, modifier: Modifier = Modifier) {
                 .fillMaxWidth()
                 .padding(horizontal = OnlineStoreSpacing.EXTRA_LARGE.dp())
                 .align(Alignment.BottomCenter),
-            contentScale = ContentScale.Fit,
-
+            contentScale = ContentScale.Fit
         )
     }
 }

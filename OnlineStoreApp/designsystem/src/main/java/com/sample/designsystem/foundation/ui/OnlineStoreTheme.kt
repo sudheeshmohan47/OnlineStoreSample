@@ -277,11 +277,10 @@ fun OnlineStoreTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = if(darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+            window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
-
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

@@ -1,5 +1,4 @@
-package com.sample.onlinestore.networkmodule.di.module
-
+package com.sample.onlinestore.commonmodule.di.module
 
 import com.sample.onlinestore.commonmodule.BuildConfig
 import com.sample.onlinestore.commonmodule.BuildConfig.BASE_URL

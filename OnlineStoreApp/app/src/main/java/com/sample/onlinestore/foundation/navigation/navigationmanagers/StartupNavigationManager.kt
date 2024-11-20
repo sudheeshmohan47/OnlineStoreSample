@@ -18,7 +18,7 @@ class StartupNavigationManager(private val appState: OnlineStoreAppState) {
     }
 
     val goToDashboardScreen: () -> Unit = {
-         appState.navigateWithPopBackstack(BottomNavItem.Home)
+        appState.navigateWithPopBackstack(BottomNavItem.Home)
     }
 
     /**

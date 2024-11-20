@@ -9,7 +9,6 @@ import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 /**
  * Manages the login process, including input validation, handling login requests,

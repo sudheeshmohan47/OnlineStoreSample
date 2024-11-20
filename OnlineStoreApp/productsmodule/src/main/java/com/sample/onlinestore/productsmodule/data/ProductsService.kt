@@ -1,6 +1,5 @@
 package com.sample.onlinestore.productsmodule.data
 
-
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
 import com.sample.onlinestore.commonmodule.domain.exception.mapException
@@ -35,7 +34,8 @@ class ProductsService @Inject constructor(
     /**
      * Fetches the list of products from the API and marks them as wishListed if applicable.
      *
-     * @param onCompletion A callback invoked with the success status and the [DomainResponse] containing the list of products.
+     * @param onCompletion A callback invoked with the success status and the [DomainResponse]
+     * containing the list of products.
      * @throws Exception If an error occurs during the API call or wishlist operations.
      */
     override suspend fun getProducts(onCompletion: (Boolean, DomainResponse<List<ProductResponse>>) -> Unit) {
@@ -44,20 +44,19 @@ class ProductsService @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { products ->
                     val wishListItems = wishlistRepository.getWishlistItems()
-                        Timber.d("WishListed Items: $wishListItems")
-                        // Update product item's wishlist status
-                        val updatedProducts = products.map { product ->
-                            val isWishListed = wishListItems.any { it.productId == product.id }
-                            product.copy(isWishListed = isWishListed)
-                        }
-                        onCompletion(true, DomainResponse(data = updatedProducts))
-                        return@getProducts
+                    Timber.d("WishListed Items: $wishListItems")
+                    // Update product item's wishlist status
+                    val updatedProducts = products.map { product ->
+                        val isWishListed = wishListItems.any { it.productId == product.id }
+                        product.copy(isWishListed = isWishListed)
                     }
+                    onCompletion(true, DomainResponse(data = updatedProducts))
+                    return@getProducts
                 }
+            }
             val errorBody: ErrorBody? = response.parseErrorBody()
             throw mapErrors(response.code(), errorBody?.responseError?.message)
         } catch (e: Exception) {
-            e.printStackTrace()
             throw mapException(e)
         }
     }
@@ -66,7 +65,8 @@ class ProductsService @Inject constructor(
      * Fetches the details of a specific product from the API.
      *
      * @param productId The ID of the product to fetch details for.
-     * @param onCompletion A callback invoked with the success status and the [DomainResponse] containing the product details.
+     * @param onCompletion A callback invoked with the success status and the [DomainResponse]
+     * containing the product details.
      * @throws Exception If an error occurs during the API call.
      */
     override suspend fun getProductDetail(

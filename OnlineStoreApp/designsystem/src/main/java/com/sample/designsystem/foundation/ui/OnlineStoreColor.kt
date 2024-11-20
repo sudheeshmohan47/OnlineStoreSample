@@ -218,7 +218,6 @@ val surfaceContainerDarkHighContrast = Color(0xFF241E22)
 val surfaceContainerHighDarkHighContrast = Color(0xFF2F282D)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF3A3338)
 
-
 // These colors does not require dark alternative
 val colorRating = Color(0xFFFFA800)
 val colorSecondaryText = Color(0xFFEEEEEE)

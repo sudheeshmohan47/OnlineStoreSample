@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.sample.onlinestore.commonmodule.foundation.base.BaseViewModel
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
-import com.sample.wishlistmodule.domain.WishlistUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

@@ -41,7 +41,6 @@ import com.sample.onlinestore.presentation.appintro.appintro.appIntroViewModelCr
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 const val AppIntroPageCount = 3
 
@@ -69,7 +68,7 @@ fun AppIntroScreen(
             uiModel = uiState.data,
             coroutineScope = coroutineScope,
             pagerState = pagerState
-        ){
+        ) {
             appIntroViewModel.sendAction(it)
         }
         HandleUiState(goToLoginScreen = goToLoginScreen)
@@ -173,7 +172,7 @@ private fun LoadDummyContent(modifier: Modifier = Modifier) {
                 AppIntroPageCount
             }
         )
-    ){}
+    ) {}
 }
 
 private fun getDummyList(): List<AppIntroPage> = listOf(

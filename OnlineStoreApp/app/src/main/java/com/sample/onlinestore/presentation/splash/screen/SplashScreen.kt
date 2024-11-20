@@ -32,7 +32,6 @@ import com.sample.onlinestore.domain.splash.model.UserStatus
 import com.sample.onlinestore.presentation.splash.SplashUiModel
 import com.sample.onlinestore.presentation.splash.SplashViewModel
 import com.sample.onlinestore.presentation.splash.splashViewModelCreationCallback
-import timber.log.Timber
 
 @Composable
 fun SplashScreen(

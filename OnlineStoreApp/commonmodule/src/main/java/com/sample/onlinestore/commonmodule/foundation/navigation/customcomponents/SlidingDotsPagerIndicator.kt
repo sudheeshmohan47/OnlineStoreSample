@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-const val defaultCornerRadius = 12f
+const val DefaultCornerRadius = 12f
 
 private fun DrawScope.drawIndicator(
     x: Float,
@@ -59,7 +59,7 @@ fun SlidingDotsPagerIndicator(
     width: Dp = 8.dp, // Width of each circle
     height: Dp = 8.dp, // Height of each circle
     activeLineWidth: Dp = 30.dp, // Width of the active line
-    radius: CornerRadius = CornerRadius(defaultCornerRadius), // Radius of each circle
+    radius: CornerRadius = CornerRadius(DefaultCornerRadius), // Radius of each circle
     defaultColor: Color = MaterialTheme.colorScheme.surfaceVariant,
     selectedColor: Color = MaterialTheme.colorScheme.primary
 ) {

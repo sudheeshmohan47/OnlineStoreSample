@@ -1,7 +1,6 @@
 package com.sample.wishlistmodule.di
 
 import com.sample.datastoragemodule.data.database.dao.WishlistDao
-import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.wishlistmodule.data.WishlistService
 import com.sample.wishlistmodule.domain.WishlistRepository
 import com.sample.wishlistmodule.domain.WishlistUseCase

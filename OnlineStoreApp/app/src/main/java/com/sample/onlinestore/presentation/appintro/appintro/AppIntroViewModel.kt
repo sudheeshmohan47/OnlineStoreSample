@@ -10,7 +10,6 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 val appIntroViewModelCreationCallback = { factory: AppIntroViewModel.AppIntroViewModelFactory ->
     factory.create()
@@ -64,6 +63,7 @@ class AppIntroViewModel @AssistedInject constructor(
                 saveAppIntroStatus()
                 sendEvent(AppIntroEvent.LoadNextScreen)
             }
+
             else -> Unit
         }
     }

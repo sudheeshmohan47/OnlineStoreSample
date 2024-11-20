@@ -53,7 +53,9 @@ import kotlinx.coroutines.flow.collectLatest
 fun ProductsListingScreen(
     loadProductDetailScreen: (String) -> Unit,
     modifier: Modifier = Modifier,
-    productListingViewModel: ProductsListingViewModel = hiltViewModel(creationCallback = productsListingViewModelCreationCallback)
+    productListingViewModel: ProductsListingViewModel = hiltViewModel(
+        creationCallback = productsListingViewModelCreationCallback
+    )
 ) {
     val productsListingUiState by productListingViewModel.uiState.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -141,7 +143,6 @@ fun ProductListingMainContent(
                 onAction = onAction
             )
         }
-
     }
 }
 
@@ -151,7 +152,9 @@ private fun HandleUIStateChanges(
     snackBarHostState: SnackbarHostState,
     loadDetailScreen: (String) -> Unit,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    productListingViewModel: ProductsListingViewModel = hiltViewModel(creationCallback = productsListingViewModelCreationCallback)
+    productListingViewModel: ProductsListingViewModel = hiltViewModel(
+        creationCallback = productsListingViewModelCreationCallback
+    )
 ) {
     val context = LocalContext.current
     val loadDetailScreenScreenState by rememberUpdatedState(loadDetailScreen)
@@ -198,7 +201,7 @@ private fun ProductsListingScreenUIPreview() {
                 products = listOf(),
                 isSwipeRefreshing = false
             )
-            ),
+        ),
         screenWidth = 300.dp,
         onAction = {}
     )

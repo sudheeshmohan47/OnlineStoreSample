@@ -9,7 +9,6 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 val splashViewModelCreationCallback = { factory: SplashViewModel.SplashViewModelFactory ->
     factory.create()

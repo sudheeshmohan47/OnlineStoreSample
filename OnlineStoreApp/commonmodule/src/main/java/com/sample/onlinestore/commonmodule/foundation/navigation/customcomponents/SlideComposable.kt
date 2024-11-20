@@ -18,7 +18,8 @@ import kotlin.reflect.KType
 const val SlideAnimationDuration = 500
 
 /**
- * Extension function for [NavGraphBuilder] to create a composable with slide animations for a specific [BaseScreen] subclass.
+ * Extension function for [NavGraphBuilder] to create a composable with slide animations for a
+ * specific [BaseScreen] subclass.
  *
  * @param content The composable content block with [AnimatedContentScope] and [NavBackStackEntry].
  */

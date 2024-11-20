@@ -1,4 +1,4 @@
-package com.carelo.android.presentation.authentication.login.screen
+package com.sample.onlinestore.authenticationmodule.presentation.login.screen
 
 import android.content.Context
 import android.content.res.Configuration
@@ -17,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,7 +29,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sample.designsystem.foundation.OnlineStoreSize
 import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
@@ -40,8 +38,6 @@ import com.sample.onlinestore.authenticationmodule.presentation.login.LoginEvent
 import com.sample.onlinestore.authenticationmodule.presentation.login.LoginUiModel
 import com.sample.onlinestore.authenticationmodule.presentation.login.LoginViewModel
 import com.sample.onlinestore.authenticationmodule.presentation.login.loginViewModelCreationCallback
-import com.sample.onlinestore.authenticationmodule.presentation.login.screen.ContinueButton
-import com.sample.onlinestore.authenticationmodule.presentation.login.screen.UserFields
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import com.sample.onlinestore.commonmodule.utils.keyboardVisibility
@@ -89,7 +85,6 @@ fun LoginScreen(
                 listState = listState,
                 context = context
             )
-
         }
         OnlineStoreSnackBarHost(
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -108,8 +103,8 @@ fun LoginScreen(
 fun HandleUiState(
     uiState: UiState<LoginUiModel>,
     gotoHomeScreen: () -> Unit,
-    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     snackbarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     loginViewModel: LoginViewModel = hiltViewModel(creationCallback = loginViewModelCreationCallback)
 ) {
     val context = LocalContext.current

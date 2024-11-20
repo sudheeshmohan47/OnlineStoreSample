@@ -1,4 +1,4 @@
-package com.commonlibs.android.data.model.api
+package com.sample.onlinestore.commonmodule.data.model.api
 
 import com.google.gson.annotations.SerializedName
 

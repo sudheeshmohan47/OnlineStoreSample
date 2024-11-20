@@ -82,6 +82,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose.v280alpha08)
     ksp(libs.google.dagger.hilt.compiler)
 
+    // Detekt compose rules
+    detektPlugins(libs.detekt)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

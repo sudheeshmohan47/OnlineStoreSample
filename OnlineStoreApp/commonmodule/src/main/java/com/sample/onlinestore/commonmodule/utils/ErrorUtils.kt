@@ -9,7 +9,16 @@ import com.sample.onlinestore.commonmodule.domain.model.FieldObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-
+/**
+ * Handles displaying an error message in a Snackbar.
+ * If the error message is empty, it retrieves a message from a resource ID.
+ *
+ * @param context The context for accessing resources.
+ * @param snackBarHostState The host state for displaying the Snackbar.
+ * @param coroutineScope The CoroutineScope for launching the Snackbar display.
+ * @param errorMessage The error message containing either a string or a resource ID.
+ * @param onSnackbarDisplayed Optional callback invoked when the Snackbar is displayed.
+ */
 fun handleErrorMessage(
     context: Context,
     snackBarHostState: SnackbarHostState,
