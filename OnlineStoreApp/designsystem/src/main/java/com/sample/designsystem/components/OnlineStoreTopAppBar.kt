@@ -1,5 +1,6 @@
 package com.sample.designsystem.components
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -93,7 +94,11 @@ fun OnlineStoreTopAppBar(
                 containerColor = backgroundColor,
                 titleContentColor = titleColor,
             ),
-            scrollBehavior = scrollBehavior
+            scrollBehavior = scrollBehavior,
+            windowInsets = WindowInsets(
+                top = 0.dp,
+                bottom = 0.dp
+            )
         )
     } else {
         TopAppBar(
@@ -104,7 +109,11 @@ fun OnlineStoreTopAppBar(
                 containerColor = backgroundColor,
                 titleContentColor = titleColor,
             ),
-            scrollBehavior = scrollBehavior
+            scrollBehavior = scrollBehavior,
+            windowInsets = WindowInsets(
+                top = 0.dp,
+                bottom = 0.dp
+            )
         )
     }
 }
@@ -120,7 +129,6 @@ private fun CustomTopAppBarPreview() {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun CustomTopAppBarPreviewDark() {

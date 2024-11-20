@@ -11,15 +11,16 @@ class WishlistService @Inject constructor(private val wishlistDao: WishlistDao) 
         wishlistDao.addToWishlist(productId = productId)
     }
 
-    override suspend fun getWishlistItems(onCompletion: (List<Wishlist>) -> Unit) {
-        onCompletion(wishlistDao.getWishlistItems())
+    override suspend fun getWishlistItems(): List<Wishlist> {
+        return wishlistDao.getWishlistItems()
     }
 
-    override suspend fun removeFromWishlist(productId: String, onCompletion: (List<Wishlist>) -> Unit) {
+    override suspend fun removeFromWishlist(
+        productId: String,
+        onCompletion: (List<Wishlist>) -> Unit
+    ) {
         if (wishlistDao.removeFromWishlist(productId) == 1) {
-            getWishlistItems {
-                onCompletion(it)
-            }
+            onCompletion(getWishlistItems())
         }
     }
 }

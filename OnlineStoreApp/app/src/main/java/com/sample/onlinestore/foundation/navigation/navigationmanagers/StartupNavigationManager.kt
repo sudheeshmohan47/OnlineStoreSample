@@ -5,6 +5,7 @@ import com.sample.onlinestore.domain.splash.model.UserStatus
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 import com.sample.onlinestore.foundation.appstate.navigateWithPopBackstack
 import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
+import com.sample.onlinestore.presentation.dashboard.BottomNavItem
 
 class StartupNavigationManager(private val appState: OnlineStoreAppState) {
 
@@ -17,7 +18,7 @@ class StartupNavigationManager(private val appState: OnlineStoreAppState) {
     }
 
     val goToDashboardScreen: () -> Unit = {
-        // appState.navigateWithPopBackstack(BottomNavItem.Home)
+         appState.navigateWithPopBackstack(BottomNavItem.Home)
     }
 
     /**

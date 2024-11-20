@@ -9,9 +9,7 @@ interface ProductsRepository {
         productId: String,
         onCompletion: (Boolean, DomainResponse<ProductResponse>) -> Unit
     )
-    suspend fun addOrRemoveItemToWishList(
-        productId: String,
-        isWishListed: Boolean,
-        onCompletion: (Boolean) -> Unit
-    )
+
+    suspend fun addToWishlist(productId: String)
+    suspend fun removeFromWishlist(productId: String, onCompletion: (Boolean) -> Unit)
 }

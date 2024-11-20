@@ -56,7 +56,6 @@ fun BottomNavigationSection(
                         textAlign = TextAlign.Center,
                         text = getStringFromId(context, navigationItem.labelResource),
                         style = MaterialTheme.typography.labelSmall,
-                        minLines = 2,
                         fontWeight = FontWeight.Normal,
                         color = selectedColor
                     )

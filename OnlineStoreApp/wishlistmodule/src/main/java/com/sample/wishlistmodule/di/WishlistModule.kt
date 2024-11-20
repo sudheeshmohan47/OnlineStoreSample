@@ -20,9 +20,8 @@ class WishlistModule {
 
     @Provides
     fun provideWishlistUseCase(
-        wishlistRepository: WishlistRepository,
-        cartRepository: CartRepository
+        wishlistRepository: WishlistRepository
     ): WishlistUseCase {
-        return WishlistUseCase(wishlistRepository, cartRepository)
+        return WishlistUseCase(wishlistRepository)
     }
 }

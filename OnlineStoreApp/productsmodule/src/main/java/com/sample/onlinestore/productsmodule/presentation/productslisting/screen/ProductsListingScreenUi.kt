@@ -1,10 +1,8 @@
 package com.sample.onlinestore.productsmodule.presentation.productslisting.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,39 +13,33 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -86,35 +78,34 @@ fun ProductsListingTopAppBarSection(
 }
 
 @Composable
-fun CollectionsScreenContent(
+fun ProductsListingScreenContent(
     productsListingUiState: UiState<ProductsListingUiModel>,
     screenWidth: Dp,
     onAction: (ProductsListingAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     productsListingUiState.data?.let { collectionsUiModel ->
-      val products = collectionsUiModel.products
-            LazyVerticalGrid(
-                modifier = modifier,
-                columns = GridCells.Fixed(CollectionsGridColumnCount),
-                contentPadding = PaddingValues(horizontal = OnlineStoreSpacing.MEDIUM.dp()),
-                verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-                horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
-            ) {
-                items(products) {
-                    CollectionItem(
-                        collectionItem = it,
-                        onAction = onAction,
-                        screenWidth = screenWidth,
-                        selectedOverFlowCollectionId = selectedOverFlowCollectionId
-                    )
-                }
+        val products = collectionsUiModel.products
+        LazyVerticalGrid(
+            modifier = modifier,
+            columns = GridCells.Fixed(ProductListingGridColumnCount),
+            contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
+            verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
+            horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
+        ) {
+            items(products) { productItem ->
+                ProductsListingItem(
+                    productItem = productItem,
+                    onAction = onAction,
+                    screenWidth = screenWidth
+                )
             }
+        }
     }
 }
 
 @Composable
-fun CollectionItem(
+fun ProductsListingItem(
     productItem: ProductItem,
     screenWidth: Dp,
     modifier: Modifier = Modifier,
@@ -123,7 +114,10 @@ fun CollectionItem(
     Card(
         modifier = modifier
             .width(screenWidth * ProductListingItemWidthPercentage)
-            .padding(OnlineStoreSpacing.EXTRA_SMALL.dp()),
+            .padding(OnlineStoreSpacing.EXTRA_SMALL.dp())
+            .clickable {
+                onAction(ProductsListingAction.OnClickProduct(productItem))
+            },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         ),
@@ -134,9 +128,6 @@ fun CollectionItem(
         Box(
             modifier = Modifier
                 .padding(OnlineStoreSpacing.SMALL.dp())
-                .clickable {
-                    onAction(ProductsListingAction.OnClickProduct(productItem))
-                }
         ) {
             Column {
                 // Main image
@@ -146,126 +137,67 @@ fun CollectionItem(
                         .fillMaxWidth()
                         .aspectRatio(ProductListingItemAspectRatio),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(productItem.image.ifEmpty { R.drawable.placeholder_home })
+                        .data(productItem.image?.ifEmpty { com.sample.designsystem.R.drawable.placeholder })
                         .crossfade(true)
                         .scale(Scale.FIT)
-                        .error(R.drawable.placeholder_home)
+                        .error(com.sample.designsystem.R.drawable.placeholder)
                         .build(),
-                    placeholder = painterResource(R.drawable.placeholder_home),
+                    placeholder = painterResource(com.sample.designsystem.R.drawable.placeholder),
                     contentDescription = "",
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(OnlineStoreSpacing.SMALL.dp()))
-                // Title
-                Text(
-                    text = collectionItem.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontFamily = InterFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1
-                )
-                Spacer(modifier = Modifier.height(AtlasSpacing.EXTRASMALL.dp()))
-                Text(
-                    text = collectionItem.place,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontFamily = InterFontFamily,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        // Title
+                        Text(
+                            text = productItem.name.orEmpty(),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(OnlineStoreSpacing.EXTRA_SMALL.dp()))
+
+                        Text(
+                            text = "Rs.${productItem.price}",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(OnlineStoreSpacing.SMALL.dp()))
+                    FavouriteSection(
+                        modifier = Modifier.align(Alignment.Top),
+                        productItem = productItem,
+                        onAction = onAction
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun BoxScope.FavouriteSection(
+fun FavouriteSection(
     productItem: ProductItem,
     onAction: (ProductsListingAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    IconButton (
+    Icon(
         modifier = modifier
-            .align(Alignment.TopEnd)
-            .padding(OnlineStoreSpacing.SMALL.dp()),
-        onClick = {
-            onAction(ProductsListingAction.OnClickFavourite(productItem))
-        }
-    ) {
-        Icon(
-            modifier = Modifier
-                .clip(RoundedCornerShape(OnlineStoreSpacing.EXTRASMALL.dp()))
-                .size(OnlineStoreSpacing.LARGE.dp())
-                .padding(AtlasSpacing.EXTRASMALL.dp())
-                .clickable { onAction(CollectionsAction.ToggleOverFlowMenu(collectionItem.id)) },
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = "Collection Options",
-            tint = Color.White
-        )
-    }
-}
-
-@Composable
-fun CollectionOverflowMenu(
-    collectionId: String,
-    expanded: Boolean,
-    modifier: Modifier = Modifier,
-    onAction: (CollectionsAction) -> Unit
-) {
-    MaterialTheme(
-        shapes = MaterialTheme.shapes.copy(
-            extraSmall = RoundedCornerShape(AtlasSpacing.MEDIUM.dp())
-        )
-    ) {
-        DropdownMenu(
-            modifier = modifier,
-            expanded = expanded,
-            onDismissRequest = { onAction(CollectionsAction.ToggleOverFlowMenu(collectionId)) }
-        ) {
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        text = stringResource(R.string.label_remove),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontFamily = InterFontFamily,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(AtlasSpacing.MEDIUM.dp()),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_delete),
-                        contentDescription = "Collection Options",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                onClick = {
-                    onAction(CollectionsAction.OnClickedRemoveCollection(collectionId))
-                }
-            )
-            DropdownMenuItem(
-                modifier = Modifier,
-                text = {
-                    Text(
-                        text = stringResource(R.string.ic_share),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontFamily = InterFontFamily,
-                        fontWeight = FontWeight.Normal,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(AtlasSpacing.MEDIUM.dp()),
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_share),
-                        contentDescription = "Collection Options",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                onClick = { onAction(CollectionsAction.OnClickedShareCollection(collectionId)) }
-            )
-        }
-    }
+            .clip(CircleShape)
+            .size(OnlineStoreSpacing.LARGE.dp())
+            .clickable {
+                onAction(ProductsListingAction.OnClickFavourite(productItem))
+            },
+        imageVector = if (productItem.isWishListed) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+        contentDescription = "Collection Options",
+        tint = if (productItem.isWishListed) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }

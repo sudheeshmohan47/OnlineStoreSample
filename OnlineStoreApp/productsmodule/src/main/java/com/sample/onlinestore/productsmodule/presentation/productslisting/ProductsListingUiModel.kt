@@ -11,12 +11,11 @@ data class ProductsListingUiModel(
 
 sealed class ProductsListingAction : Action {
     data class OnClickProduct(val product: ProductItem) : ProductsListingAction()
-    data object RefreshProducts : ProductsListingAction()
     data class SetSwipeRefreshingStatus(val isRefreshing: Boolean) : ProductsListingAction()
     data object RefreshData : ProductsListingAction()
     data class OnClickFavourite(val product: ProductItem) : ProductsListingAction()
 }
 
 sealed class ProductsListingEvent : Event {
-    data class LoadProductDetailScreen(private val productId: String) : ProductsListingEvent()
+    data class LoadProductDetailScreen(val productId: String) : ProductsListingEvent()
 }

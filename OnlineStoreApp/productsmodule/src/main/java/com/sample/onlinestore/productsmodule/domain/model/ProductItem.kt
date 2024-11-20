@@ -1,12 +1,11 @@
 package com.sample.onlinestore.productsmodule.domain.model
 
 data class ProductItem(
-    val id: String,
-    val name: String,
-    val price: Double,
+    val name: String ?= null,
+    val price: Double?= null,
     val productId: String,
-    val isWishListed: Boolean,
-    val category: String,
-    val description: String,
-    val image: String
+    val isWishListed: Boolean = false,
+    val category: String?= null,
+    val description: String?= null,
+    val image: String?= null
 )

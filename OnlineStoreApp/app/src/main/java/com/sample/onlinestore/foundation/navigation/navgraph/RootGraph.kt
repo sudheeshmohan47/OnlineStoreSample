@@ -6,4 +6,5 @@ import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 fun NavGraphBuilder.rootGraph(appState: OnlineStoreAppState) {
     splashAndAppIntroGraph(appState)
     authenticationNavGraph(appState)
+    homeNavGraph(appState)
 }

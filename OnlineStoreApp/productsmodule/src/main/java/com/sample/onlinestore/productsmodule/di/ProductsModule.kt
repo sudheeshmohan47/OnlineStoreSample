@@ -1,10 +1,10 @@
 package com.sample.onlinestore.productsmodule.di
 
-import com.sample.datastoragemodule.data.database.dao.WishlistDao
 import com.sample.onlinestore.productsmodule.data.ProductsService
 import com.sample.onlinestore.productsmodule.data.api.ProductsApiService
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
+import com.sample.wishlistmodule.domain.WishlistRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,9 +18,9 @@ class ProductsModule {
     @Provides
     fun provideProductsRepository(
         productsApiService: ProductsApiService,
-        wishlistDao: WishlistDao
+        wishlistRepository: WishlistRepository
     ): ProductsRepository {
-        return ProductsService(productsApiService, wishlistDao)
+        return ProductsService(productsApiService, wishlistRepository)
     }
 
     @Provides

@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ShowAppExitDialog(onAction: (MainActivityAction) -> Unit) {
         OnlineStoreCustomDialog(
-            dialogType = AlertDialogType.DIALOG,
+            dialogType = AlertDialogType.SHEET,
             title = stringResource(R.string.exit_confirmation_title),
             description = stringResource(R.string.exit_confirmation_message),
             positiveButtonLabel = stringResource(id = R.string.dialog_ok),
