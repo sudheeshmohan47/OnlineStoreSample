@@ -3,6 +3,7 @@ package com.sample.onlinestore.categoriesmodule.data
 import com.sample.datastoragemodule.data.database.dao.SelectedCategoryDao
 import com.sample.datastoragemodule.data.database.model.SelectedCategory
 import com.sample.onlinestore.categoriesmodule.data.api.CategoriesApiService
+import com.sample.onlinestore.categoriesmodule.data.model.CategoriesResponse
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
@@ -22,16 +23,20 @@ class CategoriesService @Inject constructor(
         categoryDao.insertSelectedCategories(categories = selectedCategories)
     }
 
-    override suspend fun getSelectedCategories(onCompletion: (List<SelectedCategory>) -> Unit) {
-        onCompletion(categoryDao.getSelectedCategories())
-    }
-
-    override suspend fun fetchCategories(onCompletion: (Boolean, DomainResponse<List<String>>) -> Unit) {
+    override suspend fun fetchCategories(onCompletion: (Boolean, DomainResponse<List<CategoriesResponse>>) -> Unit) {
         try {
             val response = categoriesApiService.getProductCategories()
+            val selectedCategories = categoryDao.getSelectedCategories()
+
             if (response.isSuccessful) {
                 response.body()?.let { categories ->
-                    onCompletion(true, DomainResponse(data = categories))
+                    val updatedCategories = categories.map { category ->
+                        CategoriesResponse(
+                            category = category,
+                            isSelected = selectedCategories.any { it.category == category }
+                        )
+                    }
+                    onCompletion(true, DomainResponse(data = updatedCategories))
                     return@fetchCategories
                 }
             }

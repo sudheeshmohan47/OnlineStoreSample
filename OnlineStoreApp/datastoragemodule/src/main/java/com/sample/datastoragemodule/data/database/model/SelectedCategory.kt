@@ -9,6 +9,5 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["category"], unique = true)]
 )
 data class SelectedCategory(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val category: String
+    @PrimaryKey val category: String
 )

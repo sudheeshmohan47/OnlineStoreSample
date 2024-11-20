@@ -158,6 +158,7 @@ private fun HandleUIStateChanges(
 ) {
     val context = LocalContext.current
     val loadDetailScreenScreenState by rememberUpdatedState(loadDetailScreen)
+    val isSwipeRefreshing = productsListingUiState.data?.isSwipeRefreshing ?: false
 
     when (productsListingUiState) {
         is UiState.Result -> {
@@ -186,7 +187,7 @@ private fun HandleUIStateChanges(
             }
         }
     }
-    if (productsListingUiState is UiState.Loading) {
+    if (productsListingUiState is UiState.Loading && !isSwipeRefreshing) {
         ShowDashedProgressIndicator()
     }
 }
