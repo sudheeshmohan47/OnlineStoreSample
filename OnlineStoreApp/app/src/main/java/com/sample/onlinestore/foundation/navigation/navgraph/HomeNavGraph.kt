@@ -3,7 +3,6 @@ package com.sample.onlinestore.foundation.navigation.navgraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.sample.onlinestore.categoriesmodule.presentation.categories.screen.CategoriesScreen
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.slideComposable
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 import com.sample.onlinestore.foundation.navigation.navigationmanagers.HomeNavigationManager
 import com.sample.onlinestore.presentation.dashboard.BottomNavItem
@@ -33,5 +32,3 @@ private fun NavGraphBuilder.categoriesScreenComposable() {
         CategoriesScreen()
     }
 }
-
-

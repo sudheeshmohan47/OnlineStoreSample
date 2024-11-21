@@ -1,5 +1,6 @@
 package com.sample.onlinestore.productsmodule.data
 
+import com.sample.datastoragemodule.data.database.model.Wishlist
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
@@ -10,6 +11,7 @@ import com.sample.onlinestore.productsmodule.data.api.ProductsApiService
 import com.sample.onlinestore.productsmodule.data.model.ProductResponse
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 import com.sample.wishlistmodule.domain.WishlistRepository
+import com.sample.wishlistmodule.domain.model.WishlistItem
 import javax.inject.Inject
 
 /**
@@ -49,21 +51,9 @@ class ProductsService @Inject constructor(
                     val wishListItems = wishlistRepository.getWishlistItems()
                     val selectedCategories = categoriesRepository.getSelectedCategories()
 
-                    // Filter selected categories and mark products as wishListed status
-                    val updatedProducts = products
-                        .let { productList ->
-                            if (selectedCategories.isNotEmpty()) {
-                                productList.filter { product ->
-                                    selectedCategories.contains(product.category)
-                                }
-                            } else {
-                                productList
-                            }
-                        }
-                        .map { product ->
-                            val isWishListed = wishListItems.any { it.productId == product.id }
-                            product.copy(isWishListed = isWishListed)
-                        }
+                    // Call to update products based on wishList and selectedCategories
+                    val updatedProducts = updateProducts(products, wishListItems, selectedCategories)
+
                     onCompletion(true, DomainResponse(data = updatedProducts))
                     return@getProducts
                 }
@@ -71,7 +61,6 @@ class ProductsService @Inject constructor(
             val errorBody: ErrorBody? = response.parseErrorBody()
             throw mapErrors(response.code(), errorBody?.responseError?.message)
         } catch (e: Exception) {
-            e.printStackTrace()
             throw mapException(e)
         }
     }
@@ -128,5 +117,29 @@ class ProductsService @Inject constructor(
                 onCompletion(true)
             }
         )
+    }
+
+    /**
+     * Update products based on the selected categories and wishlist items.
+     */
+    private fun updateProducts(
+        products: List<ProductResponse>,
+        wishListItems: List<Wishlist>,
+        selectedCategories: List<String>
+    ): List<ProductResponse> {
+        return products
+            .let { productList ->
+                // Filter products based on selected categories if any
+                if (selectedCategories.isNotEmpty()) {
+                    productList.filter { product -> selectedCategories.contains(product.category) }
+                } else {
+                    productList
+                }
+            }
+            .map { product ->
+                // Mark products as wishListed if they exist in the wishlist
+                val isWishListed = wishListItems.any { it.productId == product.id }
+                product.copy(isWishListed = isWishListed)
+            }
     }
 }

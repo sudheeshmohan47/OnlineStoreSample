@@ -188,8 +188,8 @@ private fun HandleUIStateChanges(
         }
     }
     if (isInitialLoadingCompleted && // we will show shimmer effect when loading data for first time
-        productsListingUiState is UiState.Loading
-        && !isSwipeRefreshing
+        productsListingUiState is UiState.Loading &&
+        !isSwipeRefreshing
     ) {
         ShowDashedProgressIndicator()
     }

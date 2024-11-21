@@ -46,7 +46,8 @@ class CategoriesViewModelManager(
                                 UiState.Result(
                                     currentState.data?.copy(
                                         categories = it,
-                                        isSwipeRefreshing = false, // Set swipe refreshing to false after data is fetched
+                                        // Set swipe refreshing to false after data is fetched
+                                        isSwipeRefreshing = false,
                                         isInitialLoadingCompleted = true
                                     )
                                 )
@@ -95,9 +96,8 @@ class CategoriesViewModelManager(
                 categoriesUseCase.updateSelectedCategories(updatedCategories.filter { it.isSelected })
                 // Update the UI state with the new list of categories
                 sendState(UiState.Result(updatedUiState))
-            } catch (exception: Exception) {
-                // In case of error, revert to the current UI state
-                sendState(currentState)
+            } catch (exception: DomainException) {
+                handleException(exception, currentState)
             }
         }
     }

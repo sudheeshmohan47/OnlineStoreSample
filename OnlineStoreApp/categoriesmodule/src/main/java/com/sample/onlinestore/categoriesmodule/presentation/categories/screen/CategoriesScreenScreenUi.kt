@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,12 +27,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.sample.designsystem.components.LazyGridWithShimmerEffect
 import com.sample.designsystem.components.OnlineStoreTickIcon
 import com.sample.designsystem.components.OnlineStoreTopAppBar
-import com.sample.designsystem.foundation.OnlineStoreSize
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.categoriesmodule.R
@@ -44,7 +40,6 @@ import com.sample.onlinestore.categoriesmodule.presentation.categories.Categorie
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import java.util.Locale
 
-private const val CategoriesItemWidthPercentage = 0.40f
 private const val CategoriesListingItemAspectRatio = 1f
 private const val CategoriesListingGridColumnCount = 2
 

@@ -10,7 +10,6 @@ import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
 import com.sample.onlinestore.commonmodule.domain.exception.mapException
 import com.sample.onlinestore.commonmodule.domain.model.DomainResponse
 import com.sample.onlinestore.commonmodule.utils.parseErrorBody
-import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressWarnings("TooGenericExceptionCaught")
@@ -20,8 +19,12 @@ class CategoriesService @Inject constructor(
 ) :
     CategoriesRepository {
     override suspend fun updateSelectedCategories(selectedCategories: List<SelectedCategory>) {
-        categoryDao.clearSelectedCategories()
-        categoryDao.insertSelectedCategories(categories = selectedCategories)
+        try {
+            categoryDao.clearSelectedCategories()
+            categoryDao.insertSelectedCategories(categories = selectedCategories)
+        } catch (e: Exception){
+            throw mapException(e)
+        }
     }
 
     override suspend fun fetchCategories(onCompletion: (Boolean, DomainResponse<List<CategoriesResponse>>) -> Unit) {
