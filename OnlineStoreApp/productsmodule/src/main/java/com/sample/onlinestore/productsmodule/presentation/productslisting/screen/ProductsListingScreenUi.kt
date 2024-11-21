@@ -103,7 +103,8 @@ fun ProductsListingScreenContent(
                     ProductsListingItem(
                         productItem = productItem,
                         onAction = onAction,
-                        screenWidth = screenWidth
+                        screenWidth = screenWidth,
+                        modifier = Modifier.animateItem()
                     )
                 }
             }

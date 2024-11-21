@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -69,7 +70,6 @@ fun ProductsListingTopAppBarSection(
 @Composable
 fun CategoriesScreenListingContent(
     categoriesUiState: UiState<CategoriesUiModel>,
-    screenWidth: Dp,
     onAction: (CategoriesAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -78,22 +78,23 @@ fun CategoriesScreenListingContent(
         // This is for showing shimmer effect during first time loading
         val isInitialLoadingCompleted = categoriesUiModel.isInitialLoadingCompleted
 
-        if (!isInitialLoadingCompleted && categoriesUiState is UiState.Loading) {
-            LazyGridWithShimmerEffect(itemShape = CircleShape)
-        } else {
-            LazyVerticalGrid(
-                modifier = modifier,
-                columns = GridCells.Fixed(CategoriesListingGridColumnCount),
-                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
-                verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-                horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
-            ) {
-                items(categories) { categoryItem ->
-                    CategoriesListingItem(
-                        categoryItem = categoryItem,
-                        onAction = onAction,
-                        screenWidth = screenWidth
-                    )
+        Box(modifier) {
+            if (!isInitialLoadingCompleted && categoriesUiState is UiState.Loading) {
+                LazyGridWithShimmerEffect(itemShape = CircleShape)
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(CategoriesListingGridColumnCount),
+                    contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
+                    verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.SMALL.dp()),
+                    horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.MEDIUM.dp())
+                ) {
+                    items(categories) { categoryItem ->
+                        CategoriesListingItem(
+                            modifier = Modifier.animateItem(),
+                            categoryItem = categoryItem,
+                            onAction = onAction
+                        )
+                    }
                 }
             }
         }
@@ -103,14 +104,13 @@ fun CategoriesScreenListingContent(
 @Composable
 fun CategoriesListingItem(
     categoryItem: CategoryItem,
-    screenWidth: Dp,
     modifier: Modifier = Modifier,
     onAction: (CategoriesAction) -> Unit
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Card(
             modifier = Modifier
-                .width(screenWidth * CategoriesItemWidthPercentage)
+                .fillMaxWidth()
                 .aspectRatio(CategoriesListingItemAspectRatio)
                 .padding(OnlineStoreSpacing.EXTRA_SMALL.dp()),
             elevation = CardDefaults.cardElevation(
@@ -120,7 +120,6 @@ fun CategoriesListingItem(
             colors = CardDefaults.cardColors()
                 .copy(containerColor = MaterialTheme.colorScheme.onTertiary)
         ) {
-
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -147,12 +146,9 @@ fun CategoriesListingItem(
         // Tick icon
         OnlineStoreTickIcon(
             modifier = Modifier
-                .size(OnlineStoreSize.SMALL.dp())
-                .align(Alignment.TopEnd)
-                .padding(
-                    top = OnlineStoreSpacing.LARGE.dp(),
-                    end = OnlineStoreSpacing.LARGE.dp()
-                ),
+                .padding(OnlineStoreSpacing.MEDIUM.dp())
+                .size(OnlineStoreSpacing.EXTRA_LARGE.dp())
+                .align(Alignment.TopEnd),
             isSelected = categoryItem.isSelected
         )
     }

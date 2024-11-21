@@ -55,8 +55,6 @@ fun CategoriesScreen(
     val categoriesUiState by categoriesViewModel.uiState.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
     val topAppBarState = rememberTopAppBarState()
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
     val pullRefreshState = rememberPullToRefreshState()
 
     LifecycleResumeEffect(Unit) {
@@ -71,7 +69,6 @@ fun CategoriesScreen(
     ) {
         CategoriesMainContent(
             categoriesUiState = categoriesUiState,
-            screenWidth = screenWidth,
             onAction = {
                 categoriesViewModel.sendAction(it)
             },
@@ -93,7 +90,6 @@ fun CategoriesScreen(
 @Composable
 fun CategoriesMainContent(
     categoriesUiState: UiState<CategoriesUiModel>,
-    screenWidth: Dp,
     onAction: (CategoriesAction) -> Unit,
     modifier: Modifier = Modifier,
     pullToRefreshState: PullToRefreshState = rememberPullToRefreshState(),
@@ -133,7 +129,6 @@ fun CategoriesMainContent(
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = OnlineStoreSpacing.MEDIUM.dp()),
-                screenWidth = screenWidth,
                 onAction = onAction
             )
         }
@@ -186,7 +181,6 @@ private fun CategoriesScreenUIPreview() {
                 isSwipeRefreshing = false
             )
         ),
-        screenWidth = 300.dp,
         onAction = {}
     )
 }

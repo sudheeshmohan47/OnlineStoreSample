@@ -1,6 +1,7 @@
 package com.sample.onlinestore.foundation.navigation.navgraph
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.sample.onlinestore.categoriesmodule.presentation.categories.screen.CategoriesScreen
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.slideComposable
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
@@ -20,7 +21,7 @@ fun NavGraphBuilder.homeNavGraph(
 private fun NavGraphBuilder.homeScreenComposable(
     homeNavigationManager: HomeNavigationManager
 ) {
-    slideComposable<BottomNavItem.Home> {
+    composable<BottomNavItem.Home> {
         ProductsListingScreen(
             loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen
         )
@@ -28,7 +29,7 @@ private fun NavGraphBuilder.homeScreenComposable(
 }
 
 private fun NavGraphBuilder.categoriesScreenComposable() {
-    slideComposable<BottomNavItem.Categories> {
+    composable<BottomNavItem.Categories> {
         CategoriesScreen()
     }
 }
