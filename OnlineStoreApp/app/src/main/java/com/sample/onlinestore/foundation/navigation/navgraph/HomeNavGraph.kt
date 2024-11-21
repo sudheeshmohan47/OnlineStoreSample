@@ -1,6 +1,7 @@
 package com.sample.onlinestore.foundation.navigation.navgraph
 
 import androidx.navigation.NavGraphBuilder
+import com.sample.onlinestore.categoriesmodule.presentation.categories.screen.CategoriesScreen
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.slideComposable
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 import com.sample.onlinestore.foundation.navigation.navigationmanagers.HomeNavigationManager
@@ -13,6 +14,7 @@ fun NavGraphBuilder.homeNavGraph(
     val homeNavigationManager = HomeNavigationManager(appState)
     // HomeScreen
     homeScreenComposable(homeNavigationManager)
+    categoriesScreenComposable()
 }
 
 private fun NavGraphBuilder.homeScreenComposable(
@@ -24,3 +26,11 @@ private fun NavGraphBuilder.homeScreenComposable(
         )
     }
 }
+
+private fun NavGraphBuilder.categoriesScreenComposable() {
+    slideComposable<BottomNavItem.Categories> {
+        CategoriesScreen()
+    }
+}
+
+

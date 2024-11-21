@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":commonmodule"))
     implementation(project(":cartmodule"))
     implementation(project(":wishlistmodule"))
+    implementation(project(":categoriesmodule"))
 
     // kotlin core
     implementation(libs.androidx.core.ktx)

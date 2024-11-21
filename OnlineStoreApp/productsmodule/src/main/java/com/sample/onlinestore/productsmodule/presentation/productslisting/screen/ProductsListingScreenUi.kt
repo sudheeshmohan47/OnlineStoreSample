@@ -84,8 +84,8 @@ fun ProductsListingScreenContent(
     onAction: (ProductsListingAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    productsListingUiState.data?.let { collectionsUiModel ->
-        val products = collectionsUiModel.products
+    productsListingUiState.data?.let { productsUiModel ->
+        val products = productsUiModel.products
         LazyVerticalGrid(
             modifier = modifier,
             columns = GridCells.Fixed(ProductListingGridColumnCount),

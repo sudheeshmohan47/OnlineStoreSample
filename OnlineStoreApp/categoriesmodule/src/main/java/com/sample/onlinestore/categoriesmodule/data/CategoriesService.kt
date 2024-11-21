@@ -10,6 +10,7 @@ import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
 import com.sample.onlinestore.commonmodule.domain.exception.mapException
 import com.sample.onlinestore.commonmodule.domain.model.DomainResponse
 import com.sample.onlinestore.commonmodule.utils.parseErrorBody
+import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressWarnings("TooGenericExceptionCaught")
@@ -27,6 +28,7 @@ class CategoriesService @Inject constructor(
         try {
             val response = categoriesApiService.getProductCategories()
             val selectedCategories = categoryDao.getSelectedCategories()
+            Timber.d("selectedCategories: $selectedCategories")
 
             if (response.isSuccessful) {
                 response.body()?.let { categories ->
@@ -45,5 +47,9 @@ class CategoriesService @Inject constructor(
         } catch (e: Exception) {
             throw mapException(e)
         }
+    }
+
+    override suspend fun getSelectedCategories(): List<String> {
+        return categoryDao.getSelectedCategories().map { it.category }
     }
 }

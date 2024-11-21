@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7f076471af282b2286d131bac611072c",
+    "identityHash": "281c79b6d207e4484c0fc93fca50945a",
     "entities": [
       {
         "tableName": "wishlist",
@@ -84,14 +84,8 @@
       },
       {
         "tableName": "selected_category",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`category` TEXT NOT NULL, PRIMARY KEY(`category`))",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "category",
             "columnName": "category",
@@ -100,9 +94,9 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": true,
+          "autoGenerate": false,
           "columnNames": [
-            "id"
+            "category"
           ]
         },
         "indices": [
@@ -122,7 +116,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7f076471af282b2286d131bac611072c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '281c79b6d207e4484c0fc93fca50945a')"
     ]
   }
 }

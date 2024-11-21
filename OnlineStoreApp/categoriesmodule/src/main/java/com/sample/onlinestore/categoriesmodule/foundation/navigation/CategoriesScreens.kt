@@ -5,8 +5,4 @@ import kotlinx.serialization.Serializable
 
 // Sealed class for different screens in the navigation
 @Serializable
-sealed class CategoriesScreens : BaseScreen() {
-
-    @Serializable
-    data object CategoriesScreen : CategoriesScreens()
-}
+sealed class CategoriesScreens : BaseScreen()

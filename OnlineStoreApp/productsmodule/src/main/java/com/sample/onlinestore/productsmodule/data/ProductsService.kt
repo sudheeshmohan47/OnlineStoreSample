@@ -1,5 +1,6 @@
 package com.sample.onlinestore.productsmodule.data
 
+import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
 import com.sample.onlinestore.commonmodule.domain.exception.mapException
@@ -9,7 +10,6 @@ import com.sample.onlinestore.productsmodule.data.api.ProductsApiService
 import com.sample.onlinestore.productsmodule.data.model.ProductResponse
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 import com.sample.wishlistmodule.domain.WishlistRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -29,6 +29,7 @@ import javax.inject.Inject
 class ProductsService @Inject constructor(
     private val productsApiService: ProductsApiService,
     private val wishlistRepository: WishlistRepository,
+    private val categoriesRepository: CategoriesRepository,
 ) : ProductsRepository {
 
     /**
@@ -38,18 +39,31 @@ class ProductsService @Inject constructor(
      * containing the list of products.
      * @throws Exception If an error occurs during the API call or wishlist operations.
      */
-    override suspend fun getProducts(onCompletion: (Boolean, DomainResponse<List<ProductResponse>>) -> Unit) {
+    override suspend fun getProducts(
+        onCompletion: (Boolean, DomainResponse<List<ProductResponse>>) -> Unit
+    ) {
         try {
             val response = productsApiService.getProducts()
             if (response.isSuccessful) {
                 response.body()?.let { products ->
                     val wishListItems = wishlistRepository.getWishlistItems()
-                    Timber.d("WishListed Items: $wishListItems")
-                    // Update product item's wishlist status
-                    val updatedProducts = products.map { product ->
-                        val isWishListed = wishListItems.any { it.productId == product.id }
-                        product.copy(isWishListed = isWishListed)
-                    }
+                    val selectedCategories = categoriesRepository.getSelectedCategories()
+
+                    // Filter selected categories and mark products as wishListed status
+                    val updatedProducts = products
+                        .let { productList ->
+                            if (selectedCategories.isNotEmpty()) {
+                                productList.filter { product ->
+                                    selectedCategories.contains(product.category)
+                                }
+                            } else {
+                                productList
+                            }
+                        }
+                        .map { product ->
+                            val isWishListed = wishListItems.any { it.productId == product.id }
+                            product.copy(isWishListed = isWishListed)
+                        }
                     onCompletion(true, DomainResponse(data = updatedProducts))
                     return@getProducts
                 }
@@ -57,6 +71,7 @@ class ProductsService @Inject constructor(
             val errorBody: ErrorBody? = response.parseErrorBody()
             throw mapErrors(response.code(), errorBody?.responseError?.message)
         } catch (e: Exception) {
+            e.printStackTrace()
             throw mapException(e)
         }
     }
