@@ -6,11 +6,12 @@ import com.sample.onlinestore.commonmodule.foundation.base.Event
 
 data class CategoriesUiModel(
     val categories: List<CategoryItem> = emptyList(),
-    val isSwipeRefreshing: Boolean = false
+    val isSwipeRefreshing: Boolean = false,
+    val isInitialLoadingCompleted: Boolean = false
 )
 
 sealed class CategoriesAction : Action {
-    data object RefreshData: CategoriesAction()
+    data object RefreshData : CategoriesAction()
     data class ToggleCategoriesSelection(val categoryItem: CategoryItem) : CategoriesAction()
     data class SetSwipeRefreshingStatus(val isRefreshing: Boolean) : CategoriesAction()
 }

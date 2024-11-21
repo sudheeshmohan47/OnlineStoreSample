@@ -40,7 +40,8 @@ class ProductListingViewModelManager(
                                 UiState.Result(
                                     currentState.data?.copy(
                                         products = it,
-                                        isSwipeRefreshing = false
+                                        isSwipeRefreshing = false,
+                                        isInitialLoadingCompleted = true
                                     )
                                 )
                             )
@@ -119,7 +120,8 @@ class ProductListingViewModelManager(
         currentState: UiState<ProductsListingUiModel>
     ) {
 
-        val updatedUiState = currentState.data?.copy(isSwipeRefreshing = false)
+        val updatedUiState =
+            currentState.data?.copy(isSwipeRefreshing = false, isInitialLoadingCompleted = true)
         when (exception) {
             is UnauthorizedException -> {
                 sendState(UiState.Result(updatedUiState))

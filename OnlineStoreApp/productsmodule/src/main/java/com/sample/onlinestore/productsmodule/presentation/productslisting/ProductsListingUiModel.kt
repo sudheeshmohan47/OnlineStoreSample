@@ -6,6 +6,7 @@ import com.sample.onlinestore.productsmodule.domain.model.ProductItem
 
 data class ProductsListingUiModel(
     val products: List<ProductItem> = emptyList(),
+    val isInitialLoadingCompleted: Boolean = false,
     val isSwipeRefreshing: Boolean = false
 )
 

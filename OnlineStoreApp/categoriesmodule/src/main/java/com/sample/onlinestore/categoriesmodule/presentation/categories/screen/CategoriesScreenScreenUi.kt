@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.sample.designsystem.components.LazyGridWithShimmerEffect
 import com.sample.designsystem.components.OnlineStoreTickIcon
 import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSize
@@ -40,7 +41,6 @@ import com.sample.onlinestore.categoriesmodule.domain.model.CategoryItem
 import com.sample.onlinestore.categoriesmodule.presentation.categories.CategoriesAction
 import com.sample.onlinestore.categoriesmodule.presentation.categories.CategoriesUiModel
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
-import timber.log.Timber
 import java.util.Locale
 
 private const val CategoriesItemWidthPercentage = 0.40f
@@ -75,19 +75,26 @@ fun CategoriesScreenListingContent(
 ) {
     categoriesUiState.data?.let { categoriesUiModel ->
         val categories = categoriesUiModel.categories
-        LazyVerticalGrid(
-            modifier = modifier,
-            columns = GridCells.Fixed(CategoriesListingGridColumnCount),
-            contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
-            verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-            horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
-        ) {
-            items(categories) { categoryItem ->
-                CategoriesListingItem(
-                    categoryItem = categoryItem,
-                    onAction = onAction,
-                    screenWidth = screenWidth
-                )
+        // This is for showing shimmer effect during first time loading
+        val isInitialLoadingCompleted = categoriesUiModel.isInitialLoadingCompleted
+
+        if (!isInitialLoadingCompleted && categoriesUiState is UiState.Loading) {
+            LazyGridWithShimmerEffect(itemShape = CircleShape)
+        } else {
+            LazyVerticalGrid(
+                modifier = modifier,
+                columns = GridCells.Fixed(CategoriesListingGridColumnCount),
+                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
+                verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
+                horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
+            ) {
+                items(categories) { categoryItem ->
+                    CategoriesListingItem(
+                        categoryItem = categoryItem,
+                        onAction = onAction,
+                        screenWidth = screenWidth
+                    )
+                }
             }
         }
     }

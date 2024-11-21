@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
+import com.sample.designsystem.components.LazyGridWithShimmerEffect
 import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
@@ -86,19 +87,25 @@ fun ProductsListingScreenContent(
 ) {
     productsListingUiState.data?.let { productsUiModel ->
         val products = productsUiModel.products
-        LazyVerticalGrid(
-            modifier = modifier,
-            columns = GridCells.Fixed(ProductListingGridColumnCount),
-            contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
-            verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-            horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
-        ) {
-            items(products) { productItem ->
-                ProductsListingItem(
-                    productItem = productItem,
-                    onAction = onAction,
-                    screenWidth = screenWidth
-                )
+        val isInitialLoadingCompleted = productsUiModel.isInitialLoadingCompleted
+
+        if (!isInitialLoadingCompleted && productsListingUiState is UiState.Loading) {
+            LazyGridWithShimmerEffect()
+        } else {
+            LazyVerticalGrid(
+                modifier = modifier,
+                columns = GridCells.Fixed(ProductListingGridColumnCount),
+                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
+                verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
+                horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
+            ) {
+                items(products) { productItem ->
+                    ProductsListingItem(
+                        productItem = productItem,
+                        onAction = onAction,
+                        screenWidth = screenWidth
+                    )
+                }
             }
         }
     }

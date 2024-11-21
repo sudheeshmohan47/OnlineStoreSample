@@ -28,7 +28,6 @@ class CategoriesService @Inject constructor(
         try {
             val response = categoriesApiService.getProductCategories()
             val selectedCategories = categoryDao.getSelectedCategories()
-            Timber.d("selectedCategories: $selectedCategories")
 
             if (response.isSuccessful) {
                 response.body()?.let { categories ->

@@ -24,6 +24,7 @@ class CategoriesViewModelManager(
     private val viewModelScope: CoroutineScope,
     private val sendState: (UiState<CategoriesUiModel>) -> Unit
 ) {
+
     /**
      * Fetches category data from the use case and updates the UI state.
      * It handles the loading, success, and error states.
@@ -31,17 +32,22 @@ class CategoriesViewModelManager(
      * @param currentState The current UI state to maintain certain values during the loading phase.
      */
     fun fetchCategoriesData(currentState: UiState<CategoriesUiModel>) {
+        // Launching coroutine in the IO dispatcher for background work (network/database operations)
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Send loading state to UI while fetching the categories
                 sendState(UiState.Loading(currentState.data))
+                // Fetch categories from the use case
                 categoriesUseCase.fetchCategories { isSuccessFul, domainResponse ->
                     if (isSuccessFul) {
                         domainResponse.data?.let {
+                            // If data fetch is successful, update the UI state with the new categories
                             sendState(
                                 UiState.Result(
                                     currentState.data?.copy(
                                         categories = it,
-                                        isSwipeRefreshing = false
+                                        isSwipeRefreshing = false, // Set swipe refreshing to false after data is fetched
+                                        isInitialLoadingCompleted = true
                                     )
                                 )
                             )
@@ -49,64 +55,79 @@ class CategoriesViewModelManager(
                     }
                 }
             } catch (exception: DomainException) {
+                // Handle exceptions and update the UI with appropriate error messages
                 handleException(exception, currentState)
             }
         }
     }
 
+    /**
+     * Handles toggling the selection state of a category.
+     * It updates the selected state and saves the selected categories to the database.
+     *
+     * @param categoryItem The category that was selected/deselected.
+     * @param currentState The current UI state to update with the new list of categories.
+     */
     fun handleToggleCategoriesSelection(
         categoryItem: CategoryItem,
         currentState: UiState<CategoriesUiModel>
     ) {
+        // Get the current categories list from the UI state
         val currentCategories = currentState.data?.categories ?: emptyList()
 
         // Update the selected state of the clicked category
         val updatedCategories = currentCategories.map {
             if (it.category == categoryItem.category) {
-                it.copy(isSelected = !it.isSelected)
+                it.copy(isSelected = !it.isSelected) // Toggle the selection state
             } else {
                 it
             }
         }
-        // Update the UI state with the new list of categories
+        // Create a new UI state with the updated list of categories
         val updatedUiState = currentState.data?.copy(
             categories = updatedCategories
         )
-        // Update the database with the new selected categories
+
+        // Launch a coroutine to update the database in the background
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // Save to Database only the selected items
+                // Save to the database only the categories that are selected
                 categoriesUseCase.updateSelectedCategories(updatedCategories.filter { it.isSelected })
+                // Update the UI state with the new list of categories
                 sendState(UiState.Result(updatedUiState))
             } catch (exception: Exception) {
-                // Revert to current state in case of error
+                // In case of error, revert to the current UI state
                 sendState(currentState)
             }
         }
     }
 
-
     /**
-     * Handles exceptions thrown during the product fetching or wishlist operations.
-     * Displays an appropriate error message based on the exception type.
+     * Handles exceptions that occur during fetching categories or handling category updates.
+     * Based on the exception type, it updates the UI with the appropriate error message or action.
      *
-     * @param exception The caught exception to be handled.
-     * @param currentState The current state of the UI.
+     * @param exception The exception to handle.
+     * @param currentState The current UI state to maintain while handling the exception.
      */
     private fun handleException(
         exception: DomainException,
         currentState: UiState<CategoriesUiModel>
     ) {
+        // Set Swipe refresh as false during error state
+        val updatedUiState =
+            currentState.data?.copy(isSwipeRefreshing = false, isInitialLoadingCompleted = true)
 
-        val updatedUiState = currentState.data?.copy(isSwipeRefreshing = false)
         when (exception) {
             is UnauthorizedException -> {
+                // If unauthorized, send the updated state and possibly trigger session end
                 sendState(UiState.Result(updatedUiState))
-                // sendEvent(ProductsListingEvent.EndUserSession)
+                // sendEvent(ProductsListingEvent.EndUserSession) // Handle session expiration if necessary
             }
 
             else -> {
+                // Map the exception to a user-friendly error message
                 val errorMessage = mapErrorMessage(exception)
+                // Send the updated UI state along with the error message to the UI
                 sendState(
                     UiState.Result(
                         updatedUiState,

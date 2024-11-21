@@ -148,6 +148,7 @@ private fun HandleUIStateChanges(
 ) {
     val context = LocalContext.current
     val isSwipeRefreshing = categoriesUiState.data?.isSwipeRefreshing ?: false
+    val isInitialLoadingCompleted = categoriesUiState.data?.isInitialLoadingCompleted ?: false
 
     when (categoriesUiState) {
         is UiState.Result -> {
@@ -166,7 +167,10 @@ private fun HandleUIStateChanges(
         is UiState.Error -> {}
     }
 
-    if (categoriesUiState is UiState.Loading && !isSwipeRefreshing) {
+    if (isInitialLoadingCompleted && // we will show shimmer effect when loading data for first time
+        categoriesUiState is UiState.Loading
+        && !isSwipeRefreshing
+    ) {
         ShowDashedProgressIndicator()
     }
 }

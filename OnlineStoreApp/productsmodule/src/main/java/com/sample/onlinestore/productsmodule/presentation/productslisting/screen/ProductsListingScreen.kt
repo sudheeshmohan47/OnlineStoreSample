@@ -159,6 +159,7 @@ private fun HandleUIStateChanges(
     val context = LocalContext.current
     val loadDetailScreenScreenState by rememberUpdatedState(loadDetailScreen)
     val isSwipeRefreshing = productsListingUiState.data?.isSwipeRefreshing ?: false
+    val isInitialLoadingCompleted = productsListingUiState.data?.isInitialLoadingCompleted ?: false
 
     when (productsListingUiState) {
         is UiState.Result -> {
@@ -180,14 +181,16 @@ private fun HandleUIStateChanges(
     LaunchedEffect(Unit) {
         productListingViewModel.uiEvent.collectLatest { event ->
             when (event) {
-
                 is ProductsListingEvent.LoadProductDetailScreen -> {
                     loadDetailScreenScreenState(event.productId)
                 }
             }
         }
     }
-    if (productsListingUiState is UiState.Loading && !isSwipeRefreshing) {
+    if (isInitialLoadingCompleted && // we will show shimmer effect when loading data for first time
+        productsListingUiState is UiState.Loading
+        && !isSwipeRefreshing
+    ) {
         ShowDashedProgressIndicator()
     }
 }

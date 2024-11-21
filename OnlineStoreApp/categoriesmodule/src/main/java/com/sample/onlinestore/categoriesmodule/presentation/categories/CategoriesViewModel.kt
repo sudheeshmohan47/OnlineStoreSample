@@ -2,14 +2,12 @@ package com.sample.onlinestore.categoriesmodule.presentation.categories
 
 import androidx.lifecycle.viewModelScope
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesUseCase
-import com.sample.onlinestore.categoriesmodule.domain.model.CategoryItem
 import com.sample.onlinestore.commonmodule.foundation.base.BaseViewModel
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import timber.log.Timber
 
 val categoriesViewModelCreationCallback =
     { factory: CategoriesViewModel.CategoriesViewModelFactory ->
@@ -62,6 +60,7 @@ class CategoriesViewModel @AssistedInject constructor(
                     )
                 )
             }
+
             else -> Unit
         }
         return returnState
