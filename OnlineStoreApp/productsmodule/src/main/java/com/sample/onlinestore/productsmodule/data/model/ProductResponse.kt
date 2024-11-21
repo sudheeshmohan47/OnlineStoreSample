@@ -7,5 +7,6 @@ data class ProductResponse(
     val category: String? = null,
     val description: String? = null,
     val image: String? = null,
-    val isWishListed: Boolean = false
+    val isWishListed: Boolean = false,
+    val isAddedToCart: Boolean = false
 )

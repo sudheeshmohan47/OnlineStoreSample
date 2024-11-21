@@ -57,7 +57,9 @@ class ProductsUseCase @Inject constructor(
                             productId = it.id,
                             category = it.category,
                             description = it.description,
-                            image = it.image
+                            image = it.image,
+                            isWishListed = it.isWishListed,
+                            isAddedToCart = it.isAddedToCart
                         )
                     } else {
                         null // Return null if id is null or empty
@@ -70,6 +72,11 @@ class ProductsUseCase @Inject constructor(
 
     suspend fun addToWishlist(productId: String, onCompletion: (Boolean) -> Unit) {
         productsRepository.addToWishlist(productId)
+        onCompletion(true)
+    }
+
+    suspend fun addToCart(productId: String, onCompletion: (Boolean) -> Unit) {
+        productsRepository.addProductToCart(productId)
         onCompletion(true)
     }
 

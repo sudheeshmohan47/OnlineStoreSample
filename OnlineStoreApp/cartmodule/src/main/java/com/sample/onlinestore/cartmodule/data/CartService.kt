@@ -12,15 +12,11 @@ class CartService @Inject constructor(private val cartDao: CartDao) :
         cartDao.addToCart(item = item)
     }
 
-    override suspend fun getCartItems(onCompletion: (List<Cart>) -> Unit) {
-        onCompletion(cartDao.getCartItems())
-    }
+    override suspend fun getCartItems(): List<Cart> = cartDao.getCartItems()
 
     override suspend fun removeFromCart(productId: String, onCompletion: (List<Cart>) -> Unit) {
         if (cartDao.removeFromCart(productId) == 1) {
-            getCartItems {
-                onCompletion(it)
-            }
+                onCompletion(getCartItems())
         }
     }
 }

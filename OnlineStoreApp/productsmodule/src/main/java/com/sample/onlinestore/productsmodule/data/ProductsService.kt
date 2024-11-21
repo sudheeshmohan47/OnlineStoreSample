@@ -1,6 +1,8 @@
 package com.sample.onlinestore.productsmodule.data
 
+import com.sample.datastoragemodule.data.database.model.Cart
 import com.sample.datastoragemodule.data.database.model.Wishlist
+import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
@@ -11,7 +13,6 @@ import com.sample.onlinestore.productsmodule.data.api.ProductsApiService
 import com.sample.onlinestore.productsmodule.data.model.ProductResponse
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 import com.sample.wishlistmodule.domain.WishlistRepository
-import com.sample.wishlistmodule.domain.model.WishlistItem
 import javax.inject.Inject
 
 /**
@@ -32,6 +33,7 @@ class ProductsService @Inject constructor(
     private val productsApiService: ProductsApiService,
     private val wishlistRepository: WishlistRepository,
     private val categoriesRepository: CategoriesRepository,
+    private val cartRepository: CartRepository
 ) : ProductsRepository {
 
     /**
@@ -52,7 +54,8 @@ class ProductsService @Inject constructor(
                     val selectedCategories = categoriesRepository.getSelectedCategories()
 
                     // Call to update products based on wishList and selectedCategories
-                    val updatedProducts = updateProducts(products, wishListItems, selectedCategories)
+                    val updatedProducts =
+                        updateProducts(products, wishListItems, selectedCategories)
 
                     onCompletion(true, DomainResponse(data = updatedProducts))
                     return@getProducts
@@ -81,7 +84,18 @@ class ProductsService @Inject constructor(
             val response = productsApiService.getProductDetail(productId)
             if (response.isSuccessful) {
                 response.body()?.let { product ->
-                    onCompletion(true, DomainResponse(data = product))
+                    val wishListItems = wishlistRepository.getWishlistItems()
+                    val cartItems = cartRepository.getCartItems()
+
+                    val isWishListed = wishListItems.any { it.productId == product.id }
+                    val isAddedToCart = cartItems.any { it.productId == product.id }
+
+                    val updatedProduct = product.copy(
+                        isWishListed = isWishListed,
+                        isAddedToCart = isAddedToCart
+                    )
+
+                    onCompletion(true, DomainResponse(data = updatedProduct))
                     return@getProductDetail
                 }
             }
@@ -98,7 +112,11 @@ class ProductsService @Inject constructor(
      * @param productId The ID of the product to add to the wishlist.
      */
     override suspend fun addToWishlist(productId: String) {
-        wishlistRepository.addToWishlist(productId)
+        try {
+            wishlistRepository.addToWishlist(productId)
+        } catch (e: Exception) {
+            throw mapException(e)
+        }
     }
 
     /**
@@ -111,12 +129,24 @@ class ProductsService @Inject constructor(
         productId: String,
         onCompletion: (Boolean) -> Unit
     ) {
-        wishlistRepository.removeFromWishlist(
-            productId,
-            onCompletion = {
-                onCompletion(true)
-            }
-        )
+        try {
+            wishlistRepository.removeFromWishlist(
+                productId,
+                onCompletion = {
+                    onCompletion(true)
+                }
+            )
+        } catch (e: Exception) {
+            throw mapException(e)
+        }
+    }
+
+    override suspend fun addProductToCart(productId: String) {
+        try {
+            cartRepository.addToCart(Cart(productId = productId, quantity = 1))
+        } catch (e: Exception) {
+            throw mapException(e)
+        }
     }
 
     /**

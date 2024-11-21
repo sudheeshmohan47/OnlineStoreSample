@@ -12,4 +12,5 @@ interface ProductsRepository {
 
     suspend fun addToWishlist(productId: String)
     suspend fun removeFromWishlist(productId: String, onCompletion: (Boolean) -> Unit)
+    suspend fun addProductToCart(productId: String)
 }
