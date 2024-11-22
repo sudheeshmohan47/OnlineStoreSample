@@ -1,6 +1,7 @@
 package com.sample.onlinestore.productsmodule.presentation.productslisting
 
 import androidx.lifecycle.viewModelScope
+import com.sample.onlinestore.cartmodule.presentation.cart.CartViewModel
 import com.sample.onlinestore.commonmodule.foundation.base.BaseViewModel
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
@@ -10,11 +11,11 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 val productsListingViewModelCreationCallback =
-    { factory: ProductsListingViewModel.ProductsListingViewModelFactory ->
+    { factory: CartViewModel.ProductsListingViewModelFactory ->
         factory.create()
     }
 
-@HiltViewModel(assistedFactory = ProductsListingViewModel.ProductsListingViewModelFactory::class)
+@HiltViewModel(assistedFactory = CartViewModel.ProductsListingViewModelFactory::class)
 class ProductsListingViewModel @AssistedInject constructor(
     productsUseCase: ProductsUseCase,
     @Assisted initialScreenState: UiState<ProductsListingUiModel>
@@ -23,12 +24,13 @@ class ProductsListingViewModel @AssistedInject constructor(
 ) {
 
     // Manager class for managing viewmodel business logic
-    private val productsListingViewModelManager = ProductListingViewModelManager(
-        productsUseCase,
-        viewModelScope,
-        ::sendState,
-        ::sendEvent
-    )
+    private val productsListingViewModelManager =
+        com.sample.onlinestore.cartmodule.presentation.cart.CartViewModelManager(
+            productsUseCase,
+            viewModelScope,
+            ::sendState,
+            ::sendEvent
+        )
 
     @AssistedFactory
     interface ProductsListingViewModelFactory {
@@ -36,7 +38,7 @@ class ProductsListingViewModel @AssistedInject constructor(
             initialScreenState: UiState<ProductsListingUiModel> = UiState.Result(
                 ProductsListingUiModel()
             )
-        ): ProductsListingViewModel
+        ): CartViewModel
     }
 
     override fun reduce(
@@ -85,6 +87,10 @@ class ProductsListingViewModel @AssistedInject constructor(
                     uiState.value,
                     action.product
                 )
+            }
+
+            is ProductsListingAction.OnClickCart -> {
+                sendEvent(ProductsListingEvent.GotoCartScreen)
             }
 
             else -> Unit

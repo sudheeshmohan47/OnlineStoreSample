@@ -29,15 +29,16 @@ private fun NavGraphBuilder.homeScreenComposable(
 ) {
     composable<BottomNavItem.Home> {
         ProductsListingScreen(
-            loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen
+            loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen,
+            gotoCartScreen = homeNavigationManager.gotoCartScreen
         )
     }
 }
 
 private fun NavGraphBuilder.productDetailsScreenComposable(homeNavigationManager: HomeNavigationManager) {
     slideComposable<ProductScreens.ProductDetailScreen> {
-        val productDetailScreen = it.toRoute<ProductScreens.ProductDetailScreen>()
 
+        val productDetailScreen = it.toRoute<ProductScreens.ProductDetailScreen>()
         ProductDetailsScreen(
             backToPreviousScreen = homeNavigationManager.backToPreviousScreen,
             gotoCartScreen = homeNavigationManager.gotoCartScreen,

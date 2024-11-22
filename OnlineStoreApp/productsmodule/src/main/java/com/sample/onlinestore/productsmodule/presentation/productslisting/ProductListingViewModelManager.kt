@@ -136,7 +136,14 @@ class ProductListingViewModelManager(
                         updatedUiState
                     )
                 )
-                sendEvent(ProductsListingEvent.ShowMessage(Message(errorMessage.messageResId, errorMessage.message)))
+                sendEvent(
+                    ProductsListingEvent.ShowMessage(
+                        Message(
+                            errorMessage.messageResId,
+                            errorMessage.message
+                        )
+                    )
+                )
             }
         }
     }

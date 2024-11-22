@@ -1,5 +1,6 @@
 package com.sample.designsystem.components
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -51,10 +52,15 @@ fun OnlineStoreTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior? =
         TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState),
     shadowElevation: Dp = 3.dp,
+    customActions: (@Composable () -> Unit)? = null
 ) {
     val commonModifier = modifier
         .fillMaxWidth()
         .shadow(elevation = shadowElevation)
+
+    val commonActions: @Composable (RowScope.() -> Unit) = {
+        customActions?.invoke()
+    }
 
     val commonNavigationIcon: @Composable (() -> Unit)? = if (displayBackNavigation) {
         {
@@ -102,7 +108,8 @@ fun OnlineStoreTopAppBar(
             windowInsets = WindowInsets(
                 top = 0.dp,
                 bottom = 0.dp
-            )
+            ),
+            actions = commonActions
         )
     } else {
         TopAppBar(
@@ -117,7 +124,8 @@ fun OnlineStoreTopAppBar(
             windowInsets = WindowInsets(
                 top = 0.dp,
                 bottom = 0.dp
-            )
+            ),
+            actions = commonActions
         )
     }
 }

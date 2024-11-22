@@ -2,6 +2,7 @@ package com.sample.onlinestore.productsmodule.data
 
 import com.sample.datastoragemodule.data.database.model.Cart
 import com.sample.datastoragemodule.data.database.model.Wishlist
+import com.sample.onlinestore.cartmodule.data.model.CartResponse
 import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody
@@ -143,7 +144,7 @@ class ProductsService @Inject constructor(
 
     override suspend fun addProductToCart(productId: String) {
         try {
-            cartRepository.addToCart(Cart(productId = productId, quantity = 1))
+            cartRepository.addToCart(CartResponse(productId = productId, quantity = 1))
         } catch (e: Exception) {
             throw mapException(e)
         }

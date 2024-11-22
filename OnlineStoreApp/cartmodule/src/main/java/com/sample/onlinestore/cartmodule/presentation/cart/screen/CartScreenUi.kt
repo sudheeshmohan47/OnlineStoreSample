@@ -1,4 +1,4 @@
-package com.sample.onlinestore.productsmodule.presentation.productslisting.screen
+package com.sample.onlinestore.cartmodule.presentation.cart.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,6 +52,9 @@ import com.sample.designsystem.components.LazyGridWithShimmerEffect
 import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
+import com.sample.onlinestore.cartmodule.R
+import com.sample.onlinestore.cartmodule.presentation.cart.CartAction
+import com.sample.onlinestore.cartmodule.presentation.cart.CartUiModel
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.R
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
@@ -64,48 +67,37 @@ private const val ProductListingGridColumnCount = 2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductsListingTopAppBarSection(
+fun CartTopAppBarSection(
     topAppBarState: TopAppBarState,
-    onAction: (ProductsListingAction) -> Unit,
+    onAction: (CartAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OnlineStoreTopAppBar(
         modifier = modifier,
         topAppBarState = topAppBarState,
-        title = stringResource(R.string.title_home),
+        title = stringResource(R.string.title_cart),
         titleStyle = MaterialTheme.typography.titleLarge,
         titleFontWeight = FontWeight.Normal,
         titleColor = MaterialTheme.colorScheme.onBackground,
-        displayBackNavigation = false,
+        displayBackNavigation = true,
         titleAlignment = TextAlign.Center,
         backgroundColor = MaterialTheme.colorScheme.background,
-        customActions = {
-            IconButton(
-                onClick = {
-                    onAction(ProductsListingAction.OnClickCart)
-                }
-            ) {
-                Icon(
-                    modifier = Modifier.size(OnlineStoreSpacing.LARGE.dp()),
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = "Cart",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+        onBackNavigationClicked = {
+            onAction(CartAction.OnClickBackNavigation)
         }
     )
 }
 
 @Composable
 fun ProductsListingScreenContent(
-    productsListingUiState: UiState<ProductsListingUiModel>,
+    cartUiState: UiState<CartUiModel>,
     screenWidth: Dp,
-    onAction: (ProductsListingAction) -> Unit,
+    onAction: (CartAction) -> Unit,
     modifier: Modifier = Modifier,
-    productListState: LazyGridState = rememberLazyGridState(),
-    shimmerEffectGridState: LazyGridState = rememberLazyGridState()
+    cartListState: LazyGridState = rememberLazyGridState(),
+    shimmerEffectListState: LazyGridState = rememberLazyGridState()
 ) {
-    productsListingUiState.data?.let { productsUiModel ->
+    cartUiState.data?.let { cartUiModel ->
         val products = productsUiModel.products
         val isInitialLoadingCompleted = productsUiModel.isInitialLoadingCompleted
 

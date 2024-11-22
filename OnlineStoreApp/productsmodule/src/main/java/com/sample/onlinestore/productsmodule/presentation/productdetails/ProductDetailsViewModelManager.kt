@@ -4,7 +4,6 @@ import com.sample.onlinestore.commonmodule.domain.exception.DomainException
 import com.sample.onlinestore.commonmodule.domain.exception.UnauthorizedException
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrorMessage
 import com.sample.onlinestore.commonmodule.domain.model.Message
-import com.sample.onlinestore.commonmodule.foundation.base.Event
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
@@ -12,6 +11,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Manages the business logic for the Product Details screen, including fetching product details,
+ * handling wishlist operations, and cart operations. It provides a way to send updates to the UI
+ * state and trigger UI events.
+ *
+ * @property productsUseCase Use case layer for handling product-related operations.
+ * @property viewModelScope The CoroutineScope tied to the ViewModel lifecycle.
+ * @property sendState Callback to update the UI state.
+ * @property sendEvent Callback to send events to the UI.
+ */
 class ProductDetailsViewModelManager(
     private val productsUseCase: ProductsUseCase,
     private val viewModelScope: CoroutineScope,
@@ -19,6 +28,12 @@ class ProductDetailsViewModelManager(
     private val sendEvent: (ProductDetailsEvent) -> Unit
 ) {
 
+    /**
+     * Fetches product details for a given product ID and updates the UI state.
+     *
+     * @param productId The ID of the product to fetch details for.
+     * @param currentState The current UI state to maintain existing data during loading.
+     */
     fun fetchProductDetails(productId: String, currentState: UiState<ProductDetailsUiModel>) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -43,9 +58,10 @@ class ProductDetailsViewModelManager(
     }
 
     /**
-     * Adds or removes a product from the wishlist and updates the UI optimistically.
+     * Adds or removes a product from the wishlist and updates the UI state optimistically.
+     * Reverts the UI state if the operation fails.
      *
-     * @param currentState The current UI state that contains the list of products.
+     * @param currentState The current UI state containing the product details.
      */
     fun addOrRemoveProductToWishList(
         currentState: UiState<ProductDetailsUiModel>
@@ -85,9 +101,10 @@ class ProductDetailsViewModelManager(
     }
 
     /**
-     * Adds or removes a product from the wishlist and updates the UI optimistically.
+     * Adds a product to the cart and updates the UI state optimistically.
+     * Reverts the UI state if the operation fails.
      *
-     * @param currentState The current UI state that contains the list of products.
+     * @param currentState The current UI state containing the product details.
      */
     fun addProductToCart(
         currentState: UiState<ProductDetailsUiModel>
@@ -109,6 +126,14 @@ class ProductDetailsViewModelManager(
         }
     }
 
+    /**
+     * Handles the response status from an API call and reverts the UI state in case of failure.
+     *
+     * @param currentState The current UI state.
+     * @param isSuccess Whether the API call was successful.
+     * @param originalProduct The original product before optimistic updates.
+     * @param messageResId Resource ID of the error message to display.
+     */
     private fun handleApiResponseStatus(
         currentState: UiState<ProductDetailsUiModel>,
         isSuccess: Boolean,
@@ -129,11 +154,11 @@ class ProductDetailsViewModelManager(
     }
 
     /**
-     * Handles exceptions thrown during the product fetching or wishlist operations.
-     * Displays an appropriate error message based on the exception type.
+     * Handles exceptions during product fetching or wishlist operations and updates the UI
+     * state or sends an appropriate event.
      *
-     * @param exception The caught exception to be handled.
-     * @param currentState The current state of the UI.
+     * @param exception The caught exception to handle.
+     * @param currentState The current UI state to maintain data integrity.
      */
     private fun handleException(
         exception: DomainException,
@@ -154,7 +179,12 @@ class ProductDetailsViewModelManager(
                     )
                 )
                 sendEvent(
-                    ProductDetailsEvent.ShowMessage(Message(errorMessage.messageResId, errorMessage.message))
+                    ProductDetailsEvent.ShowMessage(
+                        Message(
+                            errorMessage.messageResId,
+                            errorMessage.message
+                        )
+                    )
                 )
             }
         }

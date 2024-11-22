@@ -1,9 +1,12 @@
 package com.sample.onlinestore.cartmodule.domain
 
-import com.sample.datastoragemodule.data.database.model.Cart
+import com.sample.onlinestore.cartmodule.data.model.CartRequest
+import com.sample.onlinestore.cartmodule.data.model.CartResponse
 
 interface CartRepository {
-    suspend fun addToCart(item: Cart)
-    suspend fun getCartItems(): List<Cart>
-    suspend fun removeFromCart(productId: String, onCompletion: (List<Cart>) -> Unit)
+    suspend fun addToCart(item: CartRequest)
+    suspend fun getCartItems(onCompletion: (Boolean, List<CartResponse>) -> Unit)
+    suspend fun removeFromCart(
+        productId: String, onCompletion: (Boolean) -> Unit
+    )
 }

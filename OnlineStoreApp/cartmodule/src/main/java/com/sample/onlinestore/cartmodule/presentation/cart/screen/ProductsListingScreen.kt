@@ -1,4 +1,4 @@
-package com.sample.onlinestore.productsmodule.presentation.productslisting.screen
+package com.sample.onlinestore.cartmodule.presentation.cart.screen
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -134,7 +134,7 @@ fun ProductListingMainContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            ProductsListingTopAppBarSection(
+            CartTopAppBarSection(
                 topAppBarState = topAppBarState,
                 onAction = onAction
             )
