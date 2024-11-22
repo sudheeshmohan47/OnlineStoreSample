@@ -27,6 +27,7 @@ class CategoriesViewModel @AssistedInject constructor(
         categoriesUseCase,
         viewModelScope,
         ::sendState,
+        ::sendEvent
     )
 
     @AssistedFactory

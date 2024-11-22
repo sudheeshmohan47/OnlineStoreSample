@@ -1,6 +1,7 @@
 package com.sample.onlinestore.categoriesmodule.presentation.categories
 
 import com.sample.onlinestore.categoriesmodule.domain.model.CategoryItem
+import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.Action
 import com.sample.onlinestore.commonmodule.foundation.base.Event
 
@@ -16,4 +17,6 @@ sealed class CategoriesAction : Action {
     data class SetSwipeRefreshingStatus(val isRefreshing: Boolean) : CategoriesAction()
 }
 
-sealed class CategoriesEvent : Event
+sealed class CategoriesEvent : Event {
+    data class ShowMessage(val message: Message) : CategoriesEvent()
+}

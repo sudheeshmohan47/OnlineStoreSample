@@ -8,13 +8,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarState
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,48 +23,47 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sample.designsystem.components.OnlineStorePullToRefreshBox
 import com.sample.designsystem.components.ShowDashedProgressIndicator
 import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
-import com.sample.designsystem.foundation.OnlineStoreSpacing
-import com.sample.designsystem.foundation.dp
+import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
-import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
-import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingEvent
-import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
-import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingViewModel
-import com.sample.onlinestore.productsmodule.presentation.productslisting.productsListingViewModelCreationCallback
+import com.sample.onlinestore.productsmodule.domain.model.ProductItem
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsAction
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsEvent
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsUiModel
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailsScreen(
     backToPreviousScreen: () -> Unit,
+    gotoCartScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    productListingViewModel: ProductsListingViewModel = hiltViewModel(
-        creationCallback = productsListingViewModelCreationCallback
-    )
+    productId: String,
+    productDetailsViewModel: ProductDetailsViewModel =
+        hiltViewModel<ProductDetailsViewModel,
+                ProductDetailsViewModel.ProductDetailsViewModelFactory> { factory ->
+            factory.create(productId = productId)
+        }
 ) {
-    val productsListingUiState by productListingViewModel.uiState.collectAsStateWithLifecycle()
+    val productDetailsUiState by productDetailsViewModel.uiState.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
     val topAppBarState = rememberTopAppBarState()
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    val pullRefreshState = rememberPullToRefreshState()
+    val productDetailsListState: LazyListState = rememberLazyListState()
 
     LifecycleResumeEffect(Unit) {
-        productListingViewModel.sendAction(ProductsListingAction.RefreshData)
+        productDetailsViewModel.sendAction(ProductDetailsAction.RefreshData)
         onPauseOrDispose { }
     }
 
@@ -74,123 +72,103 @@ fun ProductDetailsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        ProductListingMainContent(
-            productsListingUiState = productsListingUiState,
-            screenWidth = screenWidth,
+        ProductDetailsScreenMainContent(
+            productDetailsUiState = productDetailsUiState,
             onAction = {
-                productListingViewModel.sendAction(it)
+                productDetailsViewModel.sendAction(it)
             },
-            pullToRefreshState = pullRefreshState,
-            topAppBarState = topAppBarState
+            topAppBarState = topAppBarState,
+            productDetailsListState = productDetailsListState
         )
         OnlineStoreSnackBarHost(
             hostState = snackBarHostState,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
         HandleUIStateChanges(
-            productsListingUiState = productsListingUiState,
+            productDetailsUiState = productDetailsUiState,
             snackBarHostState = snackBarHostState,
-            loadDetailScreen = loadProductDetailScreen
+            backToPreviousScreen = backToPreviousScreen,
+            gotoCartScreen = gotoCartScreen,
+            productId = productId
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductListingMainContent(
-    productsListingUiState: UiState<ProductsListingUiModel>,
-    screenWidth: Dp,
-    onAction: (ProductsListingAction) -> Unit,
+fun ProductDetailsScreenMainContent(
+    productDetailsUiState: UiState<ProductDetailsUiModel>,
+    onAction: (ProductDetailsAction) -> Unit,
     modifier: Modifier = Modifier,
-    pullToRefreshState: PullToRefreshState = rememberPullToRefreshState(),
     topAppBarState: TopAppBarState = rememberTopAppBarState(),
+    productDetailsListState: LazyListState = rememberLazyListState()
 ) {
-    val isRefreshing = productsListingUiState.data?.isSwipeRefreshing ?: false
-
-    OnlineStorePullToRefreshBox(
-        pullRefreshState = pullToRefreshState,
-        isRefreshing = isRefreshing,
-        onRefresh = {
-            onAction(
-                ProductsListingAction.SetSwipeRefreshingStatus(
-                    true
-                )
-            )
-            onAction(ProductsListingAction.RefreshData)
-        },
-        modifier = modifier.fillMaxSize()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
     ) {
-        Column(
+        ProductDetailsTopAppBarSection(
+            topAppBarState = topAppBarState,
+            productDetailsUiState = productDetailsUiState,
+            onAction = onAction
+        )
+        Spacer(
             modifier = Modifier
-                .fillMaxSize()
-        ) {
-            ProductsListingTopAppBarSection(
-                topAppBarState = topAppBarState
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(1.dp)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            )
-
-            ProductsListingScreenContent(
-                productsListingUiState = productsListingUiState,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = OnlineStoreSpacing.MEDIUM.dp()),
-                screenWidth = screenWidth,
-                onAction = onAction
-            )
-        }
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+        )
+        ProductsDetailsScreenContent(
+            productDetailsUiState = productDetailsUiState,
+            modifier = Modifier
+                .weight(1f),
+            onAction = onAction,
+            productDetailsListState = productDetailsListState
+        )
     }
 }
 
 @Composable
 private fun HandleUIStateChanges(
-    productsListingUiState: UiState<ProductsListingUiModel>,
+    productDetailsUiState: UiState<ProductDetailsUiModel>,
     snackBarHostState: SnackbarHostState,
-    loadDetailScreen: (String) -> Unit,
+    productId: String,
+    backToPreviousScreen: () -> Unit,
+    gotoCartScreen: () -> Unit,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    productListingViewModel: ProductsListingViewModel = hiltViewModel(
-        creationCallback = productsListingViewModelCreationCallback
-    )
+    productDetailsViewModel: ProductDetailsViewModel =
+        hiltViewModel<ProductDetailsViewModel,
+                ProductDetailsViewModel.ProductDetailsViewModelFactory> { factory ->
+            factory.create(productId = productId)
+        }
 ) {
     val context = LocalContext.current
-    val loadDetailScreenScreenState by rememberUpdatedState(loadDetailScreen)
-    val isSwipeRefreshing = productsListingUiState.data?.isSwipeRefreshing ?: false
-    val isInitialLoadingCompleted = productsListingUiState.data?.isInitialLoadingCompleted ?: false
-
-    when (productsListingUiState) {
-        is UiState.Result -> {
-            productsListingUiState.errorMessage?.let {
-                handleErrorMessage(
-                    context = context,
-                    snackBarHostState = snackBarHostState,
-                    coroutineScope = coroutineScope,
-                    errorMessage = it
-                )
-            }
-        }
-
-        is UiState.Loading -> {}
-
-        is UiState.Error -> {}
-    }
+    val backToPreviousScreenState by rememberUpdatedState(backToPreviousScreen)
+    val gotoCartScreenState by rememberUpdatedState(gotoCartScreen)
 
     LaunchedEffect(Unit) {
-        productListingViewModel.uiEvent.collectLatest { event ->
+        productDetailsViewModel.uiEvent.collectLatest { event ->
             when (event) {
-                is ProductsListingEvent.LoadProductDetailScreen -> {
-                    loadDetailScreenScreenState(event.productId)
+                is ProductDetailsEvent.BackToPreviousScreen -> {
+                    backToPreviousScreenState()
+                }
+
+                is ProductDetailsEvent.GotoCartScreen -> {
+                    gotoCartScreenState()
+                }
+
+                is ProductDetailsEvent.ShowMessage -> {
+                    handleErrorMessage(
+                        context = context,
+                        snackBarHostState = snackBarHostState,
+                        coroutineScope = coroutineScope,
+                        errorMessage = event.message
+                    )
                 }
             }
         }
     }
-    if (isInitialLoadingCompleted && // we will show shimmer effect when loading data for first time
-        productsListingUiState is UiState.Loading &&
-        !isSwipeRefreshing
-    ) {
+    if (productDetailsUiState is UiState.Loading) {
         ShowDashedProgressIndicator()
     }
 }
@@ -198,21 +176,26 @@ private fun HandleUIStateChanges(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true, device = Devices.PIXEL_XL)
-private fun ProductsListingScreenUIPreview() {
-    ProductListingMainContent(
-        productsListingUiState = UiState.Result(
-            ProductsListingUiModel(
-                products = listOf(),
-                isSwipeRefreshing = false
+private fun ProductDetailsScreenUIPreview() {
+    ProductDetailsScreenMainContent(
+        productDetailsUiState = UiState.Result(
+            ProductDetailsUiModel(
+                product = ProductItem(
+                    name = "Swarowski",
+                    price = 2000.0,
+                    isWishListed = true,
+                    isAddedToCart = false,
+                    description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                    image = "https://picsum.photos/200"
+                )
             )
         ),
-        screenWidth = 300.dp,
         onAction = {}
     )
 }
 
 @Composable
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, device = Devices.PIXEL_XL)
-private fun ProductsListingScreenUIPreviewDark() {
-    ProductsListingScreenUIPreview()
+private fun ProductDetailsScreenUIPreviewDark() {
+    ProductDetailsScreenUIPreview()
 }

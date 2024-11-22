@@ -27,6 +27,7 @@ class ProductsListingViewModel @AssistedInject constructor(
         productsUseCase,
         viewModelScope,
         ::sendState,
+        ::sendEvent
     )
 
     @AssistedFactory

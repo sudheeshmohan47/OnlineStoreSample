@@ -4,7 +4,7 @@ import com.sample.onlinestore.authenticationmodule.R
 import com.sample.onlinestore.authenticationmodule.domain.LoginUseCase
 import com.sample.onlinestore.commonmodule.domain.exception.DomainException
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrorMessage
-import com.sample.onlinestore.commonmodule.domain.model.ErrorMessage
+import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -150,7 +150,7 @@ class LoginViewModelManager(
         sendState(
             UiState.Result(
                 currentState.data,
-                ErrorMessage(errorMessage.messageResId, errorMessage.message)
+                Message(errorMessage.messageResId, errorMessage.message)
             )
         )
     }

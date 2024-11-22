@@ -3,7 +3,8 @@ package com.sample.onlinestore.productsmodule.presentation.productdetails
 import com.sample.onlinestore.commonmodule.domain.exception.DomainException
 import com.sample.onlinestore.commonmodule.domain.exception.UnauthorizedException
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrorMessage
-import com.sample.onlinestore.commonmodule.domain.model.ErrorMessage
+import com.sample.onlinestore.commonmodule.domain.model.Message
+import com.sample.onlinestore.commonmodule.foundation.base.Event
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
@@ -15,6 +16,7 @@ class ProductDetailsViewModelManager(
     private val productsUseCase: ProductsUseCase,
     private val viewModelScope: CoroutineScope,
     private val sendState: (UiState<ProductDetailsUiModel>) -> Unit,
+    private val sendEvent: (ProductDetailsEvent) -> Unit
 ) {
 
     fun fetchProductDetails(productId: String, currentState: UiState<ProductDetailsUiModel>) {
@@ -120,7 +122,7 @@ class ProductDetailsViewModelManager(
                     currentState.data?.copy(
                         product = originalProduct
                     ),
-                    ErrorMessage(messageResId)
+                    Message(messageResId)
                 )
             )
         }
@@ -148,9 +150,11 @@ class ProductDetailsViewModelManager(
                 val errorMessage = mapErrorMessage(exception)
                 sendState(
                     UiState.Result(
-                        currentState.data,
-                        ErrorMessage(errorMessage.messageResId, errorMessage.message)
+                        currentState.data
                     )
+                )
+                sendEvent(
+                    ProductDetailsEvent.ShowMessage(Message(errorMessage.messageResId, errorMessage.message))
                 )
             }
         }

@@ -3,7 +3,7 @@ package com.sample.onlinestore.productsmodule.presentation.productslisting
 import com.sample.onlinestore.commonmodule.domain.exception.DomainException
 import com.sample.onlinestore.commonmodule.domain.exception.UnauthorizedException
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrorMessage
-import com.sample.onlinestore.commonmodule.domain.model.ErrorMessage
+import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
@@ -23,6 +23,7 @@ class ProductListingViewModelManager(
     private val productsUseCase: ProductsUseCase,
     private val viewModelScope: CoroutineScope,
     private val sendState: (UiState<ProductsListingUiModel>) -> Unit,
+    private val sendEvent: (ProductsListingEvent) -> Unit
 ) {
     /**
      * Fetches the product data and updates the UI state.
@@ -102,7 +103,7 @@ class ProductListingViewModelManager(
             sendState(
                 UiState.Result(
                     currentState.data,
-                    ErrorMessage(com.sample.wishlistmodule.R.string.error_failed_to_add_wishlist)
+                    Message(com.sample.wishlistmodule.R.string.error_failed_to_add_wishlist)
                 )
             )
         }
@@ -132,10 +133,10 @@ class ProductListingViewModelManager(
                 val errorMessage = mapErrorMessage(exception)
                 sendState(
                     UiState.Result(
-                        updatedUiState,
-                        ErrorMessage(errorMessage.messageResId, errorMessage.message)
+                        updatedUiState
                     )
                 )
+                sendEvent(ProductsListingEvent.ShowMessage(Message(errorMessage.messageResId, errorMessage.message)))
             }
         }
     }

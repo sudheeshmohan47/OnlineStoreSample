@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -66,7 +68,9 @@ fun ProductsListingTopAppBarSection(
 fun CategoriesScreenListingContent(
     categoriesUiState: UiState<CategoriesUiModel>,
     onAction: (CategoriesAction) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    categoriesListState: LazyGridState = rememberLazyGridState(),
+    shimmerEffectGridState: LazyGridState = rememberLazyGridState()
 ) {
     categoriesUiState.data?.let { categoriesUiModel ->
         val categories = categoriesUiModel.categories
@@ -75,13 +79,14 @@ fun CategoriesScreenListingContent(
 
         Box(modifier) {
             if (!isInitialLoadingCompleted && categoriesUiState is UiState.Loading) {
-                LazyGridWithShimmerEffect(itemShape = CircleShape)
+                LazyGridWithShimmerEffect(itemShape = CircleShape, lazyGridState = shimmerEffectGridState)
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(CategoriesListingGridColumnCount),
                     contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
                     verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.SMALL.dp()),
-                    horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.MEDIUM.dp())
+                    horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.MEDIUM.dp()),
+                    state = categoriesListState
                 ) {
                     items(categories) { categoryItem ->
                         CategoriesListingItem(

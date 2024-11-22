@@ -1,7 +1,7 @@
 package com.sample.onlinestore.commonmodule.domain.exception
 
 import com.sample.onlinestore.commonmodule.R
-import com.sample.onlinestore.commonmodule.domain.model.ErrorMessage
+import com.sample.onlinestore.commonmodule.domain.model.Message
 import java.net.UnknownHostException
 
 fun mapException(e: Throwable): Throwable =
@@ -19,11 +19,11 @@ fun mapErrors(code: Int, message: String? = ""): DomainException =
         else -> GenericException(message)
     }
 
-fun mapErrorMessage(e: DomainException): ErrorMessage {
+fun mapErrorMessage(e: DomainException): Message {
     return when (e) {
-        is ServerNotAvailableException -> ErrorMessage(R.string.error_server_not_available)
-        is NetworkException -> ErrorMessage(R.string.error_no_internet)
-        is UnauthorizedException -> ErrorMessage(R.string.error_unauthorized)
-        else -> ErrorMessage(R.string.error_something_went_wrong)
+        is ServerNotAvailableException -> Message(R.string.error_server_not_available)
+        is NetworkException -> Message(R.string.error_no_internet)
+        is UnauthorizedException -> Message(R.string.error_unauthorized)
+        else -> Message(R.string.error_something_went_wrong)
     }
 }

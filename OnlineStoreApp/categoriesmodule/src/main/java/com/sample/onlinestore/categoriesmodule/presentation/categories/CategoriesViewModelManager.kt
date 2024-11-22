@@ -5,7 +5,8 @@ import com.sample.onlinestore.categoriesmodule.domain.model.CategoryItem
 import com.sample.onlinestore.commonmodule.domain.exception.DomainException
 import com.sample.onlinestore.commonmodule.domain.exception.UnauthorizedException
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrorMessage
-import com.sample.onlinestore.commonmodule.domain.model.ErrorMessage
+import com.sample.onlinestore.commonmodule.domain.model.Message
+import com.sample.onlinestore.commonmodule.foundation.base.Event
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +23,8 @@ import kotlinx.coroutines.launch
 class CategoriesViewModelManager(
     private val categoriesUseCase: CategoriesUseCase,
     private val viewModelScope: CoroutineScope,
-    private val sendState: (UiState<CategoriesUiModel>) -> Unit
+    private val sendState: (UiState<CategoriesUiModel>) -> Unit,
+    private val sendEvent: (CategoriesEvent) -> Unit
 ) {
 
     /**
@@ -125,14 +127,14 @@ class CategoriesViewModelManager(
             }
 
             else -> {
-                // Map the exception to a user-friendly error message
                 val errorMessage = mapErrorMessage(exception)
-                // Send the updated UI state along with the error message to the UI
                 sendState(
                     UiState.Result(
-                        updatedUiState,
-                        ErrorMessage(errorMessage.messageResId, errorMessage.message)
+                        updatedUiState
                     )
+                )
+                sendEvent(
+                    CategoriesEvent.ShowMessage(Message(errorMessage.messageResId, errorMessage.message))
                 )
             }
         }

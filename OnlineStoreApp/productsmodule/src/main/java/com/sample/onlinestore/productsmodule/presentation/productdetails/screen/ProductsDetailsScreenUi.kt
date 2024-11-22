@@ -1,28 +1,26 @@
 package com.sample.onlinestore.productsmodule.presentation.productdetails.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,161 +38,165 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.sample.designsystem.components.LazyGridWithShimmerEffect
+import com.sample.designsystem.components.OnlineStoreButton
 import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.R
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
-import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
-import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsAction
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsUiModel
 
-private const val ProductListingItemWidthPercentage = 0.40f
-private const val ProductListingItemAspectRatio = 1.3f
-private const val ProductListingGridColumnCount = 2
+private const val ProductDetailsImageAspectRatio = 1.3f
+private const val ProductTitleMaxLines = 2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductsListingTopAppBarSection(
+fun ProductDetailsTopAppBarSection(
+    productDetailsUiState: UiState<ProductDetailsUiModel>,
+    onAction: (ProductDetailsAction) -> Unit,
     topAppBarState: TopAppBarState,
     modifier: Modifier = Modifier,
 ) {
+    val productTitle = productDetailsUiState.data?.product?.name.orEmpty()
     OnlineStoreTopAppBar(
         modifier = modifier,
         topAppBarState = topAppBarState,
-        title = stringResource(R.string.title_home),
+        title = productTitle,
         titleStyle = MaterialTheme.typography.titleLarge,
         titleFontWeight = FontWeight.Normal,
         titleColor = MaterialTheme.colorScheme.onBackground,
-        displayBackNavigation = false,
+        displayBackNavigation = true,
         titleAlignment = TextAlign.Center,
-        backgroundColor = MaterialTheme.colorScheme.background
+        backgroundColor = MaterialTheme.colorScheme.background,
+        onBackNavigationClicked = {
+            onAction(ProductDetailsAction.OnClickBackNavigation)
+        }
     )
 }
 
 @Composable
-fun ProductsListingScreenContent(
-    productsListingUiState: UiState<ProductsListingUiModel>,
-    screenWidth: Dp,
-    onAction: (ProductsListingAction) -> Unit,
-    modifier: Modifier = Modifier
+fun ProductsDetailsScreenContent(
+    productDetailsUiState: UiState<ProductDetailsUiModel>,
+    onAction: (ProductDetailsAction) -> Unit,
+    modifier: Modifier = Modifier,
+    productDetailsListState: LazyListState = rememberLazyListState()
 ) {
-    productsListingUiState.data?.let { productsUiModel ->
-        val products = productsUiModel.products
-        val isInitialLoadingCompleted = productsUiModel.isInitialLoadingCompleted
 
-        if (!isInitialLoadingCompleted && productsListingUiState is UiState.Loading) {
-            LazyGridWithShimmerEffect()
-        } else {
-            LazyVerticalGrid(
-                modifier = modifier,
-                columns = GridCells.Fixed(ProductListingGridColumnCount),
-                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
-                verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-                horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
-            ) {
-                items(products) { productItem ->
-                    ProductsListingItem(
-                        productItem = productItem,
-                        onAction = onAction,
-                        screenWidth = screenWidth,
-                        modifier = Modifier.animateItem()
-                    )
+        ProductDetails(
+            productDetailsUiState = productDetailsUiState,
+            modifier = modifier,
+            onAction = onAction,
+            productDetailsListState = productDetailsListState
+        )
+}
+
+@Composable
+fun ProductDetails(
+    productDetailsUiState: UiState<ProductDetailsUiModel>,
+    modifier: Modifier = Modifier,
+    onAction: (ProductDetailsAction) -> Unit,
+    productDetailsListState: LazyListState = rememberLazyListState()
+) {
+    val productItem = productDetailsUiState.data?.product ?: ProductItem()
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.weight(1f), state = productDetailsListState) {
+                item {
+                    ProductDetailUIContent(productItem = productItem, onAction = onAction)
                 }
+            }
+            CartButton(
+                modifier = Modifier
+                    .padding(OnlineStoreSpacing.MEDIUM.dp()),
+                productItem = productItem,
+                enableButton = productDetailsUiState is UiState.Result,
+            ) {
+                onAction(it)
             }
         }
     }
 }
 
 @Composable
-fun ProductsListingItem(
+private fun ProductDetailUIContent(
     productItem: ProductItem,
-    screenWidth: Dp,
-    modifier: Modifier = Modifier,
-    onAction: (ProductsListingAction) -> Unit
+    modifier: Modifier = Modifier, onAction: (ProductDetailsAction) -> Unit
 ) {
-    Card(
-        modifier = modifier
-            .width(screenWidth * ProductListingItemWidthPercentage)
-            .padding(OnlineStoreSpacing.EXTRA_SMALL.dp())
-            .clickable {
-                onAction(ProductsListingAction.OnClickProduct(productItem))
-            },
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        ),
-        shape = RoundedCornerShape(OnlineStoreSpacing.SMALL.dp()),
-        colors = CardDefaults.cardColors()
-            .copy(containerColor = MaterialTheme.colorScheme.onTertiary)
-    ) {
-        Box(
+    val price = productItem.price?.let {
+        "Rs. $it"
+    } ?: ""
+
+    Column(modifier.fillMaxSize()) {
+        // Main image
+        AsyncImage(
             modifier = Modifier
-                .padding(OnlineStoreSpacing.SMALL.dp())
+                .fillMaxWidth()
+                .aspectRatio(ProductDetailsImageAspectRatio),
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(productItem.image?.ifEmpty { com.sample.designsystem.R.drawable.placeholder })
+                .crossfade(true)
+                .scale(Scale.FIT)
+                .error(com.sample.designsystem.R.drawable.placeholder)
+                .build(),
+            placeholder = painterResource(com.sample.designsystem.R.drawable.placeholder),
+            contentDescription = "",
+            contentScale = ContentScale.Crop
+        )
+        Spacer(modifier = Modifier.height(OnlineStoreSpacing.SMALL.dp()))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(OnlineStoreSpacing.MEDIUM.dp()),
+            verticalAlignment = Alignment.Top
         ) {
-            Column {
-                // Main image
-                AsyncImage(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(OnlineStoreSpacing.SMALL.dp()))
-                        .fillMaxWidth()
-                        .aspectRatio(ProductListingItemAspectRatio),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(productItem.image?.ifEmpty { com.sample.designsystem.R.drawable.placeholder })
-                        .crossfade(true)
-                        .scale(Scale.FIT)
-                        .error(com.sample.designsystem.R.drawable.placeholder)
-                        .build(),
-                    placeholder = painterResource(com.sample.designsystem.R.drawable.placeholder),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop
+            Column(modifier = Modifier.weight(1f)) {
+                // Title
+                Text(
+                    text = productItem.name.orEmpty(),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = ProductTitleMaxLines,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(OnlineStoreSpacing.SMALL.dp()))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        // Title
-                        Text(
-                            text = productItem.name.orEmpty(),
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Spacer(modifier = Modifier.height(OnlineStoreSpacing.EXTRA_SMALL.dp()))
-
-                        Text(
-                            text = "Rs.${productItem.price}",
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 1
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(OnlineStoreSpacing.SMALL.dp()))
-                    FavouriteSection(
-                        modifier = Modifier.align(Alignment.Top),
-                        productItem = productItem,
-                        onAction = onAction
-                    )
-                }
+                Text(
+                    text = price,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1
+                )
+                Spacer(modifier = Modifier.height(OnlineStoreSpacing.SMALL.dp()))
+                Text(
+                    text = productItem.description.orEmpty(),
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
+            Spacer(modifier = Modifier.width(OnlineStoreSpacing.SMALL.dp()))
+            FavouriteSection(
+                modifier = Modifier.align(Alignment.Top),
+                productItem = productItem,
+                onAction = onAction
+            )
         }
     }
 }
 
 @Composable
-fun FavouriteSection(
+private fun FavouriteSection(
     productItem: ProductItem,
-    onAction: (ProductsListingAction) -> Unit,
+    onAction: (ProductDetailsAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Icon(
@@ -202,10 +204,32 @@ fun FavouriteSection(
             .clip(CircleShape)
             .size(OnlineStoreSpacing.LARGE.dp())
             .clickable {
-                onAction(ProductsListingAction.OnClickFavourite(productItem))
+                onAction(ProductDetailsAction.OnClickFavourite)
             },
         imageVector = if (productItem.isWishListed) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
         contentDescription = "Collection Options",
         tint = if (productItem.isWishListed) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
     )
+}
+
+@Composable
+fun CartButton(
+    enableButton: Boolean,
+    productItem: ProductItem,
+    modifier: Modifier = Modifier,
+    onAction: (ProductDetailsAction) -> Unit
+) {
+    val isItemAddedToCart = productItem.isAddedToCart
+    val buttonTitle =
+        if (isItemAddedToCart) stringResource(R.string.label_goto_cart) else stringResource(
+            R.string.label_add_to_cart
+        )
+    OnlineStoreButton(
+        modifier = modifier,
+        label = buttonTitle,
+        enabled = enableButton
+    ) {
+        onAction(ProductDetailsAction.OnClickAddToCart)
+    }
+
 }

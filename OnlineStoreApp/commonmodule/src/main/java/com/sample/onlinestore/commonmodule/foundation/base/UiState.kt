@@ -1,7 +1,7 @@
 package com.sample.onlinestore.commonmodule.foundation.base
 
 import com.sample.onlinestore.commonmodule.domain.exception.DomainException
-import com.sample.onlinestore.commonmodule.domain.model.ErrorMessage
+import com.sample.onlinestore.commonmodule.domain.model.Message
 
 interface State
 
@@ -12,10 +12,10 @@ interface State
 sealed class UiState<T>(
     var data: T? = null,
     val error: DomainException? = null,
-    val errorMessage: ErrorMessage? = null
+    val message: Message? = null
 ) : State {
     class Loading<T>(data: T?) : UiState<T>(data)
-    class Result<T>(data: T?, errorMessage: ErrorMessage? = null) :
-        UiState<T>(data, errorMessage = errorMessage)
+    class Result<T>(data: T?, message: Message? = null) :
+        UiState<T>(data, message = message)
     class Error<T>(error: DomainException) : UiState<T>(error = error)
 }

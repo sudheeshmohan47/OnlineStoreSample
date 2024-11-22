@@ -11,7 +11,7 @@ class CartUseCase @Inject constructor(
     }
 
     suspend fun getCartItems(onCompletion: (List<Cart>) -> Unit) {
-        cartRepository.getCartItems(onCompletion)
+        onCompletion(cartRepository.getCartItems())
     }
 
     suspend fun removeFromCart(productId: String, onCompletion: (List<Cart>) -> Unit) {

@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -85,9 +87,11 @@ fun LazyGridWithShimmerEffect(
     itemShape: Shape = RoundedCornerShape(OnlineStoreSpacing.SMALL.dp()),
     itemCount: Int = 10,
     gridColumns: Int = 2,
-    gridItemAspectRatio: Float = 1.0f
+    gridItemAspectRatio: Float = 1.0f,
+    lazyGridState: LazyGridState = rememberLazyGridState()
 ) {
     LazyVerticalGrid(
+        state = lazyGridState,
         columns = GridCells.Fixed(gridColumns),
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(OnlineStoreSpacing.MEDIUM.dp())

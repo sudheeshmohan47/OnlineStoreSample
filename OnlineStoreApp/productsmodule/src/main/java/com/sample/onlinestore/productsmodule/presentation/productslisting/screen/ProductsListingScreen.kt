@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -40,6 +42,7 @@ import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsEvent
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingEvent
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
@@ -63,6 +66,8 @@ fun ProductsListingScreen(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val pullRefreshState = rememberPullToRefreshState()
+    val productListState: LazyGridState = rememberLazyGridState()
+    val shimmerEffectGridState: LazyGridState = rememberLazyGridState()
 
     LifecycleResumeEffect(Unit) {
         productListingViewModel.sendAction(ProductsListingAction.RefreshData)
@@ -81,7 +86,9 @@ fun ProductsListingScreen(
                 productListingViewModel.sendAction(it)
             },
             pullToRefreshState = pullRefreshState,
-            topAppBarState = topAppBarState
+            topAppBarState = topAppBarState,
+            productListState = productListState,
+            shimmerEffectGridState = shimmerEffectGridState
         )
         OnlineStoreSnackBarHost(
             hostState = snackBarHostState,
@@ -104,6 +111,8 @@ fun ProductListingMainContent(
     modifier: Modifier = Modifier,
     pullToRefreshState: PullToRefreshState = rememberPullToRefreshState(),
     topAppBarState: TopAppBarState = rememberTopAppBarState(),
+    productListState: LazyGridState = rememberLazyGridState(),
+    shimmerEffectGridState: LazyGridState = rememberLazyGridState()
 ) {
     val isRefreshing = productsListingUiState.data?.isSwipeRefreshing ?: false
 
@@ -140,7 +149,9 @@ fun ProductListingMainContent(
                     .weight(1f)
                     .padding(horizontal = OnlineStoreSpacing.MEDIUM.dp()),
                 screenWidth = screenWidth,
-                onAction = onAction
+                onAction = onAction,
+                productListState = productListState,
+                shimmerEffectGridState = shimmerEffectGridState
             )
         }
     }
@@ -163,7 +174,7 @@ private fun HandleUIStateChanges(
 
     when (productsListingUiState) {
         is UiState.Result -> {
-            productsListingUiState.errorMessage?.let {
+            productsListingUiState.message?.let {
                 handleErrorMessage(
                     context = context,
                     snackBarHostState = snackBarHostState,
@@ -183,6 +194,15 @@ private fun HandleUIStateChanges(
             when (event) {
                 is ProductsListingEvent.LoadProductDetailScreen -> {
                     loadDetailScreenScreenState(event.productId)
+                }
+
+                is ProductsListingEvent.ShowMessage -> {
+                    handleErrorMessage(
+                        context = context,
+                        snackBarHostState = snackBarHostState,
+                        coroutineScope = coroutineScope,
+                        errorMessage = event.message
+                    )
                 }
             }
         }

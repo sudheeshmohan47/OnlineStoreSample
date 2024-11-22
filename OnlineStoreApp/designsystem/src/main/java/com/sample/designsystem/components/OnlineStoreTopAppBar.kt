@@ -27,9 +27,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,7 +83,9 @@ fun OnlineStoreTopAppBar(
             style = titleStyle,
             fontWeight = titleFontWeight,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = titleAlignment
+            textAlign = titleAlignment,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 

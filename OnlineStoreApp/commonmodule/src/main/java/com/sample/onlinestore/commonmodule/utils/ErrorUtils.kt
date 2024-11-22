@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import com.sample.onlinestore.commonmodule.domain.model.ErrorMessage
+import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.domain.model.FieldObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ fun handleErrorMessage(
     context: Context,
     snackBarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope,
-    errorMessage: ErrorMessage,
+    errorMessage: Message,
     onSnackbarDisplayed: (() -> Unit)? = null
 ) {
     val message =

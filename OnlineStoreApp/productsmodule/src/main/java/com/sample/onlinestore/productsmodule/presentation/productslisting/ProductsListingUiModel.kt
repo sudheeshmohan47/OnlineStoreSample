@@ -1,8 +1,10 @@
 package com.sample.onlinestore.productsmodule.presentation.productslisting
 
+import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.Action
 import com.sample.onlinestore.commonmodule.foundation.base.Event
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
+import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsEvent
 
 data class ProductsListingUiModel(
     val products: List<ProductItem> = emptyList(),
@@ -19,4 +21,5 @@ sealed class ProductsListingAction : Action {
 
 sealed class ProductsListingEvent : Event {
     data class LoadProductDetailScreen(val productId: String) : ProductsListingEvent()
+    data class ShowMessage(val message: Message) : ProductsListingEvent()
 }

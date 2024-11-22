@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_home">Home</string>
+    <string name="label_goto_cart">Goto Cart</string>
+    <string name="label_add_to_cart">Add to Cart</string>
+    <string name="product_added_to_cart">"Item added to cart! "</string>
 </resources>

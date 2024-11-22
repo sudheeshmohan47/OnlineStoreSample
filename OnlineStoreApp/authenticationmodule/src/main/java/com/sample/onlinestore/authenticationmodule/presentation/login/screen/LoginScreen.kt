@@ -113,7 +113,7 @@ fun HandleUiState(
 
     when (uiState) {
         is UiState.Result -> {
-            uiState.errorMessage?.let {
+            uiState.message?.let {
                 handleErrorMessage(
                     context = context,
                     snackBarHostState = snackbarHostState,
