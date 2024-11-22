@@ -40,13 +40,13 @@ import com.sample.designsystem.components.ShowDashedProgressIndicator
 import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
-import com.sample.onlinestore.commonmodule.foundation.base.UiState
-import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
+import com.sample.onlinestore.cartmodule.presentation.cart.CartViewModel
 import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingAction
 import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingEvent
 import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingUiModel
-import com.sample.onlinestore.cartmodule.presentation.cart.CartViewModel
 import com.sample.onlinestore.cartmodule.presentation.cart.productsListingViewModelCreationCallback
+import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 
