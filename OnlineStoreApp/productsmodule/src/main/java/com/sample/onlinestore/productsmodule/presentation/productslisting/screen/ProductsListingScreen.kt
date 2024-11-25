@@ -42,11 +42,11 @@ import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
-import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingAction
-import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingEvent
-import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingUiModel
-import com.sample.onlinestore.cartmodule.presentation.cart.CartViewModel
-import com.sample.onlinestore.cartmodule.presentation.cart.productsListingViewModelCreationCallback
+import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
+import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingEvent
+import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
+import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingViewModel
+import com.sample.onlinestore.productsmodule.presentation.productslisting.productsListingViewModelCreationCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 
@@ -56,7 +56,7 @@ fun ProductsListingScreen(
     loadProductDetailScreen: (String) -> Unit,
     gotoCartScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    productListingViewModel: CartViewModel = hiltViewModel(
+    productListingViewModel: ProductsListingViewModel = hiltViewModel(
         creationCallback = productsListingViewModelCreationCallback
     )
 ) {
@@ -166,7 +166,7 @@ private fun HandleUIStateChanges(
     loadDetailScreen: (String) -> Unit,
     gotoCartScreen: () -> Unit,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    productListingViewModel: CartViewModel = hiltViewModel(
+    productListingViewModel: ProductsListingViewModel = hiltViewModel(
         creationCallback = productsListingViewModelCreationCallback
     )
 ) {

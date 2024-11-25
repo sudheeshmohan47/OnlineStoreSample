@@ -76,6 +76,10 @@ class CartViewModel @AssistedInject constructor(
             is CartAction.RemoveItemFromCart -> {
                 cartViewModelManager.removeItemFromCart(currentState, action.productId)
             }
+
+            CartAction.OnClickBackNavigation -> {
+                sendEvent(CartEvent.BackToPreviousScreen)
+            }
         }
     }
 }

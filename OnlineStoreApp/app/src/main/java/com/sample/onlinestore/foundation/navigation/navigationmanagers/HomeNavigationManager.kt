@@ -16,6 +16,6 @@ class HomeNavigationManager(private val appState: OnlineStoreAppState) {
     }
 
     val gotoCartScreen: () -> Unit = {
-        //appState.navigate(CartScreens.CartScreen)
+        appState.navigate(CartScreens.CartScreen)
     }
 }

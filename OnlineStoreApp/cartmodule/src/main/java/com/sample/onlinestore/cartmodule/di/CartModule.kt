@@ -15,8 +15,8 @@ import retrofit2.Retrofit
 @InstallIn(SingletonComponent::class)
 class CartModule {
     @Provides
-    fun provideCartRepository(cartDao: CartDao): CartRepository {
-        return CartService(cartDao)
+    fun provideCartRepository(cartDao: CartDao, cartApiService: CartApiService): CartRepository {
+        return CartService(cartDao, cartApiService)
     }
 
     @Provides

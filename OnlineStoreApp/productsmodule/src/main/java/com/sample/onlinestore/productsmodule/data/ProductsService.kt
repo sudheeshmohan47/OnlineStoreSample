@@ -1,7 +1,7 @@
 package com.sample.onlinestore.productsmodule.data
 
-import com.sample.datastoragemodule.data.database.model.Cart
 import com.sample.datastoragemodule.data.database.model.Wishlist
+import com.sample.onlinestore.cartmodule.data.model.CartRequest
 import com.sample.onlinestore.cartmodule.data.model.CartResponse
 import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
@@ -86,7 +86,7 @@ class ProductsService @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let { product ->
                     val wishListItems = wishlistRepository.getWishlistItems()
-                    val cartItems = cartRepository.getCartItems()
+                    val cartItems = cartRepository.getCartItemsLocal()
 
                     val isWishListed = wishListItems.any { it.productId == product.id }
                     val isAddedToCart = cartItems.any { it.productId == product.id }
@@ -144,7 +144,7 @@ class ProductsService @Inject constructor(
 
     override suspend fun addProductToCart(productId: String) {
         try {
-            cartRepository.addToCart(CartResponse(productId = productId, quantity = 1))
+            cartRepository.addToCart(CartRequest(productId = productId, quantity = 1))
         } catch (e: Exception) {
             throw mapException(e)
         }

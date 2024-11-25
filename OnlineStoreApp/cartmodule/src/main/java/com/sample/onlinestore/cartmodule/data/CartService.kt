@@ -26,7 +26,7 @@ class CartService @Inject constructor(
         cartDao.addToCart(item = cart)
     }
 
-    override suspend fun getCartItems(onCompletion: (Boolean, List<CartResponse>) -> Unit) {
+    override suspend fun getCartListingItems(onCompletion: (Boolean, List<CartResponse>) -> Unit) {
         try {
             val response = cartApiService.getProducts()
             if (response.isSuccessful) {
@@ -48,7 +48,7 @@ class CartService @Inject constructor(
 
                     // Pass the results to the onCompletion callback
                     onCompletion(true, cartItems)
-                    return@getCartItems
+                    return@getCartListingItems
                 }
             }
             val errorBody: ErrorBody? = response.parseErrorBody()
@@ -56,6 +56,13 @@ class CartService @Inject constructor(
         } catch (e: Exception) {
             throw mapException(e)
         }
+    }
+
+    override suspend fun getCartItemsLocal(): List<CartResponse> = cartDao.getCartItems().map {
+        CartResponse(
+            productId = it.productId,
+            quantity = it.quantity
+        )
     }
 
     override suspend fun removeFromCart(

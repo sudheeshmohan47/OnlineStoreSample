@@ -2,4 +2,6 @@
     <string name="app_name">cartmodule</string>
     <string name="error_adding_to_cart_failed">Failed to add product to cart</string>
     <string name="title_cart">Cart</string>
+    <string name="label_remove_from_cart">Remove from Cart</string>
+    <string name="label_quantity">Quantity: %1$s</string>
 </resources>

@@ -3,6 +3,8 @@ package com.sample.onlinestore.foundation.navigation.navgraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.sample.onlinestore.cartmodule.foundation.navigation.CartScreens
+import com.sample.onlinestore.cartmodule.presentation.cart.screen.CartScreen
 import com.sample.onlinestore.categoriesmodule.presentation.categories.screen.CategoriesScreen
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.slideComposable
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
@@ -22,6 +24,8 @@ fun NavGraphBuilder.homeNavGraph(
     productDetailsScreenComposable(homeNavigationManager)
     // Categories Screen
     categoriesScreenComposable()
+    // Cart Screen
+    cartScreenComposable(homeNavigationManager)
 }
 
 private fun NavGraphBuilder.homeScreenComposable(
@@ -50,5 +54,14 @@ private fun NavGraphBuilder.productDetailsScreenComposable(homeNavigationManager
 private fun NavGraphBuilder.categoriesScreenComposable() {
     composable<BottomNavItem.Categories> {
         CategoriesScreen()
+    }
+}
+
+private fun NavGraphBuilder.cartScreenComposable(homeNavigationManager: HomeNavigationManager) {
+    composable<CartScreens.CartScreen> {
+        CartScreen(
+            loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen,
+            backToPreviousScreen = homeNavigationManager.backToPreviousScreen
+        )
     }
 }

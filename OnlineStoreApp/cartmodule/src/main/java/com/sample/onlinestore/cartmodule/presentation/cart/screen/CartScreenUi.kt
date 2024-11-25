@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
+import com.sample.designsystem.components.OnlineStoreButton
+import com.sample.designsystem.components.OnlineStoreButtonVariant
 import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
@@ -103,7 +104,7 @@ fun CartItem(
     modifier: Modifier = Modifier
 ) {
     // Image size set to 20% of the screen width, making it square
-    val imageWidthSize = screenWidth * 0.2f
+    val imageWidthSize = screenWidth * 0.3f
     Card(
         modifier = modifier
             .padding(OnlineStoreSpacing.EXTRA_SMALL.dp()),
@@ -117,37 +118,31 @@ fun CartItem(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(8.dp)
-                .height(100.dp)
+                .padding(OnlineStoreSpacing.SMALL.dp())
         ) {
             // Main image
             AsyncImage(
                 modifier = Modifier
                     .width(imageWidthSize)
-                    .aspectRatio(1f)
+                    .aspectRatio(1.4f)
                     .clickable {
-                        onAction(CartAction.OnClickCartImage(cartItem.productId))
+                        onAction(CartAction.OnClickProduct(cartItem.productId))
                     },
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(cartItem.image.ifEmpty { com.sample.designsystem.R.drawable.placeholder })
                     .crossfade(true)
-                    .scale(Scale.FIT)
                     .error(com.sample.designsystem.R.drawable.placeholder)
                     .build(),
                 placeholder = painterResource(com.sample.designsystem.R.drawable.placeholder),
-                contentDescription = "",
+                contentDescription = "Cart image",
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(OnlineStoreSpacing.SMALL.dp()))
-
             // Details Section
-            Column(
-                modifier = Modifier
-                    .padding(vertical = OnlineStoreSpacing.SMALL.dp())
-            ) {
+            Column(verticalArrangement = Arrangement.SpaceBetween){
                 Text(
                     text = cartItem.name,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
@@ -156,16 +151,14 @@ fun CartItem(
 
                 // Quantity
                 Text(
-                    text = "Qty: ${cartItem.quantity}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = stringResource(R.string.label_quantity, cartItem.quantity),
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = OnlineStoreSpacing.SMALL.dp())
                 )
-
-                // Remove from Cart Text (Clickable)
-                Text(
-                    text = "Remove from Cart",
-                    style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.primary),
-                    modifier = Modifier.clickable {
+                OnlineStoreButton(
+                    variant = OnlineStoreButtonVariant.SECONDARY,
+                    label = stringResource(R.string.label_remove_from_cart),
+                    onClick = {
                         onAction(CartAction.RemoveItemFromCart(cartItem.productId))
                     }
                 )

@@ -11,11 +11,11 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 val productsListingViewModelCreationCallback =
-    { factory: CartViewModel.ProductsListingViewModelFactory ->
+    { factory: ProductsListingViewModel.ProductsListingViewModelFactory ->
         factory.create()
     }
 
-@HiltViewModel(assistedFactory = CartViewModel.ProductsListingViewModelFactory::class)
+@HiltViewModel(assistedFactory = ProductsListingViewModel.ProductsListingViewModelFactory::class)
 class ProductsListingViewModel @AssistedInject constructor(
     productsUseCase: ProductsUseCase,
     @Assisted initialScreenState: UiState<ProductsListingUiModel>
@@ -25,7 +25,7 @@ class ProductsListingViewModel @AssistedInject constructor(
 
     // Manager class for managing viewmodel business logic
     private val productsListingViewModelManager =
-        com.sample.onlinestore.cartmodule.presentation.cart.CartViewModelManager(
+        ProductListingViewModelManager(
             productsUseCase,
             viewModelScope,
             ::sendState,
@@ -38,7 +38,7 @@ class ProductsListingViewModel @AssistedInject constructor(
             initialScreenState: UiState<ProductsListingUiModel> = UiState.Result(
                 ProductsListingUiModel()
             )
-        ): CartViewModel
+        ): ProductsListingViewModel
     }
 
     override fun reduce(

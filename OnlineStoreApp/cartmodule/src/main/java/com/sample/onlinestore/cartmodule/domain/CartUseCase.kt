@@ -13,7 +13,7 @@ class CartUseCase @Inject constructor(
     }
 
     suspend fun getCartItems(onCompletion: (Boolean, DomainResponse<List<CartItem>>) -> Unit) {
-        cartRepository.getCartItems { isSuccess, cartItems ->
+        cartRepository.getCartListingItems { isSuccess, cartItems ->
             if (isSuccess) {
                 val cartItemsList = cartItems.map { cartItem ->
                     CartItem(

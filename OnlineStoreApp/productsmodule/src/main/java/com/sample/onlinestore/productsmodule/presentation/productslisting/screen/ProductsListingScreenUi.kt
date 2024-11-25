@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,8 +56,8 @@ import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.R
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
-import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingAction
-import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingUiModel
+import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
+import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
 
 private const val ProductListingItemWidthPercentage = 0.40f
 private const val ProductListingItemAspectRatio = 1.3f

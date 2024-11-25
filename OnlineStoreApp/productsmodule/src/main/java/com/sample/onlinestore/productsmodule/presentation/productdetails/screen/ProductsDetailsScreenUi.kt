@@ -229,5 +229,4 @@ fun CartButton(
     ) {
         onAction(ProductDetailsAction.OnClickAddToCart)
     }
-
 }

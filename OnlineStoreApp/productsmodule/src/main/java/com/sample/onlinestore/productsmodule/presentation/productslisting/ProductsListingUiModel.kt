@@ -1,7 +1,5 @@
 package com.sample.onlinestore.productsmodule.presentation.productslisting
 
-import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingAction
-import com.sample.onlinestore.cartmodule.presentation.cart.ProductsListingEvent
 import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.Action
 import com.sample.onlinestore.commonmodule.foundation.base.Event

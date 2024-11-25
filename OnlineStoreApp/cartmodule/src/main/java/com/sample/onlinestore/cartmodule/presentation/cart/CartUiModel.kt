@@ -12,12 +12,12 @@ data class CartUiModel(
 sealed class CartAction : Action {
     data class OnClickProduct(val productId: String) : CartAction()
     data object OnClickBackNavigation : CartAction()
-    data class OnClickCartImage(val productId: String) : CartAction()
     data class RemoveItemFromCart(val productId: String) : CartAction()
     data object RefreshData : CartAction()
 }
 
 sealed class CartEvent : Event {
     data class LoadProductDetailScreen(val productId: String) : CartEvent()
+    data object BackToPreviousScreen : CartEvent()
     data class ShowMessage(val message: Message) : CartEvent()
 }
