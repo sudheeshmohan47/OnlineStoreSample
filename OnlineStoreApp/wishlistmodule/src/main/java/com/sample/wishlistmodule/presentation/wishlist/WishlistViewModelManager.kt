@@ -11,12 +11,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel manager for handling product listing, wishlist actions, and UI state updates.
- * Manages fetching products, adding/removing from wishlist, and error handling.
+ * ViewModelManager for managing the wishlist.
+ * It interacts with the domain layer (WishlistUseCase)
+ * to perform these actions and updates the UI state accordingly.
  *
- * @param wishlistUseCase The use case for fetching product data and interacting with the wishlist.
+ * @param wishlistUseCase The use case for managing wishlist-related actions.
  * @param viewModelScope The CoroutineScope for launching background tasks.
- * @param sendState A function to update the UI state with [UiState] containing [ProductsListingUiModel].
+ * @param sendState A lambda function to update the UI state.
+ * @param sendEvent A lambda function to send UI events.
  */
 class WishlistViewModelManager(
     private val wishlistUseCase: WishlistUseCase,
@@ -24,10 +26,12 @@ class WishlistViewModelManager(
     private val sendState: (UiState<WishlistUiModel>) -> Unit,
     private val sendEvent: (WishlistEvent) -> Unit
 ) {
+
     /**
-     * Fetches the product data and updates the UI state.
+     * Fetches the wishlist data from the use case and updates the UI state with the fetched data.
+     * The current state is preserved while loading data.
      *
-     * @param currentState The current state of the UI to be updated.
+     * @param currentState The current UI state to preserve during the loading process.
      */
     fun fetchWishlistData(currentState: UiState<WishlistUiModel>) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -52,6 +56,12 @@ class WishlistViewModelManager(
         }
     }
 
+    /**
+     * Removes an item from the wishlist and updates the UI by filtering out the removed item.
+     *
+     * @param currentState The current UI state to reflect the changes.
+     * @param productId The product ID of the item to be removed from the wishlist.
+     */
     private fun handleWishlistItemFromUi(
         currentState: UiState<WishlistUiModel>,
         productId: String
@@ -68,6 +78,13 @@ class WishlistViewModelManager(
         )
     }
 
+    /**
+     * Removes an item from the wishlist by calling the removeFromWishlist use case function.
+     * If successful, the UI is updated by removing the item.
+     *
+     * @param currentState The current UI state to reflect the changes.
+     * @param productId The product ID of the item to be removed from the wishlist.
+     */
     fun removeFromWishlist(
         currentState: UiState<WishlistUiModel>,
         productId: String
@@ -81,6 +98,12 @@ class WishlistViewModelManager(
         }
     }
 
+    /**
+     * Moves an item from the wishlist to the cart and updates the UI state accordingly.
+     *
+     * @param currentState The current UI state to reflect the changes.
+     * @param productId The product ID of the item to be moved to the cart.
+     */
     fun moveToCart(
         currentState: UiState<WishlistUiModel>,
         productId: String
@@ -95,11 +118,11 @@ class WishlistViewModelManager(
     }
 
     /**
-     * Handles exceptions thrown during the product fetching or wishlist operations.
-     * Displays an appropriate error message based on the exception type.
+     * Handles exceptions that occur during wishlist operations. Based on the type of exception,
+     * appropriate actions are taken (e.g., logging the error or ending the user session).
      *
-     * @param exception The caught exception to be handled.
-     * @param currentState The current state of the UI.
+     * @param exception The exception that occurred during the wishlist operation.
+     * @param currentState The current UI state to reflect the changes based on the exception.
      */
     private fun handleException(
         exception: DomainException,
