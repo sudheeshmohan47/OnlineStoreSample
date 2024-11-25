@@ -13,6 +13,7 @@ import com.sample.wishlistmodule.data.model.WishListResponse
 import com.sample.wishlistmodule.domain.WishlistRepository
 import javax.inject.Inject
 
+@SuppressWarnings("TooGenericExceptionCaught")
 class WishlistService @Inject constructor(
     private val wishlistDao: WishlistDao,
     private val cartRepository: CartRepository,
