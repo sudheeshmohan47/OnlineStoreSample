@@ -33,7 +33,7 @@ class CartViewModel @AssistedInject constructor(
     @AssistedFactory
     interface CartViewModelFactory {
         fun create(
-            initialScreenState: UiState<CartUiModel> = UiState.Result(
+            initialScreenState: UiState<CartUiModel> = UiState.Loading(
                 CartUiModel()
             )
         ): CartViewModel

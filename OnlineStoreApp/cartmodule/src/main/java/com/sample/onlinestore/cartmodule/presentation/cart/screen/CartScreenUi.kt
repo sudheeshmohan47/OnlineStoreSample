@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sample.designsystem.components.EmptyTextPlaceHolder
 import com.sample.designsystem.components.OnlineStoreButton
 import com.sample.designsystem.components.OnlineStoreButtonVariant
 import com.sample.designsystem.components.OnlineStoreRoundedEdgedCard
@@ -78,19 +79,23 @@ fun CartScreenContent(
 ) {
     cartUiState.data?.let { cartUiModel ->
         val cartItems = cartUiModel.cartItems
-        LazyColumn(
-            state = cartListState,
-            modifier = modifier,
-            contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
-            verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-        ) {
-            items(cartItems) { productItem ->
-                CartItem(
-                    cartItem = productItem,
-                    screenWidth = screenWidth,
-                    onAction = onAction
-                )
+        if (cartItems.isNotEmpty()) {
+            LazyColumn(
+                state = cartListState,
+                modifier = modifier,
+                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
+                verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
+            ) {
+                items(cartItems) { productItem ->
+                    CartItem(
+                        cartItem = productItem,
+                        screenWidth = screenWidth,
+                        onAction = onAction
+                    )
+                }
             }
+        } else if (cartUiState is UiState.Result) {
+            EmptyTextPlaceHolder(stringResource(R.string.label_your_cart_is_empty))
         }
     }
 }

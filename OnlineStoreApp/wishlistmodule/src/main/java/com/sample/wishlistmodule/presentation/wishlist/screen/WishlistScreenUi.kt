@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
+import com.sample.designsystem.components.EmptyTextPlaceHolder
 import com.sample.designsystem.components.OnlineStoreButton
 import com.sample.designsystem.components.OnlineStoreButtonVariant
 import com.sample.designsystem.components.OnlineStoreRoundedEdgedCard
@@ -49,6 +50,7 @@ import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.wishlistmodule.R
 import com.sample.wishlistmodule.domain.model.WishlistItem
 import com.sample.wishlistmodule.presentation.wishlist.WishlistAction
 import com.sample.wishlistmodule.presentation.wishlist.WishlistUiModel
@@ -95,23 +97,29 @@ fun WishlistScreenContent(
     wishlistUiState: UiState<WishlistUiModel>,
     onAction: (WishlistAction) -> Unit,
     modifier: Modifier = Modifier,
-    wishlistGridState: LazyGridState = rememberLazyGridState(),
+    wishlistGridState: LazyGridState = rememberLazyGridState()
 ) {
     wishlistUiState.data?.let { wishlistUiModel ->
         val wishlistItems = wishlistUiModel.wishListedProducts
-        LazyVerticalGrid(
-            state = wishlistGridState,
-            modifier = modifier,
-            columns = GridCells.Fixed(ProductListingGridColumnCount),
-            contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp())
-        ) {
-            items(wishlistItems) { wishlistItem ->
-                WishlistItemCard(
-                    wishlistItem = wishlistItem,
-                    onAction = onAction,
-                    modifier = Modifier.animateItem().padding(OnlineStoreSpacing.SMALL.dp())
-                )
+        if (wishlistItems.isNotEmpty()) {
+            LazyVerticalGrid(
+                state = wishlistGridState,
+                modifier = modifier,
+                columns = GridCells.Fixed(ProductListingGridColumnCount),
+                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp())
+            ) {
+                items(wishlistItems) { wishlistItem ->
+                    WishlistItemCard(
+                        wishlistItem = wishlistItem,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .animateItem()
+                            .padding(OnlineStoreSpacing.SMALL.dp())
+                    )
+                }
             }
+        } else if (wishlistUiState is UiState.Result) {
+            EmptyTextPlaceHolder(stringResource(R.string.label_no_items_are_added_to_wishlist))
         }
     }
 }

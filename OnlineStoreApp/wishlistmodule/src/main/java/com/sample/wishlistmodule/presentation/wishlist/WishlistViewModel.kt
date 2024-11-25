@@ -34,7 +34,7 @@ class WishlistViewModel @AssistedInject constructor(
     @AssistedFactory
     interface WishlistViewModelFactory {
         fun create(
-            initialScreenState: UiState<WishlistUiModel> = UiState.Result(
+            initialScreenState: UiState<WishlistUiModel> = UiState.Loading(
                 WishlistUiModel()
             )
         ): WishlistViewModel
