@@ -119,7 +119,7 @@ class WishlistViewModelManager(
 
     /**
      * Handles exceptions that occur during wishlist operations. Based on the type of exception,
-     * appropriate actions are taken (e.g., logging the error or ending the user session).
+     * appropriate actions are taken (e.g., Showing error message or ending the user session).
      *
      * @param exception The exception that occurred during the wishlist operation.
      * @param currentState The current UI state to reflect the changes based on the exception.
