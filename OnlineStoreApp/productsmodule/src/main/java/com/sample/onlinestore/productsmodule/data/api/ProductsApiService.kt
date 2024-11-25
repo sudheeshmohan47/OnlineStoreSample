@@ -1,6 +1,6 @@
 package com.sample.onlinestore.productsmodule.data.api
 
-import com.sample.onlinestore.productsmodule.data.model.ProductResponse
+import com.sample.onlinestore.commonmodule.data.model.product.ProductResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

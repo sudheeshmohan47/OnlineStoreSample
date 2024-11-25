@@ -5,12 +5,12 @@ import com.sample.onlinestore.cartmodule.data.model.CartRequest
 import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody
+import com.sample.onlinestore.commonmodule.data.model.product.ProductResponse
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrors
 import com.sample.onlinestore.commonmodule.domain.exception.mapException
 import com.sample.onlinestore.commonmodule.domain.model.DomainResponse
 import com.sample.onlinestore.commonmodule.utils.parseErrorBody
 import com.sample.onlinestore.productsmodule.data.api.ProductsApiService
-import com.sample.onlinestore.productsmodule.data.model.ProductResponse
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 import com.sample.wishlistmodule.domain.WishlistRepository
 import javax.inject.Inject
@@ -50,7 +50,7 @@ class ProductsService @Inject constructor(
             val response = productsApiService.getProducts()
             if (response.isSuccessful) {
                 response.body()?.let { products ->
-                    val wishListItems = wishlistRepository.getWishlistItems()
+                    val wishListItems = wishlistRepository.getWishlistItemsLocal()
                     val selectedCategories = categoriesRepository.getSelectedCategories()
 
                     // Call to update products based on wishList and selectedCategories
@@ -84,7 +84,7 @@ class ProductsService @Inject constructor(
             val response = productsApiService.getProductDetail(productId)
             if (response.isSuccessful) {
                 response.body()?.let { product ->
-                    val wishListItems = wishlistRepository.getWishlistItems()
+                    val wishListItems = wishlistRepository.getWishlistItemsLocal()
                     val cartItems = cartRepository.getCartItemsLocal()
 
                     val isWishListed = wishListItems.any { it.productId == product.id }

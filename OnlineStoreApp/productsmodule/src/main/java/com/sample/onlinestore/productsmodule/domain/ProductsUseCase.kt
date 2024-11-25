@@ -54,7 +54,7 @@ class ProductsUseCase @Inject constructor(
                         ProductItem(
                             name = it.title,
                             price = it.price,
-                            productId = it.id,
+                            productId = it.id!!, // We are sure id is not null here
                             category = it.category,
                             description = it.description,
                             image = it.image,

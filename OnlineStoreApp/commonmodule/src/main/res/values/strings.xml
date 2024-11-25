@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">commonmodule</string>
 
+    // Bottom nav labels
+    <string name="label_bottom_nav_home">Home</string>
+    <string name="label_bottom_nav_categories">Categories</string>
+    <string name="label_bottom_nav_wishlist">Wishlist</string>
+
     // Error
     <string name="error_server_not_available">Server Not Available, Please try after sometime.</string>
     <string name="error_input_field_values">Please check the input field values.</string>

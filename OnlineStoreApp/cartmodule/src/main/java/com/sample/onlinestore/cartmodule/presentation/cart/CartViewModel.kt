@@ -51,7 +51,6 @@ class CartViewModel @AssistedInject constructor(
         action: CartAction,
         currentState: UiState<CartUiModel>
     ): UiState<CartUiModel> {
-
         var returnState = currentState
 
         return returnState

@@ -2,5 +2,6 @@
     <string name="app_name">wishlistmodule</string>
     <string name="error_failed_to_add_wishlist">"Failed to add to wishlist."</string>
     <string name="error_failed_to_remove_from_wishlist">"Failed to remove from wishlist."</string>
+    <string name="label_move_to_cart">Move to cart</string>
 
 </resources>

@@ -13,6 +13,7 @@ import com.sample.onlinestore.presentation.dashboard.BottomNavItem
 import com.sample.onlinestore.productsmodule.foundation.navigation.ProductScreens
 import com.sample.onlinestore.productsmodule.presentation.productdetails.screen.ProductDetailsScreen
 import com.sample.onlinestore.productsmodule.presentation.productslisting.screen.ProductsListingScreen
+import com.sample.wishlistmodule.presentation.wishlist.screen.WishlistScreen
 
 fun NavGraphBuilder.homeNavGraph(
     appState: OnlineStoreAppState
@@ -26,6 +27,8 @@ fun NavGraphBuilder.homeNavGraph(
     categoriesScreenComposable()
     // Cart Screen
     cartScreenComposable(homeNavigationManager)
+    // Wishlist Screen
+    wishlistScreenComposable(homeNavigationManager)
 }
 
 private fun NavGraphBuilder.homeScreenComposable(
@@ -62,6 +65,15 @@ private fun NavGraphBuilder.cartScreenComposable(homeNavigationManager: HomeNavi
         CartScreen(
             loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen,
             backToPreviousScreen = homeNavigationManager.backToPreviousScreen
+        )
+    }
+}
+
+private fun NavGraphBuilder.wishlistScreenComposable(homeNavigationManager: HomeNavigationManager) {
+    composable<BottomNavItem.Wishlist> {
+        WishlistScreen(
+            loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen,
+            gotoCartScreen = homeNavigationManager.gotoCartScreen
         )
     }
 }

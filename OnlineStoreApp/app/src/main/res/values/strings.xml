@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">OnlineStore App</string>
-    <string name="label_bottom_nav_home">Home</string>
-    <string name="label_bottom_nav_categories">Categories</string>
-    <string name="label_bottom_nav_wishlist">Wishlist</string>
 
     // Exit confirmation Dialog
     <string name="exit_confirmation_title">Confirm Exit</string>

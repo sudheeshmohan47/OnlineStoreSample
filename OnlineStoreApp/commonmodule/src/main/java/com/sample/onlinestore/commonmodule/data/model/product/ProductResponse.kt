@@ -1,4 +1,4 @@
-package com.sample.onlinestore.productsmodule.data.model
+package com.sample.onlinestore.commonmodule.data.model.product
 
 data class ProductResponse(
     val id: String? = null,

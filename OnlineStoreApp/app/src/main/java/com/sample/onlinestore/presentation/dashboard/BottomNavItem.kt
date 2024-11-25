@@ -12,25 +12,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 open class BottomNavItem(
     @DrawableRes val image: Int = R.drawable.ic_bottom_nav_home,
-    @StringRes val labelResource: Int = R.string.label_bottom_nav_home
+    @StringRes val labelResource: Int = com.sample.onlinestore.commonmodule.R.string.label_bottom_nav_home
 ) :
     BaseScreen() {
     @Serializable
     object Home : BottomNavItem(
         R.drawable.ic_bottom_nav_home,
-        R.string.label_bottom_nav_home
+        com.sample.onlinestore.commonmodule.R.string.label_bottom_nav_home
     )
 
     @Serializable
     object Categories : BottomNavItem(
         R.drawable.ic_bottom_nav_categories,
-        R.string.label_bottom_nav_categories
+        com.sample.onlinestore.commonmodule.R.string.label_bottom_nav_categories
     )
 
     @Serializable
     object Wishlist : BottomNavItem(
         R.drawable.ic_bottom_nav_favourite,
-        R.string.label_bottom_nav_wishlist
+        com.sample.onlinestore.commonmodule.R.string.label_bottom_nav_wishlist
     )
 
     fun dashBoardScreens(): List<BottomNavItem> {
