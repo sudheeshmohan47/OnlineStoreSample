@@ -12,6 +12,16 @@ import com.sample.onlinestore.commonmodule.domain.exception.mapException
 import com.sample.onlinestore.commonmodule.utils.parseErrorBody
 import javax.inject.Inject
 
+/**
+ * Service class for managing cart operations in the online store module.
+ *
+ * This class integrates with the local database (`CartDao`) and remote API (`CartApiService`)
+ * to handle adding, fetching, and removing items in the cart. It ensures error handling
+ * and synchronization between local and remote data sources.
+ *
+ * @param cartDao DAO interface for performing local cart-related database operations.
+ * @param cartApiService API service for fetching product data from the remote server.
+ */
 @SuppressWarnings("TooGenericExceptionCaught")
 class CartService @Inject constructor(
     private val cartDao: CartDao,
@@ -19,6 +29,13 @@ class CartService @Inject constructor(
 ) :
     CartRepository {
 
+    /**
+     * Adds an item to the cart.
+     *
+     * Converts a `CartRequest` to a `Cart` entity and stores it in the local database.
+     *
+     * @param item The item to be added to the cart.
+     */
     override suspend fun addToCart(item: CartRequest) {
         val cart = Cart(
             productId = item.productId,
@@ -27,6 +44,15 @@ class CartService @Inject constructor(
         cartDao.addToCart(item = cart)
     }
 
+    /**
+     * Fetches cart listing items from the database and supplements them with remote API product details.
+     *
+     * Combines locally stored cart items with remote product details to build a comprehensive cart list.
+     *
+     * @param onCompletion Callback to return the success status and the list of `CartResponse` items.
+     *                     If successful, returns `true` and the list of cart items.
+     *                     On failure, throws an exception.
+     */
     override suspend fun getCartListingItems(onCompletion: (Boolean, List<CartResponse>) -> Unit) {
         try {
             val response = cartApiService.getProducts()
@@ -59,6 +85,13 @@ class CartService @Inject constructor(
         }
     }
 
+    /**
+     * Retrieves locally stored cart items.
+     *
+     * Maps database `Cart` entities to `CartResponse` objects.
+     *
+     * @return A list of `CartResponse` objects representing cart items.
+     */
     override suspend fun getCartItemsLocal(): List<CartResponse> = cartDao.getCartItems().map {
         CartResponse(
             productId = it.productId,
@@ -66,6 +99,14 @@ class CartService @Inject constructor(
         )
     }
 
+    /**
+     * Removes an item from the cart by its product ID.
+     *
+     * Invokes a callback with the success status.
+     *
+     * @param productId The ID of the product to be removed.
+     * @param onCompletion Callback to indicate whether the item was successfully removed.
+     */
     override suspend fun removeFromCart(
         productId: String,
         onCompletion: (Boolean) -> Unit

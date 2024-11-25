@@ -1,17 +1,26 @@
 package com.sample.onlinestore.cartmodule.domain
 
-import com.sample.onlinestore.cartmodule.data.model.CartRequest
 import com.sample.onlinestore.cartmodule.domain.model.CartItem
 import com.sample.onlinestore.commonmodule.domain.model.DomainResponse
 import javax.inject.Inject
 
+/**
+ * Use case for managing cart operations.
+ *
+ * Provides methods to fetch and manipulate cart items, acting as an intermediary
+ * between the UI layer and the repository.
+ *
+ * @param cartRepository Repository for performing cart-related operations.
+ */
 class CartUseCase @Inject constructor(
     private val cartRepository: CartRepository
 ) {
-    suspend fun addToWishlist(item: CartItem) {
-        cartRepository.addToCart(CartRequest(productId = item.productId, quantity = item.quantity))
-    }
 
+    /**
+     * Fetches cart items and provides them as domain response.
+     *
+     * @param onCompletion Callback with success status and the list of cart items.
+     */
     suspend fun getCartItems(onCompletion: (Boolean, DomainResponse<List<CartItem>>) -> Unit) {
         cartRepository.getCartListingItems { isSuccess, cartItems ->
             if (isSuccess) {
@@ -31,6 +40,12 @@ class CartUseCase @Inject constructor(
         }
     }
 
+    /**
+     * Removes an item from the cart by its product ID.
+     *
+     * @param productId The ID of the product to remove.
+     * @param onCompletion Callback with success status.
+     */
     suspend fun removeFromCart(productId: String, onCompletion: (Boolean) -> Unit) {
         cartRepository.removeFromCart(productId, onCompletion)
     }

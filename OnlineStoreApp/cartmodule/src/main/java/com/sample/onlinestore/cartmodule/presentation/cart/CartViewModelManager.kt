@@ -11,12 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel manager for handling product listing, wishlist actions, and UI state updates.
- * Manages fetching products, adding/removing from wishlist, and error handling.
+ * Handles cart operations and facilitates UI communication.
  *
- * @param productsUseCase The use case for fetching product data and interacting with the wishlist.
- * @param viewModelScope The CoroutineScope for launching background tasks.
- * @param sendState A function to update the UI state with [UiState] containing [ProductsListingUiModel].
+ * This class connects the domain layer (`CartUseCase`) with the UI, managing tasks like
+ * fetching cart items, removing items, updating UI state, and handling errors gracefully.
+ *
+ * @param cartUseCase Handles cart data and operations at the domain layer.
+ * @param viewModelScope Coroutine scope tied to the ViewModel lifecycle.
+ * @param sendState Updates the UI state with new data or loading/error states.
+ * @param sendEvent Dispatches events for user notifications or actions.
  */
 class CartViewModelManager(
     private val cartUseCase: CartUseCase,
@@ -25,9 +28,9 @@ class CartViewModelManager(
     private val sendEvent: (CartEvent) -> Unit
 ) {
     /**
-     * Fetches the product data and updates the UI state.
+     * Fetches cart data and updates the UI state.
      *
-     * @param currentState The current state of the UI to be updated.
+     * @param currentState Current state of the UI.
      */
     fun fetchCartData(currentState: UiState<CartUiModel>) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -52,6 +55,12 @@ class CartViewModelManager(
         }
     }
 
+    /**
+     * Removes an item from the cart and updates the state.
+     *
+     * @param currentState Current state of the UI.
+     * @param productId ID of the product to remove.
+     */
     fun removeItemFromCart(
         currentState: UiState<CartUiModel>,
         productId: String
@@ -67,11 +76,10 @@ class CartViewModelManager(
     }
 
     /**
-     * Handles exceptions thrown during the product fetching or wishlist operations.
-     * Displays an appropriate error message based on the exception type.
+     * Handles errors during cart operations.
      *
-     * @param exception The caught exception to be handled.
-     * @param currentState The current state of the UI.
+     * @param exception The exception to handle.
+     * @param currentState Current UI state.
      */
     private fun handleException(
         exception: DomainException,
