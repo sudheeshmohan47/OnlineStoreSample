@@ -10,14 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarState
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -105,11 +102,12 @@ fun CartMainContent(
     cartUiState: UiState<CartUiModel>,
     screenWidth: Dp,
     onAction: (CartAction) -> Unit,
+    modifier: Modifier = Modifier,
     topAppBarState: TopAppBarState = rememberTopAppBarState(),
     cartItemsState: LazyListState = rememberLazyListState(),
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         CartTopAppBarSection(
@@ -156,6 +154,7 @@ private fun HandleUIStateChanges(
                 is CartEvent.LoadProductDetailScreen -> {
                     loadDetailScreenState(event.productId)
                 }
+
                 is CartEvent.ShowMessage -> {
                     handleErrorMessage(
                         context = context,
@@ -180,16 +179,18 @@ private fun HandleUIStateChanges(
 private fun CartScreenUIPreview() {
     CartMainContent(
         cartUiState = UiState.Result(
-            CartUiModel(cartItems = listOf(
-                com.sample.onlinestore.cartmodule.domain.model.CartItem(
-                productId = "1",
-                name = "Product 1",
-                image = "",
-                quantity = 1,
-                price = 22.0,
-                description = "",
-                category = "electronics"
-            ))
+            CartUiModel(
+                cartItems = listOf(
+                    com.sample.onlinestore.cartmodule.domain.model.CartItem(
+                        productId = "1",
+                        name = "Product 1",
+                        image = "",
+                        quantity = 1,
+                        price = 22.0,
+                        description = "",
+                        category = "electronics"
+                    )
+                )
             )
         ),
         screenWidth = 300.dp,

@@ -32,7 +32,6 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.designsystem.components.ShowDashedProgressIndicator
 import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
-import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
@@ -42,18 +41,17 @@ import com.sample.onlinestore.productsmodule.presentation.productdetails.Product
 import com.sample.onlinestore.productsmodule.presentation.productdetails.ProductDetailsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailsScreen(
     backToPreviousScreen: () -> Unit,
     gotoCartScreen: () -> Unit,
-    modifier: Modifier = Modifier,
     productId: String,
+    modifier: Modifier = Modifier,
     productDetailsViewModel: ProductDetailsViewModel =
         hiltViewModel<ProductDetailsViewModel,
-                ProductDetailsViewModel.ProductDetailsViewModelFactory> { factory ->
+            ProductDetailsViewModel.ProductDetailsViewModelFactory> { factory ->
             factory.create(productId = productId)
         }
 ) {
@@ -138,7 +136,7 @@ private fun HandleUIStateChanges(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     productDetailsViewModel: ProductDetailsViewModel =
         hiltViewModel<ProductDetailsViewModel,
-                ProductDetailsViewModel.ProductDetailsViewModelFactory> { factory ->
+            ProductDetailsViewModel.ProductDetailsViewModelFactory> { factory ->
             factory.create(productId = productId)
         }
 ) {

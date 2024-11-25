@@ -8,6 +8,7 @@ interface CartRepository {
     suspend fun getCartListingItems(onCompletion: (Boolean, List<CartResponse>) -> Unit)
     suspend fun getCartItemsLocal(): List<CartResponse>
     suspend fun removeFromCart(
-        productId: String, onCompletion: (Boolean) -> Unit
+        productId: String,
+        onCompletion: (Boolean) -> Unit
     )
 }

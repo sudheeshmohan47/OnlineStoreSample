@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalView
 
+private const val KeyboardDefaultHeightPercentage = 0.15
 /**
  * A Composable function that observes the visibility state of the keyboard.
  * It uses `OnGlobalLayoutListener` to detect when the keyboard is shown or hidden,
@@ -26,7 +27,7 @@ fun keyboardVisibility(): State<Boolean> {
             view.getWindowVisibleDisplayFrame(rect)
             val screenHeight = view.rootView.height
             val keypadHeight = screenHeight - rect.bottom
-            keyboardVisibilityState.value = keypadHeight > screenHeight * 0.15
+            keyboardVisibilityState.value = keypadHeight > screenHeight * KeyboardDefaultHeightPercentage
         }
         view.viewTreeObserver.addOnGlobalLayoutListener(onGlobalListener)
         onDispose {

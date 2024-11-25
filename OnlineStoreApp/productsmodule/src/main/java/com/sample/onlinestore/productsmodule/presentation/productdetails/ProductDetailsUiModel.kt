@@ -1,6 +1,5 @@
 package com.sample.onlinestore.productsmodule.presentation.productdetails
 
-import androidx.annotation.StringRes
 import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.Action
 import com.sample.onlinestore.commonmodule.foundation.base.Event

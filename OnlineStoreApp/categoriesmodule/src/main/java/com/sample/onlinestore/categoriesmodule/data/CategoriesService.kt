@@ -22,7 +22,7 @@ class CategoriesService @Inject constructor(
         try {
             categoryDao.clearSelectedCategories()
             categoryDao.insertSelectedCategories(categories = selectedCategories)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw mapException(e)
         }
     }

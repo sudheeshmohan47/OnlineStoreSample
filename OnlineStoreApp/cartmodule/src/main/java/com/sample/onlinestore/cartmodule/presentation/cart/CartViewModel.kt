@@ -46,17 +46,14 @@ class CartViewModel @AssistedInject constructor(
         return handleReducerAction(currentState = currentState, action = action)
     }
 
+    @SuppressWarnings("UnusedParameter")
     private fun handleReducerAction(
         action: CartAction,
         currentState: UiState<CartUiModel>
     ): UiState<CartUiModel> {
 
         var returnState = currentState
-        when (action) {
 
-
-            else -> Unit
-        }
         return returnState
     }
 

@@ -1,7 +1,6 @@
 package com.sample.onlinestore.productsmodule.presentation.productslisting
 
 import androidx.lifecycle.viewModelScope
-import com.sample.onlinestore.cartmodule.presentation.cart.CartViewModel
 import com.sample.onlinestore.commonmodule.foundation.base.BaseViewModel
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase

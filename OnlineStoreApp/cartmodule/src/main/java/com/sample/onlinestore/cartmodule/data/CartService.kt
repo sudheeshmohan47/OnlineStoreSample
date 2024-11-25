@@ -12,6 +12,7 @@ import com.sample.onlinestore.commonmodule.domain.exception.mapException
 import com.sample.onlinestore.commonmodule.utils.parseErrorBody
 import javax.inject.Inject
 
+@SuppressWarnings("TooGenericExceptionCaught")
 class CartService @Inject constructor(
     private val cartDao: CartDao,
     private val cartApiService: CartApiService

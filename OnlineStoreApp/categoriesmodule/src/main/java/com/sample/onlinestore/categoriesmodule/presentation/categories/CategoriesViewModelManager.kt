@@ -6,7 +6,6 @@ import com.sample.onlinestore.commonmodule.domain.exception.DomainException
 import com.sample.onlinestore.commonmodule.domain.exception.UnauthorizedException
 import com.sample.onlinestore.commonmodule.domain.exception.mapErrorMessage
 import com.sample.onlinestore.commonmodule.domain.model.Message
-import com.sample.onlinestore.commonmodule.foundation.base.Event
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -134,7 +133,12 @@ class CategoriesViewModelManager(
                     )
                 )
                 sendEvent(
-                    CategoriesEvent.ShowMessage(Message(errorMessage.messageResId, errorMessage.message))
+                    CategoriesEvent.ShowMessage(
+                        Message(
+                            errorMessage.messageResId,
+                            errorMessage.message
+                        )
+                    )
                 )
             }
         }

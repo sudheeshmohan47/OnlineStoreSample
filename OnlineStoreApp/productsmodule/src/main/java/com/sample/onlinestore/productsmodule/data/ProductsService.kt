@@ -2,7 +2,6 @@ package com.sample.onlinestore.productsmodule.data
 
 import com.sample.datastoragemodule.data.database.model.Wishlist
 import com.sample.onlinestore.cartmodule.data.model.CartRequest
-import com.sample.onlinestore.cartmodule.data.model.CartResponse
 import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
 import com.sample.onlinestore.commonmodule.data.model.api.ErrorBody

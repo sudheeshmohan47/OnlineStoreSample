@@ -8,7 +8,7 @@ import com.sample.onlinestore.productsmodule.foundation.navigation.ProductScreen
 
 class HomeNavigationManager(private val appState: OnlineStoreAppState) {
     val gotoProductsDetailScreen: (String) -> Unit = { productId ->
-         appState.navigate(ProductScreens.ProductDetailScreen(productId))
+        appState.navigate(ProductScreens.ProductDetailScreen(productId))
     }
 
     val backToPreviousScreen: () -> Unit = {

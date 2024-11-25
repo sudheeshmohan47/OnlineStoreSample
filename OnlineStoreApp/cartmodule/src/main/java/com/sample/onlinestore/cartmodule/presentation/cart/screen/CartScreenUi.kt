@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Scale
 import com.sample.designsystem.components.OnlineStoreButton
 import com.sample.designsystem.components.OnlineStoreButtonVariant
 import com.sample.designsystem.components.OnlineStoreTopAppBar
@@ -45,6 +44,9 @@ import com.sample.onlinestore.cartmodule.domain.model.CartItem
 import com.sample.onlinestore.cartmodule.presentation.cart.CartAction
 import com.sample.onlinestore.cartmodule.presentation.cart.CartUiModel
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+
+private const val CartImageAspectRatio = 1.4f
+private const val CartImageWidthPercentage = 0.3f
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,7 +106,7 @@ fun CartItem(
     modifier: Modifier = Modifier
 ) {
     // Image size set to 20% of the screen width, making it square
-    val imageWidthSize = screenWidth * 0.3f
+    val imageWidthSize = screenWidth * CartImageWidthPercentage
     Card(
         modifier = modifier
             .padding(OnlineStoreSpacing.EXTRA_SMALL.dp()),
@@ -116,7 +118,7 @@ fun CartItem(
             .copy(containerColor = MaterialTheme.colorScheme.onTertiary)
     ) {
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(OnlineStoreSpacing.SMALL.dp())
         ) {
@@ -124,7 +126,7 @@ fun CartItem(
             AsyncImage(
                 modifier = Modifier
                     .width(imageWidthSize)
-                    .aspectRatio(1.4f)
+                    .aspectRatio(CartImageAspectRatio)
                     .clickable {
                         onAction(CartAction.OnClickProduct(cartItem.productId))
                     },
@@ -139,7 +141,7 @@ fun CartItem(
             )
             Spacer(modifier = Modifier.width(OnlineStoreSpacing.SMALL.dp()))
             // Details Section
-            Column(verticalArrangement = Arrangement.SpaceBetween){
+            Column(verticalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = cartItem.name,
                     style = MaterialTheme.typography.titleMedium,

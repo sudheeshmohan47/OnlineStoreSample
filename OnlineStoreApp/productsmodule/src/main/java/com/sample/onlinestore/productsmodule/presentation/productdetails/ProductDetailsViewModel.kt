@@ -3,7 +3,6 @@ package com.sample.onlinestore.productsmodule.presentation.productdetails
 import androidx.lifecycle.viewModelScope
 import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.BaseViewModel
-import com.sample.onlinestore.commonmodule.foundation.base.Event
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.R
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase

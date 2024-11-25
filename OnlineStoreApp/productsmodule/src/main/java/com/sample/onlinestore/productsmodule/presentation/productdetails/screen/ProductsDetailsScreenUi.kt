@@ -96,8 +96,8 @@ fun ProductsDetailsScreenContent(
 @Composable
 fun ProductDetails(
     productDetailsUiState: UiState<ProductDetailsUiModel>,
-    modifier: Modifier = Modifier,
     onAction: (ProductDetailsAction) -> Unit,
+    modifier: Modifier = Modifier,
     productDetailsListState: LazyListState = rememberLazyListState()
 ) {
     val productItem = productDetailsUiState.data?.product ?: ProductItem()
@@ -126,7 +126,8 @@ fun ProductDetails(
 @Composable
 private fun ProductDetailUIContent(
     productItem: ProductItem,
-    modifier: Modifier = Modifier, onAction: (ProductDetailsAction) -> Unit
+    modifier: Modifier = Modifier,
+    onAction: (ProductDetailsAction) -> Unit
 ) {
     val price = productItem.price?.let {
         "Rs. $it"
