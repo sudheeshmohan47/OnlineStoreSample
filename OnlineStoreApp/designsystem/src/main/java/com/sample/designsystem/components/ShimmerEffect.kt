@@ -94,7 +94,7 @@ fun LazyGridWithShimmerEffect(
         state = lazyGridState,
         columns = GridCells.Fixed(gridColumns),
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(OnlineStoreSpacing.MEDIUM.dp())
+        contentPadding = PaddingValues(OnlineStoreSpacing.SMALL.dp())
     ) {
         items(itemCount) {
             Card(

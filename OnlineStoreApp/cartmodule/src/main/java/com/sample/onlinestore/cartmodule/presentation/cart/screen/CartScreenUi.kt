@@ -14,9 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,11 +28,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.sample.designsystem.components.OnlineStoreButton
 import com.sample.designsystem.components.OnlineStoreButtonVariant
+import com.sample.designsystem.components.OnlineStoreRoundedEdgedCard
 import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
@@ -107,16 +104,7 @@ fun CartItem(
 ) {
     // Image size set to 20% of the screen width, making it square
     val imageWidthSize = screenWidth * CartImageWidthPercentage
-    Card(
-        modifier = modifier
-            .padding(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        ),
-        shape = RoundedCornerShape(OnlineStoreSpacing.SMALL.dp()),
-        colors = CardDefaults.cardColors()
-            .copy(containerColor = MaterialTheme.colorScheme.onTertiary)
-    ) {
+    OnlineStoreRoundedEdgedCard(modifier = modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

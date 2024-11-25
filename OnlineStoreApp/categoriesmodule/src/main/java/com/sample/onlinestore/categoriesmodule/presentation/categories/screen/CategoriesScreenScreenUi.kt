@@ -1,7 +1,6 @@
 package com.sample.onlinestore.categoriesmodule.presentation.categories.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -79,18 +78,21 @@ fun CategoriesScreenListingContent(
 
         Box(modifier) {
             if (!isInitialLoadingCompleted && categoriesUiState is UiState.Loading) {
-                LazyGridWithShimmerEffect(itemShape = CircleShape, lazyGridState = shimmerEffectGridState)
+                LazyGridWithShimmerEffect(
+                    itemShape = CircleShape,
+                    lazyGridState = shimmerEffectGridState
+                )
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(CategoriesListingGridColumnCount),
                     contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
-                    verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.SMALL.dp()),
-                    horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.MEDIUM.dp()),
                     state = categoriesListState
                 ) {
                     items(categories) { categoryItem ->
                         CategoriesListingItem(
-                            modifier = Modifier.animateItem(),
+                            modifier = Modifier
+                                .animateItem()
+                                .padding(OnlineStoreSpacing.EXTRA_SMALL.dp()),
                             categoryItem = categoryItem,
                             onAction = onAction
                         )

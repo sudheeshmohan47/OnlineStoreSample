@@ -1,7 +1,6 @@
 package com.sample.onlinestore.productsmodule.presentation.productslisting.screen
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,8 +23,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,12 +41,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.sample.designsystem.components.LazyGridWithShimmerEffect
+import com.sample.designsystem.components.OnlineStoreRoundedEdgedCard
 import com.sample.designsystem.components.OnlineStoreTopAppBar
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
@@ -59,7 +55,6 @@ import com.sample.onlinestore.productsmodule.domain.model.ProductItem
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
 
-private const val ProductListingItemWidthPercentage = 0.40f
 private const val ProductListingItemAspectRatio = 1.3f
 private const val ProductListingGridColumnCount = 2
 
@@ -100,7 +95,6 @@ fun ProductsListingTopAppBarSection(
 @Composable
 fun ProductsListingScreenContent(
     productsListingUiState: UiState<ProductsListingUiModel>,
-    screenWidth: Dp,
     onAction: (ProductsListingAction) -> Unit,
     modifier: Modifier = Modifier,
     productListState: LazyGridState = rememberLazyGridState(),
@@ -117,16 +111,15 @@ fun ProductsListingScreenContent(
                 state = productListState,
                 modifier = modifier,
                 columns = GridCells.Fixed(ProductListingGridColumnCount),
-                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp()),
-                verticalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp()),
-                horizontalArrangement = Arrangement.spacedBy(OnlineStoreSpacing.EXTRA_SMALL.dp())
+                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp())
             ) {
                 items(products) { productItem ->
                     ProductsListingItem(
                         productItem = productItem,
                         onAction = onAction,
-                        screenWidth = screenWidth,
-                        modifier = Modifier.animateItem()
+                        modifier = Modifier
+                            .animateItem()
+                            .padding(OnlineStoreSpacing.SMALL.dp())
                     )
                 }
             }
@@ -137,23 +130,14 @@ fun ProductsListingScreenContent(
 @Composable
 fun ProductsListingItem(
     productItem: ProductItem,
-    screenWidth: Dp,
     modifier: Modifier = Modifier,
     onAction: (ProductsListingAction) -> Unit
 ) {
-    Card(
+    OnlineStoreRoundedEdgedCard(
         modifier = modifier
-            .width(screenWidth * ProductListingItemWidthPercentage)
-            .padding(OnlineStoreSpacing.EXTRA_SMALL.dp())
             .clickable {
                 onAction(ProductsListingAction.OnClickProduct(productItem))
-            },
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        ),
-        shape = RoundedCornerShape(OnlineStoreSpacing.SMALL.dp()),
-        colors = CardDefaults.cardColors()
-            .copy(containerColor = MaterialTheme.colorScheme.onTertiary)
+            }
     ) {
         Box(
             modifier = Modifier
@@ -195,7 +179,7 @@ fun ProductsListingItem(
 
                         Text(
                             text = "Rs.${productItem.price}",
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1

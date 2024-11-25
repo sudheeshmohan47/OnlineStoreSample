@@ -26,11 +26,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -63,8 +61,6 @@ fun ProductsListingScreen(
     val productsListingUiState by productListingViewModel.uiState.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
     val topAppBarState = rememberTopAppBarState()
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
     val pullRefreshState = rememberPullToRefreshState()
     val productListState: LazyGridState = rememberLazyGridState()
     val shimmerEffectGridState: LazyGridState = rememberLazyGridState()
@@ -81,7 +77,6 @@ fun ProductsListingScreen(
     ) {
         ProductListingMainContent(
             productsListingUiState = productsListingUiState,
-            screenWidth = screenWidth,
             onAction = {
                 productListingViewModel.sendAction(it)
             },
@@ -107,7 +102,6 @@ fun ProductsListingScreen(
 @Composable
 fun ProductListingMainContent(
     productsListingUiState: UiState<ProductsListingUiModel>,
-    screenWidth: Dp,
     onAction: (ProductsListingAction) -> Unit,
     modifier: Modifier = Modifier,
     pullToRefreshState: PullToRefreshState = rememberPullToRefreshState(),
@@ -149,8 +143,7 @@ fun ProductListingMainContent(
                 productsListingUiState = productsListingUiState,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = OnlineStoreSpacing.MEDIUM.dp()),
-                screenWidth = screenWidth,
+                    .padding(horizontal = OnlineStoreSpacing.SMALL.dp()),
                 onAction = onAction,
                 productListState = productListState,
                 shimmerEffectGridState = shimmerEffectGridState
@@ -217,7 +210,6 @@ private fun ProductsListingScreenUIPreview() {
                 isSwipeRefreshing = false
             )
         ),
-        screenWidth = 300.dp,
         onAction = {}
     )
 }

@@ -2,13 +2,14 @@ package com.sample.datastoragemodule.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.sample.datastoragemodule.data.database.model.Cart
 
 @Dao
 interface CartDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addToCart(item: Cart)
 
     @Update

@@ -15,8 +15,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.TopAppBarState
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sample.designsystem.components.OnlineStorePullToRefreshBox
 import com.sample.designsystem.components.ShowDashedProgressIndicator
 import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
@@ -63,8 +60,6 @@ fun WishlistScreen(
     val wishlistUiState by wishlistViewModel.uiState.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
     val topAppBarState = rememberTopAppBarState()
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
     val wishlistGridState: LazyGridState = rememberLazyGridState()
 
     LifecycleResumeEffect(Unit) {
@@ -79,7 +74,6 @@ fun WishlistScreen(
     ) {
         WishlistMainContent(
             wishlistUiState = wishlistUiState,
-            screenWidth = screenWidth,
             onAction = {
                 wishlistViewModel.sendAction(it)
             },
@@ -103,37 +97,35 @@ fun WishlistScreen(
 @Composable
 fun WishlistMainContent(
     wishlistUiState: UiState<WishlistUiModel>,
-    screenWidth: Dp,
     onAction: (WishlistAction) -> Unit,
     modifier: Modifier = Modifier,
     topAppBarState: TopAppBarState = rememberTopAppBarState(),
     wishlistGridState: LazyGridState = rememberLazyGridState(),
 ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-        ) {
-            WishlistTopAppBarSection(
-                topAppBarState = topAppBarState,
-                onAction = onAction
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(1.dp)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
-            )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        WishlistTopAppBarSection(
+            topAppBarState = topAppBarState,
+            onAction = onAction
+        )
+        Spacer(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+        )
 
-            WishlistScreenContent(
-                wishlistUiState = wishlistUiState,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = OnlineStoreSpacing.MEDIUM.dp()),
-                screenWidth = screenWidth,
-                onAction = onAction,
-                wishlistGridState = wishlistGridState,
-            )
-        }
+        WishlistScreenContent(
+            wishlistUiState = wishlistUiState,
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = OnlineStoreSpacing.SMALL.dp()),
+            onAction = onAction,
+            wishlistGridState = wishlistGridState,
+        )
+    }
 }
 
 @Composable
@@ -186,7 +178,6 @@ private fun WishlistScreenUIPreview() {
         wishlistUiState = UiState.Result(
             WishlistUiModel()
         ),
-        screenWidth = 300.dp,
         onAction = {}
     )
 }

@@ -140,7 +140,7 @@ fun CategoriesMainContent(
                 categoriesUiState = categoriesUiState,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = OnlineStoreSpacing.MEDIUM.dp()),
+                    .padding(horizontal = OnlineStoreSpacing.SMALL.dp()),
                 onAction = onAction,
                 categoriesListState = categoriesListState,
                 shimmerEffectGridState = shimmerEffectGridState
