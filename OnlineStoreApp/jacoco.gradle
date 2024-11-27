@@ -1,0 +1,26 @@
+apply plugin: 'jacoco'
+
+// https://medium.com/@jerry.cho.dev/apply-jacoco-into-your-android-module-5419072b547
+// https://medium.com/@kurtlemond/migrating-jacoco-reports-gradle-tasks-to-kotlin-dsl-7b566d89ea92
+tasks.register('jacocoReport', JacocoReport) {
+    dependsOn 'testDebugUnitTest'
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        html.destination("${rootProject}/coverage-report")
+    }
+
+    // Setup the .class, source, and execution directories
+    final fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', 'android/**/*.*']
+
+    // Include this if you use Kotlin
+    final kotlinTree = fileTree(dir: "${rootDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
+    final javacTree = fileTree(dir: "${rootDir}/intermediates/javac/debug", excludes: fileFilter)
+    final mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom files([mainSrc])
+    classDirectories.setFrom files([kotlinTree, javacTree])
+    executionData.setFrom fileTree(dir: rootDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+    ])
+}

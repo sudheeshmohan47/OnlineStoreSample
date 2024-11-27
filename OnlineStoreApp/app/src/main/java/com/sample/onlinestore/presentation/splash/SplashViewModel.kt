@@ -29,7 +29,7 @@ class SplashViewModel @AssistedInject constructor(
         loadInitialData()
     }
 
-    private fun loadInitialData() {
+    fun loadInitialData() {
         viewModelScope.launch {
             val userStatus = splashUseCase.checkUserStatus()
             sendAction(SplashAction.UpdateUserDetails(userStatus))

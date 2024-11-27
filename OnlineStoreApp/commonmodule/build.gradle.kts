@@ -67,6 +67,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.compose.v270)
 
+    // coroutines
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlin.stdlib.v1924)
+
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -86,6 +90,11 @@ dependencies {
     detektPlugins(libs.detekt)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

@@ -18,6 +18,7 @@ buildscript {
 
     dependencies {
         classpath(libs.detekt.gradle.plugin)
+        classpath(libs.org.jacoco.core)
     }
 }
 

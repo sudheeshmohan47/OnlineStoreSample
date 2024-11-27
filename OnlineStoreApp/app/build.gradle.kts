@@ -1,3 +1,5 @@
+import java.util.Locale
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -7,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlincompose)
     alias(libs.plugins.detekt)
     alias(libs.plugins.roomPlugin)
+    jacoco
 }
 
 android {
@@ -104,12 +107,66 @@ dependencies {
 
     // Detekt compose rules
     detektPlugins(libs.detekt)
-
+    testImplementation (libs.mockk)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation (libs.mockk.android)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.androidx.core.testing)
+}
+
+val exclusions = listOf(
+    "**/R.class",
+    "**/R\$*.class",
+    "**/BuildConfig.*",
+    "**/Manifest*.*",
+    "**/*Test*.*"
+)
+
+tasks.withType(Test::class) {
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
+        excludes = listOf("jdk.internal.*")
+    }
+}
+
+afterEvaluate {
+    val androidExtension = extensions.getByName("android") as com.android.build.gradle.AppExtension
+    androidExtension.applicationVariants.all(closureOf<com.android.build.gradle.internal.api.BaseVariantImpl> {
+        val variant = this@closureOf.name.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        }
+
+        val unitTests = "test${variant}UnitTest"
+        val androidTests = "connected${variant}AndroidTest"
+
+        tasks.register<JacocoReport>("Jacoco${variant}CodeCoverage") {
+            dependsOn(listOf(unitTests, androidTests))
+            group = "Reporting"
+            description = "Execute ui and unit tests, generate and combine Jacoco coverage report"
+            reports {
+                xml.required.set(true)
+                html.required.set(true)
+            }
+            sourceDirectories.setFrom(layout.projectDirectory.dir("src/main"))
+            classDirectories.setFrom(files(
+                fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
+                    exclude(exclusions)
+                },
+                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                    exclude(exclusions)
+                }
+            ))
+            executionData.setFrom(files(
+                fileTree(layout.buildDirectory) { include(listOf("**/*.exec", "**/*.ec")) }
+            ))
+        }
+    })
 }
