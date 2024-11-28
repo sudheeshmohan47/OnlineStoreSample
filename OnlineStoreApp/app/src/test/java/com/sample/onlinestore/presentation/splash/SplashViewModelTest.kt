@@ -5,6 +5,7 @@ import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.domain.splash.SplashUseCase
 import com.sample.onlinestore.domain.splash.model.UserStatus
 import io.mockk.coEvery
+import io.mockk.internalSubstitute
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -93,4 +94,23 @@ class SplashViewModelTest {
             advanceUntilIdle()
             assertTrue(viewModel.uiState.value.data?.userStatus?.isAppIntroFinished == true)
         }
+
+    @Test
+    fun `getInitialUserStatus returns default user status with app intro unfinished and null session token`() = runTest {
+        val userStatus = getInitialUserStatus()
+        assertFalse(userStatus.isAppIntroFinished)
+        assertNull(userStatus.sessionToken)
+    }
+
+    @Test
+    fun `SplashUiModel initializes with default values and user status as app intro unfinished with null session token`() = runTest {
+        val splashUiModel = SplashUiModel()
+
+        assertFalse(splashUiModel.initialDataLoaded)
+
+        val userStatus = splashUiModel.userStatus
+        assertFalse(userStatus.isAppIntroFinished)
+        assertNull(userStatus.sessionToken)
+    }
+
 }
