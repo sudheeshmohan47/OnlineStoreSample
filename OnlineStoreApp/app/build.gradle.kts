@@ -143,37 +143,25 @@ tasks.withType(Test::class) {
 }
 
 afterEvaluate {
-    val androidExtension = extensions.getByName("android") as com.android.build.gradle.AppExtension
-    androidExtension.applicationVariants.all(closureOf<com.android.build.gradle.internal.api.BaseVariantImpl> {
-        val variant = this@closureOf.name.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(
-                Locale.getDefault()
-            ) else it.toString()
+    tasks.register<JacocoReport>("JacocoCodeCoverage") {
+        dependsOn(listOf("testDebugUnitTest"))
+        group = "Reporting"
+        description = "Execute ui and unit tests, generate and combine Jacoco coverage report"
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
         }
-
-        val unitTests = "test${variant}UnitTest"
-        val androidTests = "connected${variant}AndroidTest"
-
-        tasks.register<JacocoReport>("Jacoco${variant}CodeCoverage") {
-            dependsOn(listOf(unitTests, androidTests))
-            group = "Reporting"
-            description = "Execute ui and unit tests, generate and combine Jacoco coverage report"
-            reports {
-                xml.required.set(true)
-                html.required.set(true)
+        sourceDirectories.setFrom(layout.projectDirectory.dir("src/main"))
+        classDirectories.setFrom(files(
+            fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
+                exclude(exclusions)
+            },
+            fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                exclude(exclusions)
             }
-            sourceDirectories.setFrom(layout.projectDirectory.dir("src/main"))
-            classDirectories.setFrom(files(
-                fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
-                    exclude(exclusions)
-                },
-                fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
-                    exclude(exclusions)
-                }
-            ))
-            executionData.setFrom(files(
-                fileTree(layout.buildDirectory) { include(listOf("**/*.exec", "**/*.ec")) }
-            ))
-        }
-    })
+        ))
+        executionData.setFrom(files(
+            fileTree(layout.buildDirectory) { include(listOf("**/*.exec", "**/*.ec")) }
+        ))
+    }
 }

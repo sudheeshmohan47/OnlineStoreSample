@@ -1,3 +1,5 @@
+import java.util.Locale
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -6,6 +8,7 @@ plugins {
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlincompose)
     alias(libs.plugins.detekt)
+    jacoco
 }
 
 android {
@@ -37,6 +40,13 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "META-INF/LICENSE.md"
+            merges += "META-INF/LICENSE-notice.md"
+        }
     }
 }
 
@@ -98,4 +108,43 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+val exclusions = listOf(
+    "**/R.class",
+    "**/R\$*.class",
+    "**/BuildConfig.*",
+    "**/Manifest*.*",
+    "**/*Test*.*"
+)
+
+tasks.withType(Test::class) {
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
+        excludes = listOf("jdk.internal.*")
+    }
+}
+
+afterEvaluate {
+    tasks.register<JacocoReport>("JacocoCodeCoverage") {
+        dependsOn(listOf("testDebugUnitTest"))
+        group = "Reporting"
+        description = "Execute ui and unit tests, generate and combine Jacoco coverage report"
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
+        sourceDirectories.setFrom(layout.projectDirectory.dir("src/main"))
+        classDirectories.setFrom(files(
+            fileTree(layout.buildDirectory.dir("intermediates/javac/")) {
+                exclude(exclusions)
+            },
+            fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/")) {
+                exclude(exclusions)
+            }
+        ))
+        executionData.setFrom(files(
+            fileTree(layout.buildDirectory) { include(listOf("**/*.exec", "**/*.ec")) }
+        ))
+    }
 }
