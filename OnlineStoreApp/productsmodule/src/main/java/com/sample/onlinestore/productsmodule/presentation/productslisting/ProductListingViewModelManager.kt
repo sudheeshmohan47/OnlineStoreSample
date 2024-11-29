@@ -7,6 +7,7 @@ import com.sample.onlinestore.commonmodule.domain.model.Message
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +24,8 @@ class ProductListingViewModelManager(
     private val productsUseCase: ProductsUseCase,
     private val viewModelScope: CoroutineScope,
     private val sendState: (UiState<ProductsListingUiModel>) -> Unit,
-    private val sendEvent: (ProductsListingEvent) -> Unit
+    private val sendEvent: (ProductsListingEvent) -> Unit,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     /**
      * Fetches the product data and updates the UI state.
@@ -31,7 +33,7 @@ class ProductListingViewModelManager(
      * @param currentState The current state of the UI to be updated.
      */
     fun fetchProductsData(currentState: UiState<ProductsListingUiModel>) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             try {
                 sendState(UiState.Loading(currentState.data))
                 productsUseCase.getProducts { isSuccessFul, domainResponse ->
@@ -65,21 +67,26 @@ class ProductListingViewModelManager(
         currentState: UiState<ProductsListingUiModel>,
         originalProduct: ProductItem
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val isAdding = !originalProduct.isWishListed
-            val updatedProduct = originalProduct.copy(isWishListed = isAdding)
+        viewModelScope.launch(dispatcher) {
+            try {
+                val isAdding = !originalProduct.isWishListed
+                val updatedProduct = originalProduct.copy(isWishListed = isAdding)
 
-            // Optimistically update UI
-            updateProductInList(currentState, updatedProduct)
+                // Optimistically update UI
+                updateProductInList(currentState, updatedProduct)
 
-            if (isAdding) {
-                productsUseCase.addToWishlist(originalProduct.productId) { isSuccess ->
-                    handleWishListApiResponse(currentState, isSuccess, originalProduct)
+                if (isAdding) {
+                    productsUseCase.addToWishlist(originalProduct.productId) { isSuccess ->
+                        handleWishListApiResponse(currentState, isSuccess, originalProduct)
+                    }
+                } else {
+                    productsUseCase.removeFromWishlist(originalProduct.productId) { isSuccess ->
+                        handleWishListApiResponse(currentState, isSuccess, originalProduct)
+                    }
                 }
-            } else {
-                productsUseCase.removeFromWishlist(originalProduct.productId) { isSuccess ->
-                    handleWishListApiResponse(currentState, isSuccess, originalProduct)
-                }
+            } catch (exception: DomainException) {
+                handleWishListApiResponse(currentState, false, originalProduct)
+                handleException(exception, currentState)
             }
         }
     }

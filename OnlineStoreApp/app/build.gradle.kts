@@ -114,6 +114,7 @@ dependencies {
 
     // Detekt compose rules
     detektPlugins(libs.detekt)
+
     testImplementation (libs.mockk)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

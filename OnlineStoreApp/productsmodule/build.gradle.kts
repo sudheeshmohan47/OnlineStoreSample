@@ -94,6 +94,7 @@ dependencies {
     // hilt
     implementation(libs.google.dagger.hilt)
     implementation(libs.play.services.analytics.impl)
+    testImplementation(libs.androidx.core.testing)
     ksp(libs.google.dagger.hilt.compiler)
     // timber
     implementation(libs.timber)
@@ -101,13 +102,17 @@ dependencies {
     // Detekt compose rules
     detektPlugins(libs.detekt)
 
+    testImplementation (libs.mockk)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation (libs.mockk.android)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(libs.androidx.core.testing)
 }
 
 val exclusions = listOf(

@@ -8,6 +8,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 val productsListingViewModelCreationCallback =
     { factory: ProductsListingViewModel.ProductsListingViewModelFactory ->
@@ -17,6 +19,7 @@ val productsListingViewModelCreationCallback =
 @HiltViewModel(assistedFactory = ProductsListingViewModel.ProductsListingViewModelFactory::class)
 class ProductsListingViewModel @AssistedInject constructor(
     productsUseCase: ProductsUseCase,
+    @Assisted dispatcher: CoroutineDispatcher = Dispatchers.IO,
     @Assisted initialScreenState: UiState<ProductsListingUiModel>
 ) : BaseViewModel<UiState<ProductsListingUiModel>, ProductsListingAction, ProductsListingEvent>(
     initialScreenState
@@ -28,7 +31,8 @@ class ProductsListingViewModel @AssistedInject constructor(
             productsUseCase,
             viewModelScope,
             ::sendState,
-            ::sendEvent
+            ::sendEvent,
+            dispatcher
         )
 
     @AssistedFactory
@@ -36,7 +40,8 @@ class ProductsListingViewModel @AssistedInject constructor(
         fun create(
             initialScreenState: UiState<ProductsListingUiModel> = UiState.Result(
                 ProductsListingUiModel()
-            )
+            ),
+            dispatcher: CoroutineDispatcher = Dispatchers.IO
         ): ProductsListingViewModel
     }
 
