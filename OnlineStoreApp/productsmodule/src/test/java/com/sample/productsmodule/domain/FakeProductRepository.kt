@@ -2,6 +2,7 @@ package com.sample.productsmodule.domain
 
 import com.sample.onlinestore.commonmodule.data.model.product.ProductResponse
 import com.sample.onlinestore.commonmodule.domain.exception.DomainException
+import com.sample.onlinestore.commonmodule.domain.exception.NotFoundException
 import com.sample.onlinestore.commonmodule.domain.model.DomainResponse
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
 
@@ -24,7 +25,14 @@ class FakeProductRepository : ProductsRepository {
         productId: String,
         onCompletion: (Boolean, DomainResponse<ProductResponse>) -> Unit
     ) {
-        onCompletion(true, DomainResponse(data = products.find { it.id == productId }))
+        val products = getFakeProducts()
+        exception?.let {
+            throw it
+        } ?: run {
+            if(products.find { productId == it.id } != null){
+                onCompletion(true, DomainResponse(data = products.find { it.id == productId }))
+            } else throw NotFoundException()
+        }
     }
 
     override suspend fun addToWishlist(productId: String) {
@@ -36,12 +44,22 @@ class FakeProductRepository : ProductsRepository {
     }
 
     override suspend fun removeFromWishlist(productId: String, onCompletion: (Boolean) -> Unit) {
-        wishlist.remove(productId)
-        onCompletion(true)
+        exception?.let {
+            throw it
+        } ?: run {
+            if (wishlist.contains(productId)) {
+                wishlist.remove(productId)
+                onCompletion(true)
+            } else throw NotFoundException()
+        }
     }
 
     override suspend fun addProductToCart(productId: String) {
-        cart.add(productId)
+        exception?.let {
+            throw it
+        } ?: run {
+            cart.add(productId)
+        }
     }
 }
 

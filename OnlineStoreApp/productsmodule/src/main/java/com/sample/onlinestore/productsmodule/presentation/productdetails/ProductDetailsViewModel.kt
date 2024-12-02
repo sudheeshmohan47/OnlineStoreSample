@@ -11,11 +11,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @HiltViewModel(assistedFactory = ProductDetailsViewModel.ProductDetailsViewModelFactory::class)
 class ProductDetailsViewModel @AssistedInject constructor(
     productsUseCase: ProductsUseCase,
     @Assisted private val productId: String,
+    @Assisted dispatcher: CoroutineDispatcher = Dispatchers.IO,
     @Assisted initialScreenState: UiState<ProductDetailsUiModel>
 ) : BaseViewModel<UiState<ProductDetailsUiModel>, ProductDetailsAction, ProductDetailsEvent>(
     initialScreenState
@@ -26,7 +29,8 @@ class ProductDetailsViewModel @AssistedInject constructor(
         productsUseCase,
         viewModelScope,
         ::sendState,
-        ::sendEvent
+        ::sendEvent,
+        dispatcher
     )
 
     @AssistedFactory
@@ -35,7 +39,8 @@ class ProductDetailsViewModel @AssistedInject constructor(
             initialScreenState: UiState<ProductDetailsUiModel> = UiState.Result(
                 ProductDetailsUiModel()
             ),
-            productId: String
+            productId: String,
+            dispatcher: CoroutineDispatcher = Dispatchers.IO
         ): ProductDetailsViewModel
     }
 
@@ -53,23 +58,6 @@ class ProductDetailsViewModel @AssistedInject constructor(
         var returnState = currentState
 
         when (action) {
-            is ProductDetailsAction.OnClickAddToCart -> {
-                val isItemAddedToCart = uiState.value.data?.product?.isAddedToCart ?: false
-
-                if (isItemAddedToCart) {
-                    sendEvent(ProductDetailsEvent.GotoCartScreen)
-                } else {
-                    productDetailsViewModelManager.addProductToCart(uiState.value)
-                    // Update UI
-                    val updatedProduct =
-                        currentState.data?.product?.copy(isAddedToCart = true) ?: ProductItem()
-
-                    returnState = UiState.Result(
-                        data = currentState.data?.copy(product = updatedProduct)
-                    )
-                    sendEvent(ProductDetailsEvent.ShowMessage(Message(R.string.product_added_to_cart)))
-                }
-            }
 
             else -> Unit
         }
@@ -81,6 +69,15 @@ class ProductDetailsViewModel @AssistedInject constructor(
         currentState: UiState<ProductDetailsUiModel>
     ) {
         when (action) {
+            is ProductDetailsAction.OnClickAddToCart -> {
+                val isItemAddedToCart = uiState.value.data?.product?.isAddedToCart ?: false
+                if (isItemAddedToCart) {
+                    sendEvent(ProductDetailsEvent.GotoCartScreen)
+                } else {
+                    productDetailsViewModelManager.addProductToCart(uiState.value)
+                }
+            }
+
             is ProductDetailsAction.RefreshData -> {
                 productDetailsViewModelManager.fetchProductDetails(productId, uiState.value)
             }
