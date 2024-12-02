@@ -52,8 +52,8 @@ class ProductUseCaseTest {
         }
     }
 
-    @Test
-    fun `getProductDetail returns null for non-existent product`() = runBlocking {
+    @Test (expected = DomainException::class)
+    fun `getProductDetail throws error for non-existent product`() = runBlocking {
         val productId = "100"
         productRepository.products = getFakeProducts()
 

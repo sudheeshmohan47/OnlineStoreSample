@@ -162,6 +162,46 @@ class ProductDetailsViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
+    fun `WHEN OnClickFavorite is triggered THEN product should be removed from favorites wishlisted and appropriate event sent`() =
+        runTest {
+            val events = mutableListOf<ProductDetailsEvent>()
+            val testProduct = ProductItem(productId = "1")
+
+            // Collect events in a separate coroutine
+            val job = launch {
+                viewModel.uiEvent.collectLatest { event ->
+                    events.add(event)
+                }
+            }
+            productsRepository.exception = null
+            viewModel.sendAction(ProductDetailsAction.RefreshData)
+            advanceUntilIdle()
+
+            productsRepository.wishlist = mutableListOf()
+
+            // Add to wishlist
+            viewModel.sendAction(ProductDetailsAction.OnClickFavourite)
+            advanceUntilIdle()
+
+            // Check if the product is added to favorites in the repository
+            assertTrue(productsRepository.wishlist.contains(testProduct.productId))
+
+            // Add to wishlist
+            viewModel.sendAction(ProductDetailsAction.OnClickFavourite)
+            advanceUntilIdle()
+
+            // Check if the product is added to favorites in the repository
+            assertFalse(productsRepository.wishlist.contains(testProduct.productId))
+
+            val productItem =
+                viewModel.uiState.value.data?.product
+            assertTrue(productItem?.isWishListed == false)
+
+            job.cancel()
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
     fun `WHEN OnClickFavorite is triggered BUT API fails, THEN product status should revert`() =
         runTest {
             val events = mutableListOf<ProductDetailsEvent>()
@@ -186,9 +226,9 @@ class ProductDetailsViewModelTest {
 
             // Check if the product is added to favorites in the repository
             assertFalse(productsRepository.wishlist.contains(testProduct.productId))
-          /*  val wishListedProduct =
+            val wishListedProduct =
                 viewModel.uiState.value.data?.product
-            assertTrue(wishListedProduct?.isWishListed == false)*/
+            assertTrue(wishListedProduct?.isWishListed == false)
 
             job.cancel()
         }
@@ -255,4 +295,50 @@ class ProductDetailsViewModelTest {
             job.cancel()
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `WHEN Product is added to Cart, THEN triggering cart event should send GotoCart event`() =
+        runTest {
+            val events = mutableListOf<ProductDetailsEvent>()
+
+            // Collect events in a separate coroutine
+            val job = launch {
+                viewModel.uiEvent.collectLatest { event ->
+                    events.add(event)
+                }
+            }
+
+            // Add item to cart
+            viewModel.sendAction(ProductDetailsAction.OnClickAddToCart)
+            advanceUntilIdle()
+
+            // Click cart again
+            viewModel.sendAction(ProductDetailsAction.OnClickAddToCart)
+            advanceUntilIdle()
+
+            assertTrue(events.last() is ProductDetailsEvent.GotoCartScreen)
+
+            job.cancel()
+        }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `WHEN triggering OnClickBack action, THEN appropriate event should be sent`() =
+        runTest {
+            val events = mutableListOf<ProductDetailsEvent>()
+
+            // Collect events in a separate coroutine
+            val job = launch {
+                viewModel.uiEvent.collectLatest { event ->
+                    events.add(event)
+                }
+            }
+
+            viewModel.sendAction(ProductDetailsAction.OnClickBackNavigation)
+            advanceUntilIdle()
+
+            assertTrue(events.last() is ProductDetailsEvent.BackToPreviousScreen)
+
+            job.cancel()
+        }
 }
