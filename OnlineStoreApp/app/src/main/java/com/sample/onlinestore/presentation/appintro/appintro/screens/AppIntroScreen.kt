@@ -118,7 +118,8 @@ fun LoadIntroContent(
                     horizontal = OnlineStoreSpacing.MEDIUM.dp(),
                     vertical = OnlineStoreSize.EXTRA_SMALL.dp()
                 ),
-                buttonStyle = MaterialTheme.typography.titleMedium
+                buttonStyle = MaterialTheme.typography.titleMedium,
+                testTag = stringResource(R.string.test_tag_appintro_next_button)
             ) {
                 if (pagerState.currentPage < AppIntroPageCount - 1) {
                     coroutineScope.launch {

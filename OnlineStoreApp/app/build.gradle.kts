@@ -23,7 +23,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.sample.onlinestore.HiltTestRunner"
     }
 
     buildTypes {
@@ -100,6 +100,7 @@ dependencies {
 
     // room
     implementation(libs.androidx.room.runtime)
+    androidTestImplementation(project(":datastoragemodule"))
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
@@ -126,6 +127,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.androidx.core.testing)
+
+    testImplementation (libs.hilt.android.testing)
+    kspTest (libs.hilt.android.compiler.v2511)
+    androidTestImplementation (libs.hilt.android.testing)
+    kspAndroidTest (libs.google.dagger.hilt.compiler)
 }
 
 val exclusions = listOf(

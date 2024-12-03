@@ -19,5 +19,6 @@
     <string name="app_intro_title_3">All in One Place</string>
     <string name="app_intro_subtitle_3">Explore products across diverse categories, all in one app.</string>
     <string name="label_next">Next</string>
+    <string name="test_tag_appintro_next_button">AppIntro Next Button</string>
 
 </resources>

@@ -323,7 +323,7 @@ class ProductDetailsViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `WHEN triggering OnClickBack action, THEN appropriate event should be sent`() =
+    fun `WHEN triggering OnClickBackNavigation action, THEN appropriate event should be sent`() =
         runTest {
             val events = mutableListOf<ProductDetailsEvent>()
 
