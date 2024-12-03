@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sample.onlinestore.productsmodule.test">
+
+    <application>
+        <!-- Declare TestActivity for testing -->
+        <activity
+            android:name="com.sample.onlinestore.commonmodule.presentation.test.TestActivity"
+            android:exported="true" />
+    </application>
+</manifest>

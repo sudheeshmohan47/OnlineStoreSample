@@ -18,7 +18,7 @@ android {
     defaultConfig {
         minSdk = 26
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.sample.productsmodule.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -113,6 +113,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.androidx.core.testing)
+
+    testImplementation (libs.hilt.android.testing)
+    kspTest (libs.hilt.android.compiler.v2511)
+    androidTestImplementation (libs.hilt.android.testing)
+    kspAndroidTest (libs.google.dagger.hilt.compiler)
 }
 
 val exclusions = listOf(
