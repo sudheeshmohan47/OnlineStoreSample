@@ -45,6 +45,7 @@ import com.sample.onlinestore.productsmodule.presentation.productslisting.Produc
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingViewModel
 import com.sample.onlinestore.productsmodule.presentation.productslisting.productsListingViewModelCreationCallback
+import com.sample.onlinestore.productsmodule.util.ProductTestTags
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 
@@ -122,7 +123,9 @@ fun ProductListingMainContent(
             )
             onAction(ProductsListingAction.RefreshData)
         },
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        testTag = ProductTestTags.PRODUCT_LISTING_SWIPE_REFRESH,
+        indicatorTestTag = ProductTestTags.PRODUCT_LISTING_SWIPE_REFRESH_INDICATOR
     ) {
         Column(
             modifier = Modifier

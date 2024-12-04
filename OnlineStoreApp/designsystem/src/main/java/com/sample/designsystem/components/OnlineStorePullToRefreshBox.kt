@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -38,16 +39,20 @@ fun OnlineStorePullToRefreshBox(
     spinningIndicatorColor: Color = MaterialTheme.colorScheme.primary,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     positionalThreshold: Dp = 150.dp,
-    content: @Composable () -> Unit
+    testTag: String = "",
+    indicatorTestTag: String = "",
+    content: @Composable () -> Unit,
 ) {
     PullToRefreshBox(
         state = pullRefreshState,
         isRefreshing = isRefreshing,
         onRefresh = onRefresh,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(testTag),
         indicator = {
             PullToRefreshDefaults.Indicator(
-                modifier = Modifier.align(Alignment.TopCenter),
+                modifier = Modifier.align(Alignment.TopCenter).testTag(indicatorTestTag),
                 state = pullRefreshState,
                 isRefreshing = isRefreshing,
                 color = spinningIndicatorColor,

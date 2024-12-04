@@ -28,6 +28,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.testTag
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 
@@ -88,12 +89,13 @@ fun LazyGridWithShimmerEffect(
     itemCount: Int = 10,
     gridColumns: Int = 2,
     gridItemAspectRatio: Float = 1.0f,
-    lazyGridState: LazyGridState = rememberLazyGridState()
+    lazyGridState: LazyGridState = rememberLazyGridState(),
+    testTag: String = ""
 ) {
     LazyVerticalGrid(
         state = lazyGridState,
         columns = GridCells.Fixed(gridColumns),
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().testTag(testTag),
         contentPadding = PaddingValues(OnlineStoreSpacing.SMALL.dp())
     ) {
         items(itemCount) {

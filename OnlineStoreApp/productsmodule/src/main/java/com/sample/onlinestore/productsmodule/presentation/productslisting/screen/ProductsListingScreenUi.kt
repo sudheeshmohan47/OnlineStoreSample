@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
+import com.sample.designsystem.components.EmptyTextPlaceHolder
 import com.sample.designsystem.components.LazyGridWithShimmerEffect
 import com.sample.designsystem.components.OnlineStoreRoundedEdgedCard
 import com.sample.designsystem.components.OnlineStoreTopAppBar
@@ -54,6 +56,7 @@ import com.sample.onlinestore.productsmodule.R
 import com.sample.onlinestore.productsmodule.domain.model.ProductItem
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingUiModel
+import com.sample.onlinestore.productsmodule.util.ProductTestTags
 
 private const val ProductListingItemAspectRatio = 1.3f
 private const val ProductListingGridColumnCount = 2
@@ -105,23 +108,33 @@ fun ProductsListingScreenContent(
         val isInitialLoadingCompleted = productsUiModel.isInitialLoadingCompleted
 
         if (!isInitialLoadingCompleted && productsListingUiState is UiState.Loading) {
-            LazyGridWithShimmerEffect(lazyGridState = shimmerEffectGridState)
+            LazyGridWithShimmerEffect(
+                lazyGridState = shimmerEffectGridState,
+                testTag = ProductTestTags.PRODUCT_LISTING_SHIMMER_EFFECT
+            )
         } else {
-            LazyVerticalGrid(
-                state = productListState,
-                modifier = modifier,
-                columns = GridCells.Fixed(ProductListingGridColumnCount),
-                contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp())
-            ) {
-                items(products) { productItem ->
-                    ProductsListingItem(
-                        productItem = productItem,
-                        onAction = onAction,
-                        modifier = Modifier
-                            .animateItem()
-                            .padding(OnlineStoreSpacing.SMALL.dp())
-                    )
+            if (products.isNotEmpty()) {
+                LazyVerticalGrid(
+                    state = productListState,
+                    modifier = modifier.testTag(ProductTestTags.PRODUCT_LISTING_LIST),
+                    columns = GridCells.Fixed(ProductListingGridColumnCount),
+                    contentPadding = PaddingValues(vertical = OnlineStoreSpacing.SMALL.dp())
+                ) {
+                    items(products) { productItem ->
+                        ProductsListingItem(
+                            productItem = productItem,
+                            onAction = onAction,
+                            modifier = Modifier
+                                .animateItem()
+                                .padding(OnlineStoreSpacing.SMALL.dp())
+                        )
+                    }
                 }
+            } else if (isInitialLoadingCompleted && productsListingUiState is UiState.Result) {
+                EmptyTextPlaceHolder(
+                    text = stringResource(R.string.label_no_products_found),
+                    testTag = ProductTestTags.PRODUCT_LISTING_EMPTY_TEXT
+                )
             }
         }
     }
@@ -137,7 +150,7 @@ fun ProductsListingItem(
         modifier = modifier
             .clickable {
                 onAction(ProductsListingAction.OnClickProduct(productItem))
-            }
+            }.testTag(ProductTestTags.PRODUCT_LISTING_ITEM)
     ) {
         Box(
             modifier = Modifier
