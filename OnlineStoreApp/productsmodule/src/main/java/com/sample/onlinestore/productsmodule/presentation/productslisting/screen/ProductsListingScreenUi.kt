@@ -150,7 +150,8 @@ fun ProductsListingItem(
         modifier = modifier
             .clickable {
                 onAction(ProductsListingAction.OnClickProduct(productItem))
-            }.testTag(ProductTestTags.PRODUCT_LISTING_ITEM)
+            }
+            .testTag(ProductTestTags.PRODUCT_LISTING_ITEM)
     ) {
         Box(
             modifier = Modifier
@@ -224,7 +225,7 @@ fun FavouriteSection(
                 onAction(ProductsListingAction.OnClickFavourite(productItem))
             },
         imageVector = if (productItem.isWishListed) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-        contentDescription = "Collection Options",
+        contentDescription = stringResource(R.string.content_description_product_listing_fav_icon),
         tint = if (productItem.isWishListed) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
     )
 }

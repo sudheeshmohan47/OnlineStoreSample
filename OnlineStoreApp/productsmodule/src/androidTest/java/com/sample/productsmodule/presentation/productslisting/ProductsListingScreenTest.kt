@@ -2,6 +2,7 @@ package com.sample.productsmodule.presentation.productslisting
 
 import android.content.Context
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.assertAll
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -11,6 +12,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -24,6 +26,7 @@ import com.sample.datastoragemodule.di.PreferenceModule
 import com.sample.designsystem.foundation.ui.OnlineStoreTheme
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.presentation.test.TestActivity
+import com.sample.onlinestore.productsmodule.R
 import com.sample.onlinestore.productsmodule.di.ProductsModule
 import com.sample.onlinestore.productsmodule.domain.ProductsUseCase
 import com.sample.onlinestore.productsmodule.foundation.navigation.ProductScreens
@@ -127,5 +130,23 @@ class ProductsListingScreenTest {
     @Test
     fun productsListing_EnsureListIsNotEmpty() {
         composeRule.onAllNodesWithTag(ProductTestTags.PRODUCT_LISTING_ITEM)[0].assertIsDisplayed()
+    }
+
+    @Test
+    fun productsListing_EnsureTitleIsDisplayed() {
+        val productTitle = getFakeProducts()[0].title.orEmpty()
+        composeRule.onAllNodesWithText(productTitle)[0].assertIsDisplayed()
+    }
+
+    @Test
+    fun productsListing_EnsurePriceIsDisplayed() {
+        val price = getFakeProducts()[0].price.toString()
+        composeRule.onAllNodesWithText("Rs.${price}")[0].assertIsDisplayed()
+    }
+
+    @Test
+    fun productsListing_EnsureFavIconIsDisplayed() {
+        val favouriteIconDescription = context.getString(R.string.content_description_product_listing_fav_icon)
+        composeRule.onAllNodesWithContentDescription(favouriteIconDescription)[0].assertIsDisplayed()
     }
 }
