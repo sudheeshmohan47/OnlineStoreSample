@@ -19,6 +19,7 @@ The following are the tech stack used for this project:
 - **Hilt**: Dependency injection   
 - **Ktlint**: Linting tool for Kotlin code.  
 - **Detekt**: Static code analysis tool with Compose-specific rules.
+- **Github Workflow**:  Automated workflows that perform specified checks(eg: ktlint, detekt...) during pull requests, ensuring code quality and consistency by raising errors if any checks fail.
 
 ## Architecture
 OnlineStoreSample app is structured in a mix of clean architecture, MVVM, and MVI pattern.
@@ -26,12 +27,12 @@ The whole project is clearly separated in layers - Presentation, Business logic 
 
 Project is a combination of multiple MFE's (Micro Front Ends)
 - **designsystem**: Defines the app's theme, spacing, sizing, and reusable UI components.  
-- **commonmodule**: Shared utilities such as networking and common data models.  
-- **datastoragemodule**: Handles database operations and preferences management.  
+- **commonmodule**: Serves as a shared library across modules, encapsulating utilities, networking functionality, and other common components to ensure reusability and maintainability.
+- **datastoragemodule**: DataStorageModule: Manages database operations and preference handling, providing a centralized solution for data storage and retrieval.
 - **authenticationmodule**: Manages user authentication, including login and registration screens.  
-- **categoriesmodule**: For managing categories  
+- **categoriesmodule**: For managing product categories  
 - **cartmodule**: Manages cart functionality and screens.  
-- **wishlistmodule**: Displays and manages wishlisted items.  
+- **wishlistmodule**: Handles the display and management of items added to the wishlist, providing functionality for users to view or remove their favorite items.
 
 ![OnlineStoreApp Architecture](https://github.com/user-attachments/assets/83f01d94-7d29-477d-9731-6559b8010313)
 
