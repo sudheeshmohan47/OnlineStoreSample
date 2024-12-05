@@ -50,8 +50,8 @@ libs.versions.toml contains all the dependencies required for this project
 
 ## Testing
 Login using the following credentials:
- username: mor_2314
- password: 83r5^_
+ - username: mor_2314
+ - password: 83r5^_
 
 Products listing screen will be loaded in the home page. 
 Category specific products can be showing by going to the categories tab and Select categories. If no categories are selected, full product list will be loaded.
