@@ -10,8 +10,9 @@
 
 ## Technology Stack
 The following are the tech stack used for this project:
-- Jetpack Compose ( Showing UI)
+- Jetpack Compose
 - Kotlin
+- Room (Database)
 - Retrofit & Okhttp (Networking)
 - Junit & Mockk( Unit testing), Papparazzi for screenshot testing
 - Hilt ( Dependency Injection)
