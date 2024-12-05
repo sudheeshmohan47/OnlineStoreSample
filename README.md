@@ -31,7 +31,6 @@ Project is a combination of multiple MFE's (Micro Front Ends)
 - **wishlistmodule**: This MFE is used for showing wishlisted items in the app 
 - **productsmodule**: This MFE is used for showing Products and Details in the app. From here you can wishlist or add a product to cart. 
 
-
   ![arch](https://github.com/user-attachments/assets/8af276ac-f0c5-4a10-a1a3-b65ce1238e0e)
 
 
