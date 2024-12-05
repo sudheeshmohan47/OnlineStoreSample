@@ -19,12 +19,12 @@ The following are the tech stack used for this project:
 - Ktlint for detecting lint errors and Detekt with Compose rules for improving code quality
 
 ## Architecture
-OnlineStoreSample app is structured in a mix of clean architecture and MVI pattern.
+OnlineStoreSample app is structured in a mix of clean architecture, MVVM, and MVI pattern.
 The whole project is clearly separated in layers - Presentation, Business logic and Data layer.
 
 Project is a combination of multiple MFE's (Micro Front Ends)
-- **designsystem**: This module is used for defining the common app theme for app which includes Networking, Spacing details, Sizing details, custom UI components etc
-- **commonmodule**: This module contains all the common items shared across different modules
+- **designsystem**: This module is used for defining the common app theme for app which includes  Spacing details, Sizing details, custom UI components etc
+- **commonmodule**: This module contains all the common items shared across different modules including Networking
 - **datastoragemodule**: This module used for handling Database and Preference which is used in different modules
 - **authenticationmodule**: This MFE is used for authenticating the user. Contains authentication related screens. 
 - **categoriesmodule**: This MFE is used for showing Categories in the app. 
@@ -33,7 +33,6 @@ Project is a combination of multiple MFE's (Micro Front Ends)
 - **productsmodule**: This MFE is used for showing Products and Details in the app. From here you can wishlist or add a product to cart. 
 
 ![OnlineStoreApp Architecture](https://github.com/user-attachments/assets/83f01d94-7d29-477d-9731-6559b8010313)
-
 
 ## Design Patterns
 
