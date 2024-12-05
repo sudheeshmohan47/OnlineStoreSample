@@ -14,9 +14,9 @@ The following are the tech stack used for this project:
 - Jetpack Compose ( Showing UI)
 - Kotlin
 - Retrofit & Okhttp (Networking)
-- Junit & Mockk( Unit testing)
+- Junit & Mockk( Unit testing), Papparazzi for screenshot testing
 - Hilt ( Dependency Injection)
-- Ktlint and Detekt with Compose rules for lint and code quality
+- Ktlint for detecting lint errors and Detekt with Compose rules for improving code quality
 
 ## Architecture
 OnlineStoreSample app is structured in a mix of clean architecture and MVI pattern.
@@ -50,3 +50,12 @@ All the dependencies are managed using .toml file inside the root -> gradle fold
 libs.versions.toml contains all the dependencies required for this project
 
 ## Testing
+Login using the following credentials:
+username: mor_2314
+password: 83r5^_
+
+Products listing screen will be loaded in the home page. 
+Category specific products can be showing by going to the categories tab and Select categories. If no categories are selected, full product list will be loaded.
+Wishlisted and Cart items are displayed in the Wishlist screen and Cart screen respectively.
+
+Unit test and Ui test are added for app module and products module. 
