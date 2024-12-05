@@ -10,27 +10,28 @@
 
 ## Technology Stack
 The following are the tech stack used for this project:
-- Jetpack Compose
-- Kotlin
-- Room (Database)
-- Retrofit & Okhttp (Networking)
-- Junit & Mockk( Unit testing), Papparazzi for screenshot testing
-- Hilt ( Dependency Injection)
-- Ktlint for detecting lint errors and Detekt with Compose rules for improving code quality
+- **Jetpack Compose**: Ui
+- **Kotlin**  
+- **Room**: Database
+- **Retrofit & OkHttp**: For Networking  
+- **JUnit & MockK**: Unit testing 
+- **Paparazzi**: Screenshot testing library.  
+- **Hilt**: Dependency injection   
+- **Ktlint**: Linting tool for Kotlin code.  
+- **Detekt**: Static code analysis tool with Compose-specific rules.
 
 ## Architecture
 OnlineStoreSample app is structured in a mix of clean architecture, MVVM, and MVI pattern.
 The whole project is clearly separated in layers - Presentation, Business logic and Data layer.
 
 Project is a combination of multiple MFE's (Micro Front Ends)
-- **designsystem**: This module is used for defining the common app theme for app which includes  Spacing details, Sizing details, custom UI components etc
-- **commonmodule**: This module contains all the common items shared across different modules including Networking
-- **datastoragemodule**: This module used for handling Database and Preference which is used in different modules
-- **authenticationmodule**: This MFE is used for authenticating the user. Contains authentication related screens. 
-- **categoriesmodule**: This MFE is used for showing Categories in the app. 
-- **cartmodule**: This MFE is used for showing Cart in the app. 
-- **wishlistmodule**: This MFE is used for showing wishlisted items in the app 
-- **productsmodule**: This MFE is used for showing Products and Details in the app. From here you can wishlist or add a product to cart. 
+- **designsystem**: Defines the app's theme, spacing, sizing, and reusable UI components.  
+- **commonmodule**: Shared utilities such as networking and common data models.  
+- **datastoragemodule**: Handles database operations and preferences management.  
+- **authenticationmodule**: Manages user authentication, including login and registration screens.  
+- **categoriesmodule**: For managing categories  
+- **cartmodule**: Manages cart functionality and screens.  
+- **wishlistmodule**: Displays and manages wishlisted items.  
 
 ![OnlineStoreApp Architecture](https://github.com/user-attachments/assets/83f01d94-7d29-477d-9731-6559b8010313)
 
