@@ -45,6 +45,7 @@ This app make use of the following patterns:
 #### Add these in gradle.properties file
 - BASE_URL="https://fakestoreapi.com"
 
+## Dependencies
 All the dependencies are managed using .toml file inside the root -> gradle folder.
 libs.versions.toml contains all the dependencies required for this project
 
