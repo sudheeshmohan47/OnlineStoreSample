@@ -1,6 +1,5 @@
 package com.sample.onlinestore.productsmodule.data
 
-import com.sample.datastoragemodule.data.database.model.Wishlist
 import com.sample.onlinestore.cartmodule.data.model.CartRequest
 import com.sample.onlinestore.cartmodule.domain.CartRepository
 import com.sample.onlinestore.categoriesmodule.domain.CategoriesRepository
@@ -50,7 +49,7 @@ class ProductsService @Inject constructor(
             val response = productsApiService.getProducts()
             if (response.isSuccessful) {
                 response.body()?.let { products ->
-                    val wishListItems = wishlistRepository.getWishlistItemsLocal()
+                    val wishListItems: List<String> = wishlistRepository.getWishlistItemsIds()
                     val selectedCategories = categoriesRepository.getSelectedCategories()
 
                     // Call to update products based on wishList and selectedCategories
@@ -84,10 +83,10 @@ class ProductsService @Inject constructor(
             val response = productsApiService.getProductDetail(productId)
             if (response.isSuccessful) {
                 response.body()?.let { product ->
-                    val wishListItems = wishlistRepository.getWishlistItemsLocal()
+                    val wishListItemIds = wishlistRepository.getWishlistItemsIds()
                     val cartItems = cartRepository.getCartItemsLocal()
 
-                    val isWishListed = wishListItems.any { it.productId == product.id }
+                    val isWishListed = wishListItemIds.any { it == product.id }
                     val isAddedToCart = cartItems.any { it.productId == product.id }
 
                     val updatedProduct = product.copy(
@@ -154,7 +153,7 @@ class ProductsService @Inject constructor(
      */
     private fun updateProducts(
         products: List<ProductResponse>,
-        wishListItems: List<Wishlist>,
+        wishListItemIds: List<String>,
         selectedCategories: List<String>
     ): List<ProductResponse> {
         return products
@@ -168,7 +167,7 @@ class ProductsService @Inject constructor(
             }
             .map { product ->
                 // Mark products as wishListed if they exist in the wishlist
-                val isWishListed = wishListItems.any { it.productId == product.id }
+                val isWishListed = wishListItemIds.any { it == product.id }
                 product.copy(isWishListed = isWishListed)
             }
     }

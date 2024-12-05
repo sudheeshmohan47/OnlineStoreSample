@@ -84,6 +84,15 @@ class WishlistService @Inject constructor(
     override suspend fun getWishlistItemsLocal(): List<Wishlist> = wishlistDao.getWishlistItems()
 
     /**
+     * Retrieves the list of wishlist items from the local database and returns their IDs.
+     *
+     * @return A list of ids of wishListed items.
+     */
+    override suspend fun getWishlistItemsIds(): List<String> {
+        return getWishlistItemsLocal().map { it.productId }
+    }
+
+    /**
      * Moves an item from the wishlist to the cart.
      *
      * @param productId The ID of the product to be moved from wishlist to cart.

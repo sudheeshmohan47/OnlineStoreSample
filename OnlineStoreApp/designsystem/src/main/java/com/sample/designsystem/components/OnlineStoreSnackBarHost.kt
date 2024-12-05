@@ -1,4 +1,4 @@
-package com.sample.designsystem.foundation
+package com.sample.designsystem.components
 
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn

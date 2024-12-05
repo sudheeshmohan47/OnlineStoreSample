@@ -53,7 +53,6 @@ android {
 dependencies {
 
     implementation(project(":designsystem"))
-    implementation(project(":datastoragemodule"))
     implementation(project(":commonmodule"))
     implementation(project(":cartmodule"))
     implementation(project(":wishlistmodule"))

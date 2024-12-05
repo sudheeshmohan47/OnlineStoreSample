@@ -34,7 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.designsystem.components.ShowDashedProgressIndicator
-import com.sample.designsystem.foundation.OnlineStoreSnackBarHost
+import com.sample.designsystem.components.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.cartmodule.presentation.cart.CartAction
