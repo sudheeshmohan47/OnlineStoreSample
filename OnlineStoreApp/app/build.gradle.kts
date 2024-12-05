@@ -1,5 +1,3 @@
-import java.util.Locale
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlincompose)
     alias(libs.plugins.detekt)
     alias(libs.plugins.roomPlugin)
+    alias(libs.plugins.paparazzi)
     jacoco
 }
 
@@ -100,7 +99,6 @@ dependencies {
 
     // room
     implementation(libs.androidx.room.runtime)
-    androidTestImplementation(project(":datastoragemodule"))
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 

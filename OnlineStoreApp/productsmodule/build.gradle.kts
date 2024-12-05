@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlincompose)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.paparazzi)
     jacoco
 }
 

@@ -5,6 +5,7 @@ import com.sample.onlinestore.commonmodule.domain.exception.DomainException
 import com.sample.onlinestore.commonmodule.domain.exception.NotFoundException
 import com.sample.onlinestore.commonmodule.domain.model.DomainResponse
 import com.sample.onlinestore.productsmodule.domain.ProductsRepository
+import com.sample.onlinestore.productsmodule.domain.model.ProductItem
 
 class FakeProductRepository : ProductsRepository {
     var products: List<ProductResponse> = mutableListOf()

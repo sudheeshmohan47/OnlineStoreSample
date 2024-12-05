@@ -84,7 +84,6 @@ fun ProductsDetailsScreenContent(
     modifier: Modifier = Modifier,
     productDetailsListState: LazyListState = rememberLazyListState()
 ) {
-
     ProductDetails(
         productDetailsUiState = productDetailsUiState,
         modifier = modifier,

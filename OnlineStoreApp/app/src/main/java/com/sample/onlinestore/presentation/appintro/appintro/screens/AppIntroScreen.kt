@@ -63,7 +63,7 @@ fun AppIntroScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        LoadIntroContent(
+        LoadAppIntroContent(
             modifier = Modifier,
             uiModel = uiState.data,
             coroutineScope = coroutineScope,
@@ -76,7 +76,7 @@ fun AppIntroScreen(
 }
 
 @Composable
-fun LoadIntroContent(
+fun LoadAppIntroContent(
     uiModel: AppIntroUiModel?,
     coroutineScope: CoroutineScope,
     pagerState: PagerState,
@@ -164,7 +164,7 @@ private fun OnBoardContentUIDarkPreview() {
 
 @Composable
 private fun LoadDummyContent(modifier: Modifier = Modifier) {
-    LoadIntroContent(
+    LoadAppIntroContent(
         modifier = modifier,
         uiModel = AppIntroUiModel(getDummyList()),
         coroutineScope = rememberCoroutineScope(),

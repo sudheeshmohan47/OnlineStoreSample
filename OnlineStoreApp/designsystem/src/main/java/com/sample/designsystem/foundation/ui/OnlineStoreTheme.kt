@@ -1,6 +1,7 @@
 package com.sample.designsystem.foundation.ui
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -260,13 +261,12 @@ val unspecified_scheme = ColorFamily(
 @Composable
 fun OnlineStoreTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
-    content: @Composable() () -> Unit
+    context: Context = LocalContext.current,
+    content: @Composable () -> Unit
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
@@ -277,12 +277,24 @@ fun OnlineStoreTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+            window.statusBarColor =
+                if (!darkTheme) backgroundLight.toArgb() else backgroundDark.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
     MaterialTheme(
         colorScheme = colorScheme,
+        typography = Typography,
+        content = content
+    )
+}
+
+@Composable
+fun OnlineStoreTestAndroidTheme(
+    content: @Composable () -> Unit
+) {
+    MaterialTheme(
+        colorScheme = lightScheme,
         typography = Typography,
         content = content
     )

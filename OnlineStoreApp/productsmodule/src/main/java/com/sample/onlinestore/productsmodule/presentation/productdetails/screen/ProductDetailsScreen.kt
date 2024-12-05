@@ -104,6 +104,7 @@ fun ProductDetailsScreenMainContent(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
         ProductDetailsTopAppBarSection(
             topAppBarState = topAppBarState,
