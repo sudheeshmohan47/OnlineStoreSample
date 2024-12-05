@@ -19,6 +19,7 @@ The following are the tech stack used for this project:
 - **Hilt**: Dependency injection   
 - **Ktlint**: Linting tool for Kotlin code.  
 - **Detekt**: Static code analysis tool with Compose-specific rules.
+- **Jacoco**: Used for measuring code coverage, providing insights into the extent of testing with both unit tests and UI tests.
 - **Github Workflow**:  Automated workflows that perform specified checks(eg: ktlint, detekt...) during pull requests, ensuring code quality and consistency by raising errors if any checks fail.
 
 ## Architecture
