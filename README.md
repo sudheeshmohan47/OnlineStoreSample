@@ -52,7 +52,6 @@ libs.versions.toml contains all the dependencies required for this project
 ## Testing
 Login using the following credentials:
 username: mor_2314
-
 password: 83r5^_
 
 Products listing screen will be loaded in the home page. 
