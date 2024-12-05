@@ -7,7 +7,6 @@
 - [Design patterns](#design-patterns)
 - [Installation](#installation)
 - [Testing](#testing)
-- [Note](#note)
 
 ## Technology Stack
 The following are the tech stack used for this project:
@@ -23,15 +22,15 @@ OnlineStoreSample app is structured in a mix of clean architecture and MVI patte
 The whole project is clearly separated in layers - Presentation, Business logic and Data layer.
 
 Project is a combination of multiple MFE's (Micro Front Ends)
-- **designsystem**: This module is used for defining the common app theme for app which includes Spacing details, Sizing details, custom UI components etc
+- **designsystem**: This module is used for defining the common app theme for app which includes Networking, Spacing details, Sizing details, custom UI components etc
 - **commonmodule**: This module contains all the common items shared across different modules
 - **datastoragemodule**: This module used for handling Database and Preference which is used in different modules
-- **authenticationmodule**: This MFE is used for authenticating the user. Contains authentication related screens
-- **productsmodule**: This MFE is used for showing Products and Details in the app. 
-- **categoriesmodule**: This MFE is used for showing Categories in the app
-- **cartmodule**: This MFE is used for showing Cart in the app.
-- **wishlistmodule**: This MFE is used for showing wishlisted items in the app
-- **shared**: This module is used for handling database operations as well as app related shared info's
+- **authenticationmodule**: This MFE is used for authenticating the user. Contains authentication related screens. 
+- **categoriesmodule**: This MFE is used for showing Categories in the app. 
+- **cartmodule**: This MFE is used for showing Cart in the app. 
+- **wishlistmodule**: This MFE is used for showing wishlisted items in the app 
+- **productsmodule**: This MFE is used for showing Products and Details in the app. From here you can wishlist or add a product to cart. 
+
 
   ![arch](https://github.com/user-attachments/assets/8af276ac-f0c5-4a10-a1a3-b65ce1238e0e)
 
