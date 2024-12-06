@@ -50,10 +50,10 @@ class ProductDetailsScreenshotTest {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Test
-    fun productsDetailScreen_lightTheme() {
+    fun productsDetailScreenTest_lightTheme() {
         paparazzi.snapshot {
             OnlineStoreTestAndroidTheme {
-                val uiState = UiState.Loading(
+                val uiState = UiState.Result(
                     ProductDetailsUiModel(
                         product = getFakeProductItems()[0]
                     )

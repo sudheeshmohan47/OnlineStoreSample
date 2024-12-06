@@ -50,10 +50,10 @@ class ProductsListingScreenshotTest {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Test
-    fun productsListingScreen_lightTheme() {
+    fun productsListingScreenTest_lightTheme() {
         paparazzi.snapshot {
             OnlineStoreTestAndroidTheme {
-                val uiState = UiState.Loading(
+                val uiState = UiState.Result(
                     ProductsListingUiModel(
                         products = getFakeProductItems()
                     )
@@ -77,7 +77,7 @@ fun getFakeProductItems(): List<ProductItem> {
                 price = i * 10.0,
                 category = "Category ${(i % 3) + 1}",
                 description = "Description for Product $i",
-                image = "https://example.com/product$i.jpg",
+                image = "https://picsum.photos/seed/picsum/200/300",
                 isWishListed = (i % 2 == 0),
                 isAddedToCart = (i % 3 == 0)
             )
