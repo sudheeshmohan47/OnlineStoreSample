@@ -1,135 +1,85 @@
 @file:SuppressWarnings("RestrictedApi")
 package com.sample.onlinestore.foundation.appstate
 
-import androidx.navigation.NavHostController
 import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.isLifecycleResumed
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.navigateBackWithData
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.navigateWithPopBackstack
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.popBackStackWithLifecycle
+
 
 /**
- * Pops the back stack if the lifecycle state of the current back stack entry associated
- * with the NavHostController is in a resumed state.
+ * Pops the last destination off the back stack.
  */
 fun OnlineStoreAppState.popUp() {
-    navController.popBackStackWithLifecycle()
+    backStack.removeLastOrNull()
 }
 
 /**
- * Navigates to the specified screen and pops the back stack if the lifecycle state
- * of the current back stack entry associated with the NavHostController is in a resumed state.
- *
- * @param screen The destination screen to navigate to.
+ * Pushes a new screen onto the back stack.
  */
-fun OnlineStoreAppState.navigateWithPopBackstack(screen: BaseScreen) {
-    navController.navigateWithPopBackstack(screen)
+fun OnlineStoreAppState.navigate(toScreen: BaseScreen) {
+    backStack.add(toScreen)
 }
 
 /**
- * Navigates to the specified screen if the lifecycle state of the current back stack entry
- * associated with the NavHostController is in a resumed state, and launch single top.
- *
- * @param screen The destination screen to navigate to.
+ * Replaces the current top screen with a new one.
+ * If the stack is empty, adds the screen.
  */
-fun OnlineStoreAppState.navigate(screen: BaseScreen) {
-    if (navController.isLifecycleResumed) {
-        navController.navigate(screen) {
-            launchSingleTop = true
+fun OnlineStoreAppState.replace(toScreen: BaseScreen) {
+    if (backStack.isNotEmpty()) {
+        backStack.removeLastOrNull()
+    }
+    backStack.add(toScreen)
+}
+
+/**
+ * Clears the back stack and navigates to the new screen.
+ */
+fun OnlineStoreAppState.clearAndNavigate(toScreen: BaseScreen) {
+    backStack.clear()
+    backStack.add(toScreen)
+}
+
+/**
+ * Pops the back stack until the given screen.
+ * @param inclusive If true, removes the target screen as well.
+ */
+fun OnlineStoreAppState.popUpTo(screenToPopTo: BaseScreen, inclusive: Boolean = true) {
+    val index = backStack.indexOf(screenToPopTo)
+    if (index != -1) {
+        val endIndex = if (inclusive) index else index + 1
+        for (i in backStack.size - 1 downTo endIndex) {
+            backStack.removeAt(i)
         }
     }
 }
 
 /**
- * Navigates to the specified screen and pops the back stack up to the specified screen,
- * if the lifecycle state of the current back stack entry
- * associated with the NavHostController is in a resumed state.
- *
- * @param toScreen The destination screen to navigate to.
- * @param popUpToScreen The screen up to which the back stack should be popped.
+ * Switches bottom navigation screen by clearing stack and pushing new root.
  */
-fun OnlineStoreAppState.navigateAndPopUpTo(toScreen: BaseScreen, popUpToScreen: BaseScreen) {
-    if (navController.isLifecycleResumed) {
-        navController.navigate(toScreen) {
-            launchSingleTop = true
-            popUpTo(popUpToScreen) { inclusive = true }
-        }
-    }
+fun OnlineStoreAppState.switchBottomNavigationScreens(toScreen: BaseScreen) {
+    backStack.clear()
+    backStack.add(toScreen)
 }
 
 /**
- * Navigates to the specified screen with restored state, and pop up to the
- * specified screen, saving state, if the lifecycle state of the current back stack entry
- * associated with the NavHostController is in a resumed state.
- *
- * @param toScreen The destination screen to navigate to.
- * @param popUpToScreen The screen up to which the back stack should be popped.
+ * Removes all instances of the given screen type from the back stack.
  */
-fun OnlineStoreAppState.navigateSaved(toScreen: BaseScreen, popUpToScreen: BaseScreen) {
-    if (navController.isLifecycleResumed) {
-        navController.navigate(toScreen) {
-            launchSingleTop = true
-            restoreState = true
-            popUpTo(popUpToScreen) { saveState = true }
-        }
-    }
+fun OnlineStoreAppState.removeAllOfType(screenClass: Class<out BaseScreen>) {
+    backStack.removeAll { screenClass.isInstance(it) }
 }
-
 /**
- * Switches the current screen in the bottom navigation to the specified screen.
- * This function ensures that the new screen becomes the only screen in the
- * bottom navigation back stack.
- *
- * @param navController The NavHostController responsible for navigation.
- * @param toScreen The target screen to navigate to.
- */
-fun OnlineStoreAppState.switchBottomNavigationScreens(
-    navController: NavHostController,
-    toScreen: BaseScreen,
-) {
-    navController.navigate(toScreen) {
-        popUpTo(0) {
-            saveState = true
-        }
-        launchSingleTop = true
-        restoreState = true
-    }
-}
-
-/**
- * Navigates to the specified screen if the lifecycle state of the current back stack entry
- * associated with the NavHostController is in a resumed state and clears the entire back stack.
- *
- * @param screen The destination screen to navigate to.
- */
-fun OnlineStoreAppState.clearAndNavigate(screen: BaseScreen) {
-    if (navController.isLifecycleResumed) {
-        navController.navigate(screen) {
-            launchSingleTop = true
-            popUpTo(0) { inclusive = true }
-        }
-    }
-}
-
-/**
- * Pops the back stack up to the specified screen inclusively if the NavHostController's
- * lifecycle is in a resumed state.
- *
- * @param screenToPopupTo The screen up to which the back stack should be popped inclusively.
- */
-fun OnlineStoreAppState.popupBackStackUpTo(screenToPopupTo: BaseScreen, inclusive: Boolean = true) {
-    if (navController.isLifecycleResumed) {
-        navController.popBackStack(screenToPopupTo, inclusive)
-    }
-}
-
-/**
- * Pops the back stack of the associated NavHostController to the previous destination with data.
- * Internally uses Gson to convert Object to json
- *
- * @param key The key to identify the data.
- * @param value The value of the data to be passed.
+ * Pops the current screen and saves data for the previous screen.
+ * @param key The key to associate with the data.
+ * @param value The data to save for the previous screen.
  */
 fun OnlineStoreAppState.popUpWithData(key: String, value: Any) {
-    navController.navigateBackWithData(key, value)
+    // Save data for the previous screen
+    if (backStack.size > 1) { // Only if there is a previous screen
+        backStackDataMap[key] = value
+    }
+    // Pop the current screen
+    backStack.removeLastOrNull()
 }
+
+/**
+ * Returns the current top screen in the back stack or null if empty.
+ */
+fun OnlineStoreAppState.currentScreen(): BaseScreen? = backStack.firstOrNull() as BaseScreen

@@ -20,4 +20,19 @@ fun rememberAppState(
     OnlineStoreAppState(backStack)
 }
 
-class OnlineStoreAppState(val backStack: NavBackStack<NavKey>)
+class OnlineStoreAppState(val backStack: NavBackStack<NavKey>){
+
+    // Holds data associated with the previous screen
+    val backStackDataMap = mutableMapOf<String, Any>()
+    val backStackData: Map<String, Any> get() = backStackDataMap
+
+    /**
+     * Retrieves the value associated with the given [key] from the back stack data map
+     * and removes it immediately. Use this to consume data passed via [popUpWithData]
+     * so that it is only read once.
+     *
+     * @param key The key identifying the data to retrieve.
+     * @return The value associated with the key, or null if no value exists.
+     */
+    fun getAndRemoveData(key: String): Any? = backStackDataMap.remove(key)
+}

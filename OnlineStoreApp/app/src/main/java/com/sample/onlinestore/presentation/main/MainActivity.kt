@@ -12,18 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
 import com.sample.designsystem.components.AlertDialogType
 import com.sample.designsystem.components.OnlineStoreCustomDialog
 import com.sample.designsystem.foundation.ui.OnlineStoreTheme
 import com.sample.onlinestore.R
 import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.popBackStackWithLifecycle
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.foundation.appstate.OnlineStoreApp
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 import com.sample.onlinestore.foundation.appstate.rememberAppState
@@ -46,8 +45,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     appState = rememberAppState()
-                    val mainActivityViewModel: MainActivityViewModel = hiltViewModel(
-                        creationCallback = mainActivityViewModelCreationCallback
+                    val mainActivityViewModel: MainActivityViewModel = assistedHiltViewModel(
+                        mainActivityViewModelCreationCallback
                     )
 
                     val uiState by mainActivityViewModel.uiState.collectAsStateWithLifecycle()

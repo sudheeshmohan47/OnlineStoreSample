@@ -11,9 +11,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.foundation.base.getBaseRoute
 import com.sample.onlinestore.commonmodule.utils.getBaseRoute
 import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
 import com.sample.onlinestore.foundation.navigation.navgraph.rootGraph
@@ -32,8 +39,8 @@ fun OnlineStoreApp(
     onAction: (MainActivityAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route?.getBaseRoute()
+
+    val currentRoute: String? = (appState.backStack.firstOrNull() as BaseScreen).getBaseRoute()
 
     // List of screens without bottom navigation
     val screensWithoutBottomNav = getScreenRoutesWithoutBottomNav()
@@ -61,7 +68,6 @@ fun OnlineStoreApp(
                     onAction = onAction,
                     switchToScreen = { screenToNavigate ->
                         mainActivityNavigationManager.switchScreens(
-                            appState.navController,
                             screenToNavigate
                         )
                     }
@@ -70,11 +76,23 @@ fun OnlineStoreApp(
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
+            NavDisplay(
+                entryDecorators = listOf(
+                    // Add the default decorators for managing scenes and saving state
+                    rememberSavedStateNavEntryDecorator(),
+                    // Then add the view model store decorator
+                    rememberViewModelStoreNavEntryDecorator()
+                ),
+                backStack = appState.backStack, onBack = { appState.popUp() },
+                entryProvider = entryProvider {
+                    rootGraph(appState)
+                }
+            )
             NavHost(
                 navController = appState.navController,
                 startDestination = OnlineStoreScreens.Splash,
             ) {
-                rootGraph(appState)
+
             }
         }
     }

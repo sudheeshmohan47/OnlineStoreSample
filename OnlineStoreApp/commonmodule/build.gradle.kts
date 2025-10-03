@@ -68,7 +68,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose.v270)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.lifecycle.runtime.compose.v270)
 
     // coroutines
     implementation(libs.kotlinx.coroutines.android)
@@ -85,10 +84,12 @@ dependencies {
 
     // hilt
     implementation(libs.google.dagger.hilt)
+    ksp(libs.google.dagger.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose.v280alpha08)
-    implementation(libs.navigation3.runtime)
-    ksp(libs.google.dagger.hilt.compiler)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
     // Detekt compose rules
     detektPlugins(libs.detekt)
