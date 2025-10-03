@@ -1,4 +1,4 @@
-name: Building Carelo Consumer Android build
+name: Building Online Store App Android build
 
 on:
   pull_request:

@@ -224,7 +224,7 @@ class ProductDetailsViewModelTest {
             viewModel.sendAction(ProductDetailsAction.OnClickFavourite)
             advanceUntilIdle()
 
-            // Check if the product is added to favorites in the repository
+            // Check if the product is not added to favorites in the repository
             assertFalse(productsRepository.wishlist.contains(testProduct.productId))
             val wishListedProduct =
                 viewModel.uiState.value.data?.product

@@ -1,0 +1,169 @@
+{
+  "Splash": {
+    "from": [],
+    "to": [
+      {
+        "screen": "Login",
+        "condition": "if not logged in"
+      },
+      {
+        "screen": "Home",
+        "condition": "if logged in"
+      }
+    ]
+  },
+  "Login": {
+    "from": [
+      {
+        "screen": "Splash",
+        "condition": "if not logged in"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Home",
+        "condition": "after successful login"
+      },
+      {
+        "screen": "Register",
+        "condition": "if user selects create account"
+      }
+    ]
+  },
+  "Register": {
+    "from": [
+      {
+        "screen": "Login",
+        "condition": "if user chooses register"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Home",
+        "condition": "after successful registration"
+      }
+    ]
+  },
+  "Home": {
+    "from": [
+      {
+        "screen": "Login",
+        "condition": "after login"
+      },
+      {
+        "screen": "Register",
+        "condition": "after registration"
+      },
+      {
+        "screen": "Splash",
+        "condition": "if already logged in"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Product Details",
+        "condition": "if user selects a product"
+      },
+      {
+        "screen": "Cart",
+        "condition": "if user opens cart"
+      },
+      {
+        "screen": "Profile",
+        "condition": "if user opens profile"
+      }
+    ]
+  },
+  "Product Details": {
+    "from": [
+      {
+        "screen": "Home",
+        "condition": "when user clicks on product"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Cart",
+        "condition": "if user adds product to cart"
+      }
+    ]
+  },
+  "Cart": {
+    "from": [
+      {
+        "screen": "Home",
+        "condition": "when user opens cart"
+      },
+      {
+        "screen": "Product Details",
+        "condition": "after adding product to cart"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Checkout",
+        "condition": "if user proceeds to checkout"
+      }
+    ]
+  },
+  "Checkout": {
+    "from": [
+      {
+        "screen": "Cart",
+        "condition": "if user clicks checkout"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Payment",
+        "condition": "if user continues"
+      }
+    ]
+  },
+  "Payment": {
+    "from": [
+      {
+        "screen": "Checkout",
+        "condition": "after confirming checkout"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Order Confirmation",
+        "condition": "if payment is successful"
+      },
+      {
+        "screen": "Checkout",
+        "condition": "if payment fails"
+      }
+    ]
+  },
+  "Order Confirmation": {
+    "from": [
+      {
+        "screen": "Payment",
+        "condition": "if payment is successful"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Home",
+        "condition": "if user continues shopping"
+      }
+    ]
+  },
+  "Profile": {
+    "from": [
+      {
+        "screen": "Home",
+        "condition": "if user opens profile"
+      }
+    ],
+    "to": [
+      {
+        "screen": "Login",
+        "condition": "if user logs out"
+      }
+    ]
+  }
+}
