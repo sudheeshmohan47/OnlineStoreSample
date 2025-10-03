@@ -15,10 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.sample.designsystem.components.AlertDialogType
 import com.sample.designsystem.components.OnlineStoreCustomDialog
 import com.sample.designsystem.foundation.ui.OnlineStoreTheme
 import com.sample.onlinestore.R
+import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.popBackStackWithLifecycle
 import com.sample.onlinestore.foundation.appstate.OnlineStoreApp
@@ -28,8 +31,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private lateinit var navController: NavHostController
     private lateinit var appState: OnlineStoreAppState
+    private lateinit var backStack: NavBackStack<BaseScreen>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     appState = rememberAppState()
-                    navController = appState.navController
                     val mainActivityViewModel: MainActivityViewModel = hiltViewModel(
                         creationCallback = mainActivityViewModelCreationCallback
                     )
@@ -74,14 +76,14 @@ class MainActivity : ComponentActivity() {
     ) {
         BackHandler(
             onBack = {
-                if (navController.previousBackStackEntry?.id == null && !isFinishing) {
+                if (backStack.size <=1 && !isFinishing) {
                     onAction(
                         MainActivityAction.ShowAppExitDialog(
                             true
                         )
                     )
                 } else {
-                    navController.popBackStackWithLifecycle()
+                    backStack.removeLastOrNull()
                 }
             }
         )

@@ -1,10 +1,11 @@
 package com.sample.onlinestore.commonmodule.foundation.base
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 // Base class for Screen to be used in app
 @Serializable
-open class BaseScreen
+open class BaseScreen: NavKey
 
 /**
  * Retrieves the base route string for a given BaseScreen.

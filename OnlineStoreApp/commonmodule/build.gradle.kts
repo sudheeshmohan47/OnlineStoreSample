@@ -11,7 +11,7 @@ plugins {
 
 android {
     namespace = "com.sample.onlinestore.commonmodule"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
@@ -43,8 +43,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
     buildFeatures {
         buildConfig = true
@@ -85,6 +87,7 @@ dependencies {
     implementation(libs.google.dagger.hilt)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose.v280alpha08)
+    implementation(libs.navigation3.runtime)
     ksp(libs.google.dagger.hilt.compiler)
 
     // Detekt compose rules
