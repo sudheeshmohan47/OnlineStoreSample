@@ -3,9 +3,12 @@ package com.sample.onlinestore.foundation.navigation.navgraph
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
 import com.sample.onlinestore.cartmodule.foundation.navigation.CartScreens
 import com.sample.onlinestore.cartmodule.presentation.cart.screen.CartScreen
 import com.sample.onlinestore.categoriesmodule.presentation.categories.screen.CategoriesScreen
+import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.navigation.animatedEntry
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.slideComposable
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 import com.sample.onlinestore.foundation.navigation.navigationmanagers.HomeNavigationManager
@@ -15,7 +18,7 @@ import com.sample.onlinestore.productsmodule.presentation.productdetails.screen.
 import com.sample.onlinestore.productsmodule.presentation.productslisting.screen.ProductsListingScreen
 import com.sample.wishlistmodule.presentation.wishlist.screen.WishlistScreen
 
-fun NavGraphBuilder.homeNavGraph(
+fun EntryProviderBuilder<NavKey>.homeNavGraph(
     appState: OnlineStoreAppState
 ) {
     val homeNavigationManager = HomeNavigationManager(appState)
@@ -31,10 +34,10 @@ fun NavGraphBuilder.homeNavGraph(
     wishlistScreenComposable(homeNavigationManager)
 }
 
-private fun NavGraphBuilder.homeScreenComposable(
+private fun EntryProviderBuilder<NavKey>.homeScreenComposable(
     homeNavigationManager: HomeNavigationManager
 ) {
-    composable<BottomNavItem.Home> {
+    entry<BottomNavItem.Home> {
         ProductsListingScreen(
             loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen,
             gotoCartScreen = homeNavigationManager.gotoCartScreen
@@ -42,26 +45,25 @@ private fun NavGraphBuilder.homeScreenComposable(
     }
 }
 
-private fun NavGraphBuilder.productDetailsScreenComposable(homeNavigationManager: HomeNavigationManager) {
-    slideComposable<ProductScreens.ProductDetailScreen> {
+private fun EntryProviderBuilder<NavKey>.productDetailsScreenComposable(homeNavigationManager: HomeNavigationManager) {
+    animatedEntry<ProductScreens.ProductDetailScreen> { productDetailsScreen ->
 
-        val productDetailScreen = it.toRoute<ProductScreens.ProductDetailScreen>()
         ProductDetailsScreen(
             backToPreviousScreen = homeNavigationManager.backToPreviousScreen,
             gotoCartScreen = homeNavigationManager.gotoCartScreen,
-            productId = productDetailScreen.productId
+            productId = productDetailsScreen.productId
         )
     }
 }
 
-private fun NavGraphBuilder.categoriesScreenComposable() {
-    composable<BottomNavItem.Categories> {
+private fun EntryProviderBuilder<NavKey>.categoriesScreenComposable() {
+    entry<BottomNavItem.Categories> {
         CategoriesScreen()
     }
 }
 
-private fun NavGraphBuilder.cartScreenComposable(homeNavigationManager: HomeNavigationManager) {
-    composable<CartScreens.CartScreen> {
+private fun EntryProviderBuilder<NavKey>.cartScreenComposable(homeNavigationManager: HomeNavigationManager) {
+    entry<CartScreens.CartScreen> {
         CartScreen(
             loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen,
             backToPreviousScreen = homeNavigationManager.backToPreviousScreen
@@ -69,8 +71,8 @@ private fun NavGraphBuilder.cartScreenComposable(homeNavigationManager: HomeNavi
     }
 }
 
-private fun NavGraphBuilder.wishlistScreenComposable(homeNavigationManager: HomeNavigationManager) {
-    composable<BottomNavItem.Wishlist> {
+private fun EntryProviderBuilder<NavKey>.wishlistScreenComposable(homeNavigationManager: HomeNavigationManager) {
+    entry<BottomNavItem.Wishlist> {
         WishlistScreen(
             loadProductDetailScreen = homeNavigationManager.gotoProductsDetailScreen,
             gotoCartScreen = homeNavigationManager.gotoCartScreen

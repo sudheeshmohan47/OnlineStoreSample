@@ -1,14 +1,15 @@
 package com.sample.onlinestore.foundation.navigation.navgraph
 
-import androidx.navigation.NavGraphBuilder
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.slideComposable
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
+import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.navigation.animatedEntry
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
 import com.sample.onlinestore.foundation.navigation.navigationmanagers.StartupNavigationManager
 import com.sample.onlinestore.presentation.appintro.appintro.screens.AppIntroScreen
 import com.sample.onlinestore.presentation.splash.screen.SplashScreen
 
-fun NavGraphBuilder.splashAndAppIntroGraph(
+fun EntryProviderBuilder<NavKey>.splashAndAppIntroGraph(
     appState: OnlineStoreAppState
 ) {
     val startupNavigationManager = StartupNavigationManager(appState)
@@ -19,10 +20,10 @@ fun NavGraphBuilder.splashAndAppIntroGraph(
     appIntroScreenComposable(startupNavigationManager)
 }
 
-private fun NavGraphBuilder.splashScreenComposable(
+private fun EntryProviderBuilder<NavKey>.splashScreenComposable(
     startupNavigationManager: StartupNavigationManager
 ) {
-    slideComposable<OnlineStoreScreens.Splash> {
+    animatedEntry<OnlineStoreScreens.Splash> {
         SplashScreen(
             navigateToScreens = { userStatus ->
                 startupNavigationManager.navigateToScreens(
@@ -33,10 +34,10 @@ private fun NavGraphBuilder.splashScreenComposable(
     }
 }
 
-private fun NavGraphBuilder.appIntroScreenComposable(
+private fun EntryProviderBuilder<NavKey>.appIntroScreenComposable(
     startupNavigationManager: StartupNavigationManager
 ) {
-    slideComposable<OnlineStoreScreens.AppIntroScreen> {
+    animatedEntry<OnlineStoreScreens.AppIntroScreen> {
         AppIntroScreen(goToLoginScreen = startupNavigationManager.gotoLoginScreen)
     }
 }

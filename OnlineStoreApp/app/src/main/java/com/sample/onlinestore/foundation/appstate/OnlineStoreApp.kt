@@ -9,22 +9,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.sample.onlinestore.authenticationmodule.foundation.navigation.AuthenticationScreens
 import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.foundation.base.getBaseRoute
-import com.sample.onlinestore.commonmodule.utils.getBaseRoute
 import com.sample.onlinestore.foundation.navigation.OnlineStoreScreens
-import com.sample.onlinestore.foundation.navigation.navgraph.rootGraph
+import com.sample.onlinestore.foundation.navigation.navgraph.rootUI
 import com.sample.onlinestore.foundation.navigation.navigationmanagers.MainActivityNavigationManager
+import com.sample.onlinestore.presentation.dashboard.BottomNavItem
 import com.sample.onlinestore.presentation.dashboard.getScreenRoutesWithoutBottomNav
 import com.sample.onlinestore.presentation.dashboard.screen.BottomNavigationSection
 import com.sample.onlinestore.presentation.main.MainActivityAction
@@ -85,15 +82,16 @@ fun OnlineStoreApp(
                 ),
                 backStack = appState.backStack, onBack = { appState.popUp() },
                 entryProvider = entryProvider {
-                    rootGraph(appState)
+                    entry<AuthenticationScreens.LoginScreen> {
+
+                    }
+                    entry<OnlineStoreScreens.Splash> {
+
+                    }
+                    rootUI(appState)
                 }
             )
-            NavHost(
-                navController = appState.navController,
-                startDestination = OnlineStoreScreens.Splash,
-            ) {
-
-            }
         }
     }
 }
+

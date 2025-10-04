@@ -1,9 +1,10 @@
 package com.sample.onlinestore.foundation.navigation.navgraph
 
-import androidx.navigation.NavGraphBuilder
+import androidx.navigation3.runtime.EntryProviderBuilder
+import androidx.navigation3.runtime.NavKey
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 
-fun NavGraphBuilder.rootGraph(appState: OnlineStoreAppState) {
+fun EntryProviderBuilder<NavKey>.rootUI(appState: OnlineStoreAppState) {
     splashAndAppIntroGraph(appState)
     authenticationNavGraph(appState)
     homeNavGraph(appState)
