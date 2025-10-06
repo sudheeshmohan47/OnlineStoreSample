@@ -13,6 +13,7 @@ The following are the tech stack used for this project:
 - **Jetpack Compose**: Ui
 - **Kotlin**  
 - **Room**: Database
+- **Navigation 3**: Compose Navigation
 - **Retrofit & OkHttp**: For Networking  
 - **JUnit & MockK**: Unit testing 
 - **Paparazzi**: Screenshot testing library.  
