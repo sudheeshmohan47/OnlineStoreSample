@@ -1,15 +1,11 @@
 package com.sample.onlinestore.foundation.navigation.navgraph
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import androidx.navigation3.runtime.EntryProviderBuilder
 import androidx.navigation3.runtime.NavKey
 import com.sample.onlinestore.cartmodule.foundation.navigation.CartScreens
 import com.sample.onlinestore.cartmodule.presentation.cart.screen.CartScreen
 import com.sample.onlinestore.categoriesmodule.presentation.categories.screen.CategoriesScreen
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.navigation.animatedEntry
-import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.slideComposable
 import com.sample.onlinestore.foundation.appstate.OnlineStoreAppState
 import com.sample.onlinestore.foundation.navigation.navigationmanagers.HomeNavigationManager
 import com.sample.onlinestore.presentation.dashboard.BottomNavItem

@@ -1,4 +1,6 @@
 [versions]
+kotlin = "2.2.20"
+ksp = "2.2.20-2.0.3"
 accompanistPermissions = "0.37.3"
 agp = "8.12.3"
 animation = "1.9.2"
@@ -11,7 +13,6 @@ detektVersion = "0.4.27"
 hiltAndroidCompiler = "2.57.2"
 hiltAndroidTesting = "2.57.2"
 hiltNavigationComposeVersion = "1.3.0"
-kotlin = "2.2.20"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -26,12 +27,12 @@ composeBom = "2025.09.01"
 appcompat = "1.7.1"
 detekt = "1.23.8"
 immutableCollections = "0.4.0"
+materialIconsCore = "1.7.8"
 mockk = "1.14.6"
 navigationCompose = "2.9.5"
 ktlint = "13.1.0"
 kotlinSerialization = "2.2.20"
 hilt = "2.57.2"
-ksp = "2.1.0-1.0.29"
 orgJacocoCore = "0.8.13"
 room = "2.8.1"
 timber = "5.0.1"
@@ -42,7 +43,7 @@ playServicesAnalyticsImpl = "18.2.0"
 paparazzi = "1.3.5"
 navigation3 = "1.0.0-alpha10"
 navigation3Runtime = "1.0.0-alpha10"
-lifecycleViewmodelNav3 = "1.0.0-alpha01"
+lifecycleViewmodelNav3 = "1.0.0-alpha04"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -56,6 +57,7 @@ androidx-core-testing = { module = "androidx.arch.core:core-testing", version.re
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 androidx-lifecycle-runtime-compose-v270 = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+androidx-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsCore" }
 androidx-navigation-compose-v280alpha08 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }

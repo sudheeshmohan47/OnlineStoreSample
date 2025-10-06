@@ -3,8 +3,8 @@ package com.sample.onlinestore.commonmodule.foundation.navigation.customcomponen
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.EntryProviderBuilder
@@ -29,25 +29,26 @@ import com.sample.onlinestore.commonmodule.foundation.base.BaseScreen
 inline fun <reified T : NavKey> EntryProviderBuilder<NavKey>.animatedEntry(
     duration: Int = 500,
     metadata: Map<String, Any> = NavDisplay.transitionSpec {
-        slideInVertically(
-            initialOffsetY = { it },
+        slideInHorizontally( // ← horizontal slide in
+            initialOffsetX = { it }, // positive = from right, negative = from left
             animationSpec = tween(duration)
         ) togetherWith ExitTransition.KeepUntilTransitionsFinished
     } + NavDisplay.popTransitionSpec {
-        EnterTransition.None togetherWith slideOutVertically(
-            targetOffsetY = { it },
+        EnterTransition.None togetherWith slideOutHorizontally( // ← horizontal slide out
+            targetOffsetX = { it }, // positive = slide to right, negative = slide to left
             animationSpec = tween(duration)
         )
     } + NavDisplay.predictivePopTransitionSpec {
-        EnterTransition.None togetherWith slideOutVertically(
-            targetOffsetY = { it },
+        EnterTransition.None togetherWith slideOutHorizontally(
+            targetOffsetX = { it },
             animationSpec = tween(duration)
         )
     },
     noinline content: @Composable (T) -> Unit
-    ) {
+) {
     addEntryProvider(T::class, { simpleContentKey(it) }, metadata, content)
 }
+
 
 /**
  * Generates a stable key for a NavEntry from the key object.

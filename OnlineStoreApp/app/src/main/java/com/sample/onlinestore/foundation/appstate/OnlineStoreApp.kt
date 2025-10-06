@@ -82,12 +82,6 @@ fun OnlineStoreApp(
                 ),
                 backStack = appState.backStack, onBack = { appState.popUp() },
                 entryProvider = entryProvider {
-                    entry<AuthenticationScreens.LoginScreen> {
-
-                    }
-                    entry<OnlineStoreScreens.Splash> {
-
-                    }
                     rootUI(appState)
                 }
             )

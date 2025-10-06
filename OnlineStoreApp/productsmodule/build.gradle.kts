@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.ui.tooling.preview)
     implementation(libs.androidx.compose.material3.material3)
     implementation(libs.androidx.lifecycle.runtime.compose.v270)
+    implementation(libs.androidx.material.icons.core)
+
     // coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlin.stdlib.v1924)
@@ -103,6 +105,11 @@ dependencies {
 
     // Detekt compose rules
     detektPlugins(libs.detekt)
+    // Navigation
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
     testImplementation (libs.mockk)
     testImplementation(libs.junit)

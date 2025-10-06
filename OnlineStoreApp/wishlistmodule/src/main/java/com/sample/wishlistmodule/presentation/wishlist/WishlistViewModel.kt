@@ -87,8 +87,6 @@ class WishlistViewModel @AssistedInject constructor(
             is WishlistAction.OnClickMoveToCart -> {
                 wishlistViewModelManager.moveToCart(uiState.value, action.productId)
             }
-
-            else -> Unit
         }
     }
 }

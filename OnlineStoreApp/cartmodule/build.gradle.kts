@@ -78,6 +78,12 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
+    // Navigation
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
     // room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)

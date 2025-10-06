@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.ui.tooling.preview)
     implementation(libs.androidx.compose.material3.material3)
     implementation(libs.androidx.lifecycle.runtime.compose.v270)
+    implementation(libs.androidx.material.icons.core)
+
     // coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlin.stdlib.v1924)
@@ -75,6 +77,12 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    // Navigation
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
 
     // room
     implementation(libs.androidx.room.runtime)

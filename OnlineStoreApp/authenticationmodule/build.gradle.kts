@@ -71,8 +71,11 @@ dependencies {
     // Compose Animation
     implementation(libs.androidx.animation)
     // Navigation
-    implementation(libs.androidx.navigation.compose.v280alpha08)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
     // DataStore Preferences
     implementation(libs.androidx.datastore.preferences)
     // Retrofit

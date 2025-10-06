@@ -57,7 +57,6 @@ fun OnlineStorePullToRefreshBox(
                 isRefreshing = isRefreshing,
                 color = spinningIndicatorColor,
                 containerColor = containerColor,
-                threshold = positionalThreshold
             )
         }
     ) {

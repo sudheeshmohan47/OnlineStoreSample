@@ -16,6 +16,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.sample.designsystem.components.AlertDialogType
 import com.sample.designsystem.components.OnlineStoreCustomDialog
 import com.sample.designsystem.foundation.ui.OnlineStoreTheme
@@ -31,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var appState: OnlineStoreAppState
-    private lateinit var backStack: NavBackStack<BaseScreen>
+    private lateinit var backStack: NavBackStack<NavKey>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     appState = rememberAppState()
+                    backStack = appState.backStack
                     val mainActivityViewModel: MainActivityViewModel = assistedHiltViewModel(
                         mainActivityViewModelCreationCallback
                     )
