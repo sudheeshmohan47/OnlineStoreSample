@@ -39,6 +39,7 @@ import com.sample.onlinestore.authenticationmodule.presentation.login.LoginUiMod
 import com.sample.onlinestore.authenticationmodule.presentation.login.LoginViewModel
 import com.sample.onlinestore.authenticationmodule.presentation.login.loginViewModelCreationCallback
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import com.sample.onlinestore.commonmodule.utils.keyboardVisibility
 import kotlinx.coroutines.CoroutineScope
@@ -48,7 +49,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun LoginScreen(
     gotoHomeScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel(creationCallback = loginViewModelCreationCallback)
+    loginViewModel: LoginViewModel = assistedHiltViewModel(creationCallback = loginViewModelCreationCallback)
 ) {
     val loginUiState: UiState<LoginUiModel> =
         loginViewModel.uiState.collectAsStateWithLifecycle().value
@@ -105,7 +106,7 @@ fun HandleUiState(
     gotoHomeScreen: () -> Unit,
     snackbarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    loginViewModel: LoginViewModel = hiltViewModel(creationCallback = loginViewModelCreationCallback)
+    loginViewModel: LoginViewModel = assistedHiltViewModel(creationCallback = loginViewModelCreationCallback)
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current

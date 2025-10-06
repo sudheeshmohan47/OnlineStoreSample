@@ -28,6 +28,7 @@ import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.R
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.domain.splash.model.UserStatus
 import com.sample.onlinestore.presentation.splash.SplashUiModel
 import com.sample.onlinestore.presentation.splash.SplashViewModel
@@ -37,7 +38,7 @@ import com.sample.onlinestore.presentation.splash.splashViewModelCreationCallbac
 fun SplashScreen(
     navigateToScreens: (UserStatus?) -> Unit,
     modifier: Modifier = Modifier,
-    splashViewModel: SplashViewModel = hiltViewModel(creationCallback = splashViewModelCreationCallback)
+    splashViewModel: SplashViewModel = assistedHiltViewModel(creationCallback = splashViewModelCreationCallback)
 ) {
     val uiState: UiState<SplashUiModel> =
         splashViewModel.uiState.collectAsStateWithLifecycle().value

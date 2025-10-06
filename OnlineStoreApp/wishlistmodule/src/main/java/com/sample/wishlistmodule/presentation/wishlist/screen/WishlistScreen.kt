@@ -36,6 +36,7 @@ import com.sample.designsystem.components.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import com.sample.wishlistmodule.presentation.wishlist.WishlistAction
 import com.sample.wishlistmodule.presentation.wishlist.WishlistEvent
@@ -51,7 +52,7 @@ fun WishlistScreen(
     loadProductDetailScreen: (String) -> Unit,
     gotoCartScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    wishlistViewModel: WishlistViewModel = hiltViewModel(
+    wishlistViewModel: WishlistViewModel = assistedHiltViewModel(
         creationCallback = wishlistViewModelCreationCallback
     )
 ) {
@@ -133,7 +134,7 @@ private fun HandleUIStateChanges(
     loadProductDetailScreen: (String) -> Unit,
     gotoCartScreen: () -> Unit,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    wishlistViewModel: WishlistViewModel = hiltViewModel(
+    wishlistViewModel: WishlistViewModel = assistedHiltViewModel(
         creationCallback = wishlistViewModelCreationCallback
     )
 ) {

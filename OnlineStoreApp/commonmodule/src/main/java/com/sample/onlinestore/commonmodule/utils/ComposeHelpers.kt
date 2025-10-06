@@ -12,11 +12,6 @@ import androidx.lifecycle.ViewModelStoreOwner
  * This wraps the longer `hiltViewModel(viewModelStoreOwner, key, creationCallback)` call,
  * automatically resolving the current [ViewModelStoreOwner] from [LocalViewModelStoreOwner].
  *
- * Usage:
- * ```
- * val myViewModel: MyViewModel = assistedHiltViewModel(myViewModelFactory::create)
- * ```
- *
  * @param VM  The type of the ViewModel
  * @param VMF The type of the assisted factory for the ViewModel
  * @param creationCallback A lambda that takes the factory and returns the ViewModel instance

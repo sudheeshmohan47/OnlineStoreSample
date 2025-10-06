@@ -39,6 +39,7 @@ import com.sample.designsystem.components.OnlineStoreSnackBarHost
 import com.sample.designsystem.foundation.OnlineStoreSpacing
 import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingAction
 import com.sample.onlinestore.productsmodule.presentation.productslisting.ProductsListingEvent
@@ -55,7 +56,7 @@ fun ProductsListingScreen(
     loadProductDetailScreen: (String) -> Unit,
     gotoCartScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    productListingViewModel: ProductsListingViewModel = hiltViewModel(
+    productListingViewModel: ProductsListingViewModel = assistedHiltViewModel(
         creationCallback = productsListingViewModelCreationCallback
     )
 ) {
@@ -162,7 +163,7 @@ private fun HandleUIStateChanges(
     loadDetailScreen: (String) -> Unit,
     gotoCartScreen: () -> Unit,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    productListingViewModel: ProductsListingViewModel = hiltViewModel(
+    productListingViewModel: ProductsListingViewModel = assistedHiltViewModel(
         creationCallback = productsListingViewModelCreationCallback
     )
 ) {

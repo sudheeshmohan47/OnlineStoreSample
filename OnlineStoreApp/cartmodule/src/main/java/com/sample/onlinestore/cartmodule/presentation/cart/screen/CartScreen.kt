@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -43,6 +44,7 @@ import com.sample.onlinestore.cartmodule.presentation.cart.CartUiModel
 import com.sample.onlinestore.cartmodule.presentation.cart.CartViewModel
 import com.sample.onlinestore.cartmodule.presentation.cart.cartViewModelCreationCallback
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -53,15 +55,15 @@ fun CartScreen(
     loadProductDetailScreen: (String) -> Unit,
     backToPreviousScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    cartViewModel: CartViewModel = hiltViewModel(
+    cartViewModel: CartViewModel = assistedHiltViewModel(
         creationCallback = cartViewModelCreationCallback
     )
 ) {
     val cartUiState by cartViewModel.uiState.collectAsStateWithLifecycle()
     val snackBarHostState = remember { SnackbarHostState() }
     val topAppBarState = rememberTopAppBarState()
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
+    val windowInfo = LocalWindowInfo.current
+    val screenWidth: Dp = windowInfo.containerSize.width.dp
     val cartItemsState: LazyListState = rememberLazyListState()
 
     LifecycleResumeEffect(Unit) {
@@ -140,7 +142,7 @@ private fun HandleUIStateChanges(
     loadDetailScreen: (String) -> Unit,
     backToPreviousScreen: () -> Unit,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    cartViewModel: CartViewModel = hiltViewModel(
+    cartViewModel: CartViewModel = assistedHiltViewModel(
         creationCallback = cartViewModelCreationCallback
     )
 ) {

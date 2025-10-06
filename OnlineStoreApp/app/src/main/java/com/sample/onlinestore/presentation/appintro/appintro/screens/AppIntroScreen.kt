@@ -32,6 +32,7 @@ import com.sample.designsystem.foundation.dp
 import com.sample.onlinestore.R
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
 import com.sample.onlinestore.commonmodule.foundation.navigation.customcomponents.SlidingDotsPagerIndicator
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.presentation.appintro.appintro.AppIntroAction
 import com.sample.onlinestore.presentation.appintro.appintro.AppIntroEvent
 import com.sample.onlinestore.presentation.appintro.appintro.AppIntroPage
@@ -48,7 +49,7 @@ const val AppIntroPageCount = 3
 fun AppIntroScreen(
     goToLoginScreen: () -> Unit,
     modifier: Modifier = Modifier,
-    appIntroViewModel: AppIntroViewModel = hiltViewModel(creationCallback = appIntroViewModelCreationCallback)
+    appIntroViewModel: AppIntroViewModel = assistedHiltViewModel(creationCallback = appIntroViewModelCreationCallback)
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -136,7 +137,7 @@ fun LoadAppIntroContent(
 @Composable
 private fun HandleUiState(
     goToLoginScreen: () -> Unit,
-    appIntroViewModel: AppIntroViewModel = hiltViewModel(creationCallback = appIntroViewModelCreationCallback)
+    appIntroViewModel: AppIntroViewModel = assistedHiltViewModel(creationCallback = appIntroViewModelCreationCallback)
 ) {
     val goToLoginScreenState by rememberUpdatedState(goToLoginScreen)
     LaunchedEffect(Unit) {

@@ -44,6 +44,7 @@ import com.sample.onlinestore.categoriesmodule.presentation.categories.Categorie
 import com.sample.onlinestore.categoriesmodule.presentation.categories.CategoriesViewModel
 import com.sample.onlinestore.categoriesmodule.presentation.categories.categoriesViewModelCreationCallback
 import com.sample.onlinestore.commonmodule.foundation.base.UiState
+import com.sample.onlinestore.commonmodule.utils.assistedHiltViewModel
 import com.sample.onlinestore.commonmodule.utils.handleErrorMessage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -52,7 +53,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun CategoriesScreen(
     modifier: Modifier = Modifier,
-    categoriesViewModel: CategoriesViewModel = hiltViewModel(
+    categoriesViewModel: CategoriesViewModel = assistedHiltViewModel(
         creationCallback = categoriesViewModelCreationCallback
     )
 ) {
@@ -154,7 +155,7 @@ private fun HandleUIStateChanges(
     categoriesUiState: UiState<CategoriesUiModel>,
     snackBarHostState: SnackbarHostState,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    categoriesViewModel: CategoriesViewModel = hiltViewModel(
+    categoriesViewModel: CategoriesViewModel = assistedHiltViewModel(
         creationCallback = categoriesViewModelCreationCallback
     ),
     context: Context = LocalContext.current
