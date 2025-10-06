@@ -38,13 +38,10 @@ class ProductsService @Inject constructor(
     /**
      * Fetches the list of products from the API and marks them as wishListed if applicable.
      *
-     * @param onCompletion A callback invoked with the success status and the [DomainResponse]
      * containing the list of products.
      * @throws Exception If an error occurs during the API call or wishlist operations.
      */
-    override suspend fun getProducts(
-        onCompletion: (Boolean, DomainResponse<List<ProductResponse>>) -> Unit
-    ) {
+    override suspend fun getProducts(): DomainResponse<List<ProductResponse>> {
         try {
             val response = productsApiService.getProducts()
             if (response.isSuccessful) {
@@ -55,9 +52,7 @@ class ProductsService @Inject constructor(
                     // Call to update products based on wishList and selectedCategories
                     val updatedProducts =
                         updateProducts(products, wishListItems, selectedCategories)
-
-                    onCompletion(true, DomainResponse(data = updatedProducts))
-                    return@getProducts
+                    return DomainResponse(data = updatedProducts)
                 }
             }
             val errorBody: ErrorBody? = response.parseErrorBody()
@@ -75,10 +70,7 @@ class ProductsService @Inject constructor(
      * containing the product details.
      * @throws Exception If an error occurs during the API call.
      */
-    override suspend fun getProductDetail(
-        productId: String,
-        onCompletion: (Boolean, DomainResponse<ProductResponse>) -> Unit
-    ) {
+    override suspend fun getProductDetail(productId: String): DomainResponse<ProductResponse> {
         try {
             val response = productsApiService.getProductDetail(productId)
             if (response.isSuccessful) {
@@ -94,8 +86,7 @@ class ProductsService @Inject constructor(
                         isAddedToCart = isAddedToCart
                     )
 
-                    onCompletion(true, DomainResponse(data = updatedProduct))
-                    return@getProductDetail
+                    return DomainResponse(data = updatedProduct)
                 }
             }
             val errorBody: ErrorBody? = response.parseErrorBody()
@@ -124,17 +115,9 @@ class ProductsService @Inject constructor(
      * @param productId The ID of the product to remove from the wishlist.
      * @param onCompletion A callback invoked with the success status of the operation.
      */
-    override suspend fun removeFromWishlist(
-        productId: String,
-        onCompletion: (Boolean) -> Unit
-    ) {
+    override suspend fun removeFromWishlist(productId: String): Boolean {
         try {
-            wishlistRepository.removeFromWishlist(
-                productId,
-                onCompletion = {
-                    onCompletion(true)
-                }
-            )
+            return wishlistRepository.removeFromWishlist(productId)
         } catch (e: Exception) {
             throw mapException(e)
         }

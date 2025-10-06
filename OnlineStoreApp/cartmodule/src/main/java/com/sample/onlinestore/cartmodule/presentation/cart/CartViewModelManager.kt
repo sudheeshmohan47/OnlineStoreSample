@@ -36,18 +36,11 @@ class CartViewModelManager(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 sendState(UiState.Loading(currentState.data))
-                cartUseCase.getCartItems { isSuccess, domainResponse ->
-                    if (isSuccess) {
-                        domainResponse.data?.let {
-                            sendState(
-                                UiState.Result(
-                                    currentState.data?.copy(
-                                        cartItems = it
-                                    )
-                                )
-                            )
-                        }
-                    }
+                val domainResponse = cartUseCase.getCartItems()
+                domainResponse.data?.let {
+                    sendState(
+                        UiState.Result(currentState.data?.copy(cartItems = it))
+                    )
                 }
             } catch (exception: DomainException) {
                 handleException(exception, currentState)
@@ -66,7 +59,8 @@ class CartViewModelManager(
         productId: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            cartUseCase.removeFromCart(productId) { isSuccess ->
+            val hasRemovedFromCart = cartUseCase.removeFromCart(productId)
+            if (hasRemovedFromCart) {
                 val updatedCartItems = currentState.data?.cartItems?.filter {
                     it.productId != productId
                 }.orEmpty()

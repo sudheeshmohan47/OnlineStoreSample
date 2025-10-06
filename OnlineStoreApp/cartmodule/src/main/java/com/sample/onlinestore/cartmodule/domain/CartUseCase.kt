@@ -21,23 +21,22 @@ class CartUseCase @Inject constructor(
      *
      * @param onCompletion Callback with success status and the list of cart items.
      */
-    suspend fun getCartItems(onCompletion: (Boolean, DomainResponse<List<CartItem>>) -> Unit) {
-        cartRepository.getCartListingItems { isSuccess, cartItems ->
-            if (isSuccess) {
-                val cartItemsList = cartItems.map { cartItem ->
-                    CartItem(
-                        productId = cartItem.productId ?: "",
-                        quantity = cartItem.quantity ?: 0,
-                        name = cartItem.name ?: "",
-                        price = cartItem.price ?: 0.0,
-                        category = cartItem.category ?: "",
-                        description = cartItem.description ?: "",
-                        image = cartItem.image ?: ""
-                    )
-                }
-                onCompletion(true, DomainResponse(cartItemsList))
+    suspend fun getCartItems(): DomainResponse<List<CartItem>> {
+        val cartItems = cartRepository.getCartListingItems()
+
+        return DomainResponse(
+            data = cartItems.map { cartItem ->
+                CartItem(
+                    productId = cartItem.productId ?: "",
+                    quantity = cartItem.quantity ?: 0,
+                    name = cartItem.name ?: "",
+                    price = cartItem.price ?: 0.0,
+                    category = cartItem.category ?: "",
+                    description = cartItem.description ?: "",
+                    image = cartItem.image ?: ""
+                )
             }
-        }
+        )
     }
 
     /**
@@ -46,7 +45,7 @@ class CartUseCase @Inject constructor(
      * @param productId The ID of the product to remove.
      * @param onCompletion Callback with success status.
      */
-    suspend fun removeFromCart(productId: String, onCompletion: (Boolean) -> Unit) {
-        cartRepository.removeFromCart(productId, onCompletion)
+    suspend fun removeFromCart(productId: String): Boolean {
+        return cartRepository.removeFromCart(productId)
     }
 }

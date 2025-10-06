@@ -53,7 +53,7 @@ class CartService @Inject constructor(
      *                     If successful, returns `true` and the list of cart items.
      *                     On failure, throws an exception.
      */
-    override suspend fun getCartListingItems(onCompletion: (Boolean, List<CartResponse>) -> Unit) {
+    override suspend fun getCartListingItems(): List<CartResponse> {
         try {
             val response = cartApiService.getProducts()
             if (response.isSuccessful) {
@@ -72,10 +72,7 @@ class CartService @Inject constructor(
                             )
                         }
                     }
-
-                    // Pass the results to the onCompletion callback
-                    onCompletion(true, cartItems)
-                    return@getCartListingItems
+                    return cartItems
                 }
             }
             val errorBody: ErrorBody? = response.parseErrorBody()
@@ -108,11 +105,8 @@ class CartService @Inject constructor(
      * @param onCompletion Callback to indicate whether the item was successfully removed.
      */
     override suspend fun removeFromCart(
-        productId: String,
-        onCompletion: (Boolean) -> Unit
-    ) {
-        if (cartDao.removeFromCart(productId) == 1) {
-            onCompletion(true)
-        }
+        productId: String
+    ): Boolean {
+        return cartDao.removeFromCart(productId) == 1
     }
 }

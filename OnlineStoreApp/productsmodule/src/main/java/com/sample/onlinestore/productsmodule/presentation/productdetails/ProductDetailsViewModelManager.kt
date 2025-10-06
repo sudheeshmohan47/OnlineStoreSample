@@ -40,18 +40,15 @@ class ProductDetailsViewModelManager(
         viewModelScope.launch(dispatcher) {
             try {
                 sendState(UiState.Loading(currentState.data))
-                productsUseCase.getProductDetail(productId = productId) { isSuccessFul, domainResponse ->
-                    if (isSuccessFul) {
-                        domainResponse.data?.let {
-                            sendState(
-                                UiState.Result(
-                                    currentState.data?.copy(
-                                        product = it
-                                    )
-                                )
+                val productResponse = productsUseCase.getProductDetail(productId = productId)
+                productResponse.data?.let {
+                    sendState(
+                        UiState.Result(
+                            currentState.data?.copy(
+                                product = it
                             )
-                        }
-                    }
+                        )
+                    )
                 }
             } catch (exception: DomainException) {
                 handleException(exception, currentState)
@@ -83,7 +80,7 @@ class ProductDetailsViewModelManager(
 
                 if (isAdding) {
                     productsUseCase.addToWishlist(originalProductItem.productId) { isSuccess ->
-                        handleApiResponseStatus(
+                        handleRemoveWishlistApiResponseStatus(
                             currentState,
                             isSuccess,
                             originalProductItem,
@@ -91,14 +88,13 @@ class ProductDetailsViewModelManager(
                         )
                     }
                 } else {
-                    productsUseCase.removeFromWishlist(originalProductItem.productId) { isSuccess ->
-                        handleApiResponseStatus(
-                            currentState,
-                            isSuccess,
-                            originalProductItem,
-                            wishlistErrorMessageResId
-                        )
-                    }
+                    val isRemovedFromWishlist = productsUseCase.removeFromWishlist(originalProductItem.productId)
+                    handleRemoveWishlistApiResponseStatus(
+                        currentState,
+                        isRemovedFromWishlist,
+                        originalProductItem,
+                        wishlistErrorMessageResId
+                    )
                 }
             } catch (exception: DomainException) {
                 handleException(exception, currentState)
@@ -124,14 +120,13 @@ class ProductDetailsViewModelManager(
                 val updatedProductItem = currentState.data?.copy(product = updatedProduct)
 
                 sendState(UiState.Result(updatedProductItem))
-                productsUseCase.addToCart(originalProductItem.productId) { isSuccess ->
-                    if (isSuccess) {
-                        sendEvent(ProductDetailsEvent.ShowMessage(Message(R.string.product_added_to_cart)))
-                    } else handleApiResponseStatus(
-                        currentState, false, originalProductItem,
-                        com.sample.onlinestore.cartmodule.R.string.error_adding_to_cart_failed
-                    )
-                }
+                val isAddedToCart = productsUseCase.addToCart(originalProductItem.productId)
+                if (isAddedToCart) {
+                    sendEvent(ProductDetailsEvent.ShowMessage(Message(R.string.product_added_to_cart)))
+                } else handleRemoveWishlistApiResponseStatus(
+                    currentState, false, originalProductItem,
+                    com.sample.onlinestore.cartmodule.R.string.error_adding_to_cart_failed
+                )
             } catch (exception: DomainException) {
                 handleException(exception, currentState)
             }
@@ -146,7 +141,7 @@ class ProductDetailsViewModelManager(
      * @param originalProduct The original product before optimistic updates.
      * @param messageResId Resource ID of the error message to display.
      */
-    private fun handleApiResponseStatus(
+    private fun handleRemoveWishlistApiResponseStatus(
         currentState: UiState<ProductDetailsUiModel>,
         isSuccess: Boolean,
         originalProduct: ProductItem,

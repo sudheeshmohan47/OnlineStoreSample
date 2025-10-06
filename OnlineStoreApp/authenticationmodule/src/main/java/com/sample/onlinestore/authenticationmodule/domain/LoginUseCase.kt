@@ -8,23 +8,18 @@ class LoginUseCase @Inject constructor(
     private val loginRepository: LoginRepository,
     private val preferenceManagerRepository: PreferenceManagerRepository
 ) {
-    suspend fun loginUser(
-        username: String,
-        password: String,
-        onComplete: (Boolean) -> Unit
-    ) {
-        loginRepository.loginUser(
+    suspend fun loginUser(username: String, password: String): Boolean {
+        val domainResponse = loginRepository.loginUser(
             LoginRequest(
                 username = username,
                 password = password
-            ),
-            onComplete = { isSuccessful, domainResponse ->
-                domainResponse.data?.let {
-                    onComplete(isSuccessful)
-                    saveSessionToken(it)
-                }
-            }
+            )
         )
+        domainResponse.data?.let {
+            saveSessionToken(it)
+            return true
+        }
+        return false
     }
 
     private suspend fun saveSessionToken(sessionToken: String) {

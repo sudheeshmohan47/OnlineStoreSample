@@ -27,7 +27,7 @@ class CategoriesService @Inject constructor(
         }
     }
 
-    override suspend fun fetchCategories(onCompletion: (Boolean, DomainResponse<List<CategoriesResponse>>) -> Unit) {
+    override suspend fun fetchCategories(): DomainResponse<List<CategoriesResponse>> {
         try {
             val response = categoriesApiService.getProductCategories()
             val selectedCategories = categoryDao.getSelectedCategories()
@@ -40,8 +40,7 @@ class CategoriesService @Inject constructor(
                             isSelected = selectedCategories.any { it.category == category }
                         )
                     }
-                    onCompletion(true, DomainResponse(data = updatedCategories))
-                    return@fetchCategories
+                    return DomainResponse(data = updatedCategories)
                 }
             }
             val errorBody: ErrorBody? = response.parseErrorBody()

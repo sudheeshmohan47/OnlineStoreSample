@@ -37,18 +37,15 @@ class WishlistViewModelManager(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 sendState(UiState.Loading(currentState.data))
-                wishlistUseCase.getWishlistItems { isSuccessFul, domainResponse ->
-                    if (isSuccessFul) {
-                        domainResponse.data?.let {
-                            sendState(
-                                UiState.Result(
-                                    currentState.data?.copy(
-                                        wishListedProducts = it
-                                    )
-                                )
+                val wishlistResponse = wishlistUseCase.getWishlistItems()
+                wishlistResponse.data?.let {
+                    sendState(
+                        UiState.Result(
+                            currentState.data?.copy(
+                                wishListedProducts = it
                             )
-                        }
-                    }
+                        )
+                    )
                 }
             } catch (exception: DomainException) {
                 handleException(exception, currentState)
@@ -90,10 +87,9 @@ class WishlistViewModelManager(
         productId: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            wishlistUseCase.removeFromWishlist(productId) { isSuccess ->
-                if (isSuccess) {
-                    handleWishlistItemFromUi(currentState, productId)
-                }
+            val isRemovedFromWishlist = wishlistUseCase.removeFromWishlist(productId)
+            if (isRemovedFromWishlist) {
+                handleWishlistItemFromUi(currentState, productId)
             }
         }
     }
@@ -109,10 +105,9 @@ class WishlistViewModelManager(
         productId: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            wishlistUseCase.moveItemToCart(productId) { isSuccess ->
-                if (isSuccess) {
-                    handleWishlistItemFromUi(currentState, productId)
-                }
+            val isItemAddedToCart = wishlistUseCase.moveItemToCart(productId)
+            if (isItemAddedToCart) {
+                handleWishlistItemFromUi(currentState, productId)
             }
         }
     }

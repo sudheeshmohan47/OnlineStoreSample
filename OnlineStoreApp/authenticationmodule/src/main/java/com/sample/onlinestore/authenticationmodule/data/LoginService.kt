@@ -29,16 +29,12 @@ class LoginService @Inject constructor(
      *
      * @throws Exception Mapped exceptions for API errors or any other failures encountered during login.
      */
-    override suspend fun loginUser(
-        loginRequest: LoginRequest,
-        onComplete: suspend (Boolean, DomainResponse<String>) -> Unit
-    ) {
+    override suspend fun loginUser(loginRequest: LoginRequest) :DomainResponse<String> {
         try {
             val response = authenticationApiService.login(loginRequest)
             if (response.isSuccessful) {
                 response.body()?.let { loginResponse ->
-                    onComplete(true, DomainResponse(data = loginResponse.token))
-                    return@loginUser
+                    return DomainResponse(data = loginResponse.token)
                 }
             }
             val errorBody: ErrorBody? = response.parseErrorBody()

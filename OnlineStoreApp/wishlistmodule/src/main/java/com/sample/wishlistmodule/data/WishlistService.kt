@@ -45,7 +45,7 @@ class WishlistService @Inject constructor(
      *
      * @param onCompletion A callback to return the success status and a list of wishlist items.
      */
-    override suspend fun getWishlistListingItems(onCompletion: (Boolean, List<WishListResponse>) -> Unit) {
+    override suspend fun getWishlistListingItems(): List<WishListResponse> {
         try {
             val response = wishlistApiService.getProducts()
             if (response.isSuccessful) {
@@ -63,10 +63,7 @@ class WishlistService @Inject constructor(
                             )
                         }
                     }
-
-                    // Pass the results to the onCompletion callback
-                    onCompletion(true, wishlistItems)
-                    return@getWishlistListingItems
+                    return wishlistItems
                 }
             }
             val errorBody: ErrorBody? = response.parseErrorBody()
@@ -114,11 +111,8 @@ class WishlistService @Inject constructor(
      * @param onCompletion A callback to return the success status of the removal operation.
      */
     override suspend fun removeFromWishlist(
-        productId: String,
-        onCompletion: (Boolean) -> Unit
-    ) {
-        if (wishlistDao.removeFromWishlist(productId) == 1) {
-            onCompletion(true)
-        }
+        productId: String
+    ): Boolean {
+        return wishlistDao.removeFromWishlist(productId) == 1
     }
 }

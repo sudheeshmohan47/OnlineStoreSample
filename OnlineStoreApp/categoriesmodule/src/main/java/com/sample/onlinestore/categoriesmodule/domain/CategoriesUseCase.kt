@@ -36,17 +36,15 @@ class CategoriesUseCase @Inject constructor(
      * @param onCompletion A callback that receives a success flag and a
      * DomainResponse containing a list of CategoryItem objects.
      */
-    suspend fun fetchCategories(onCompletion: (Boolean, DomainResponse<List<CategoryItem>>) -> Unit) {
-        categoriesRepository.fetchCategories { isSuccess, categoriesResponse ->
-            if (isSuccess) {
-                val categories = categoriesResponse.data?.map {
-                    CategoryItem(
-                        category = it.category,
-                        isSelected = it.isSelected
-                    )
-                }
-                onCompletion(true, DomainResponse(data = categories))
+    suspend fun fetchCategories(): DomainResponse<List<CategoryItem>> {
+        val categoriesResponse = categoriesRepository.fetchCategories()
+        return DomainResponse(
+            data = categoriesResponse.data?.map {
+                CategoryItem(
+                    category = it.category,
+                    isSelected = it.isSelected
+                )
             }
-        }
+        )
     }
 }

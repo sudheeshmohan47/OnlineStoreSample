@@ -36,20 +36,17 @@ class ProductListingViewModelManager(
         viewModelScope.launch(dispatcher) {
             try {
                 sendState(UiState.Loading(currentState.data))
-                productsUseCase.getProducts { isSuccessFul, domainResponse ->
-                    if (isSuccessFul) {
-                        domainResponse.data?.let {
-                            sendState(
-                                UiState.Result(
-                                    currentState.data?.copy(
-                                        products = it,
-                                        isSwipeRefreshing = false,
-                                        isInitialLoadingCompleted = true
-                                    )
-                                )
+                val productsResponse = productsUseCase.getProducts()
+                productsResponse.data?.let {
+                    sendState(
+                        UiState.Result(
+                            currentState.data?.copy(
+                                products = it,
+                                isSwipeRefreshing = false,
+                                isInitialLoadingCompleted = true
                             )
-                        }
-                    }
+                        )
+                    )
                 }
             } catch (exception: DomainException) {
                 handleException(exception, currentState)
@@ -80,9 +77,9 @@ class ProductListingViewModelManager(
                         handleWishListApiResponse(currentState, isSuccess, originalProduct)
                     }
                 } else {
-                    productsUseCase.removeFromWishlist(originalProduct.productId) { isSuccess ->
-                        handleWishListApiResponse(currentState, isSuccess, originalProduct)
-                    }
+                    val hasRemovedProduct =
+                        productsUseCase.removeFromWishlist(originalProduct.productId)
+                    handleWishListApiResponse(currentState, hasRemovedProduct, originalProduct)
                 }
             } catch (exception: DomainException) {
                 handleWishListApiResponse(currentState, false, originalProduct)

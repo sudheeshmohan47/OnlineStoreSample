@@ -119,16 +119,14 @@ class LoginViewModelManager(
                 val username = currentState.data?.username?.value.orEmpty()
                 val password = currentState.data?.password?.value.orEmpty()
 
-                loginUseCase.loginUser(
+                val isLoginSuccess = loginUseCase.loginUser(
                     username = username,
-                    password = password,
-                    onComplete = { isSuccessFul ->
-                        if (isSuccessFul) {
-                            sendState(UiState.Result(currentState.data))
-                            sendEvent(LoginEvent.LoginSuccess)
-                        }
-                    }
+                    password = password
                 )
+                if (isLoginSuccess) {
+                    sendState(UiState.Result(currentState.data))
+                    sendEvent(LoginEvent.LoginSuccess)
+                }
             } catch (exception: DomainException) {
                 handleException(exception, currentState)
             }

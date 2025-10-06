@@ -20,54 +20,43 @@ class ProductsUseCase @Inject constructor(
     private val productsRepository: ProductsRepository
 ) {
 
-    suspend fun getProducts(onCompletion: (Boolean, DomainResponse<List<ProductItem>>) -> Unit) {
-        productsRepository.getProducts { isSuccess, domainResponse ->
-            if (isSuccess) {
-                val products = domainResponse.data
-                    ?.filter { productResponse ->
-                        !productResponse.id.isNullOrEmpty() // Ensure id is not null or empty
-                    }
-                    ?.map { productResponse ->
-                        ProductItem(
-                            name = productResponse.title,
-                            price = productResponse.price,
-                            productId = productResponse.id!!, // Safe to use `!!` as we've filtered for non-null ids
-                            category = productResponse.category,
-                            description = productResponse.description,
-                            image = productResponse.image,
-                            isWishListed = productResponse.isWishListed
-                        )
-                    }
-                onCompletion(true, DomainResponse(data = products))
+    suspend fun getProducts(): DomainResponse<List<ProductItem>> {
+
+        val productsResponse = productsRepository.getProducts()
+        val products = productsResponse.data
+            ?.filter { productResponse ->
+                !productResponse.id.isNullOrEmpty() // Ensure id is not null or empty
+            }?.map { productResponse ->
+                ProductItem(
+                    name = productResponse.title,
+                    price = productResponse.price,
+                    productId = productResponse.id!!, // Safe to use `!!` as we've filtered for non-null ids
+                    category = productResponse.category,
+                    description = productResponse.description,
+                    image = productResponse.image,
+                    isWishListed = productResponse.isWishListed
+                )
             }
-        }
+        return DomainResponse(data = products)
     }
 
-    suspend fun getProductDetail(
-        productId: String,
-        onCompletion: (Boolean, DomainResponse<ProductItem>) -> Unit
-    ) {
-        productsRepository.getProductDetail(productId) { isSuccess, domainResponse ->
-            if (isSuccess) {
-                val productDetail = domainResponse.data?.let {
-                    if (!it.id.isNullOrEmpty()) { // Check if id is not null or empty
-                        ProductItem(
-                            name = it.title,
-                            price = it.price,
-                            productId = it.id!!, // We are sure id is not null here
-                            category = it.category,
-                            description = it.description,
-                            image = it.image,
-                            isWishListed = it.isWishListed,
-                            isAddedToCart = it.isAddedToCart
-                        )
-                    } else {
-                        null // Return null if id is null or empty
-                    }
-                }
-                onCompletion(true, DomainResponse(data = productDetail))
-            }
+    suspend fun getProductDetail(productId: String): DomainResponse<ProductItem> {
+        val productData = productsRepository.getProductDetail(productId).data
+
+        val productDetail = productData?.id?.takeIf { it.isNotEmpty() }?.let { id ->
+            ProductItem(
+                name = productData.title.orEmpty(),
+                price = productData.price ?: 0.0,
+                productId = id,
+                category = productData.category.orEmpty(),
+                description = productData.description.orEmpty(),
+                image = productData.image.orEmpty(),
+                isWishListed = productData.isWishListed,
+                isAddedToCart = productData.isAddedToCart
+            )
         }
+
+        return DomainResponse(data = productDetail)
     }
 
     suspend fun addToWishlist(productId: String, onCompletion: (Boolean) -> Unit) {
@@ -75,20 +64,12 @@ class ProductsUseCase @Inject constructor(
         onCompletion(true)
     }
 
-    suspend fun addToCart(productId: String, onCompletion: (Boolean) -> Unit) {
+    suspend fun addToCart(productId: String): Boolean {
         productsRepository.addProductToCart(productId)
-        onCompletion(true)
+        return true
     }
 
-    suspend fun removeFromWishlist(
-        productId: String,
-        onCompletion: (Boolean) -> Unit
-    ) {
-        productsRepository.removeFromWishlist(
-            productId,
-            onCompletion = {
-                onCompletion(true)
-            }
-        )
+    suspend fun removeFromWishlist(productId: String): Boolean {
+        return productsRepository.removeFromWishlist(productId)
     }
 }

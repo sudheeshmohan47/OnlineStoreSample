@@ -20,40 +20,19 @@ class WishlistUseCase @Inject constructor(
      * @param onCompletion A callback that returns a boolean indicating success or failure,
      * and a DomainResponse containing the list of WishlistItem.
      */
-    suspend fun getWishlistItems(onCompletion: (Boolean, DomainResponse<List<WishlistItem>>) -> Unit) {
-        wishlistRepository.getWishlistListingItems { isSuccess, wishlistItems ->
-            if (isSuccess) {
-                val cartItemsList = wishlistItems.map { wishlistItem ->
-                    WishlistItem(
-                        productId = wishlistItem.productId ?: "",
-                        name = wishlistItem.title ?: "",
-                        category = wishlistItem.category ?: "",
-                        description = wishlistItem.description ?: "",
-                        image = wishlistItem.image ?: "",
-                        price = wishlistItem.price ?: 0.0
-                    )
-                }
-                onCompletion(true, DomainResponse(cartItemsList))
-            }
-        }
-    }
+    suspend fun getWishlistItems(): DomainResponse<List<WishlistItem>> {
+        val wishlistItemsList = wishlistRepository.getWishlistListingItems()
 
-    /**
-     * Removes an item from the wishlist.
-     *
-     * @param productId The ID of the product to be removed from the wishlist.
-     * @param onCompletion A callback that returns a boolean indicating whether the removal
-     * operation was successful.
-     */
-    suspend fun removeFromWishlist(
-        productId: String,
-        onCompletion: (Boolean) -> Unit
-    ) {
-        wishlistRepository.removeFromWishlist(
-            productId,
-            onCompletion = { isSuccess ->
-                onCompletion(isSuccess)
-            }
+        return DomainResponse(wishlistItemsList.map { wishlistItem ->
+            WishlistItem(
+                productId = wishlistItem.productId ?: "",
+                name = wishlistItem.title ?: "",
+                category = wishlistItem.category ?: "",
+                description = wishlistItem.description ?: "",
+                image = wishlistItem.image ?: "",
+                price = wishlistItem.price ?: 0.0
+            )
+        }
         )
     }
 
@@ -64,8 +43,21 @@ class WishlistUseCase @Inject constructor(
      * @param onCompletion A callback that returns a boolean indicating whether the removal
      * operation was successful.
      */
-    suspend fun moveItemToCart(productId: String, onCompletion: (Boolean) -> Unit) {
+    suspend fun removeFromWishlist(
+        productId: String
+    ): Boolean {
+        return wishlistRepository.removeFromWishlist(productId)
+    }
+
+    /**
+     * Removes an item from the wishlist.
+     *
+     * @param productId The ID of the product to be removed from the wishlist.
+     * @param onCompletion A callback that returns a boolean indicating whether the removal
+     * operation was successful.
+     */
+    suspend fun moveItemToCart(productId: String): Boolean {
         wishlistRepository.moveItemToCart(productId)
-        onCompletion(true)
+        return true
     }
 }

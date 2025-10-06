@@ -127,6 +127,7 @@ dependencies {
     kspTest (libs.hilt.android.compiler.v2511)
     androidTestImplementation (libs.hilt.android.testing)
     kspAndroidTest (libs.google.dagger.hilt.compiler)
+    testImplementation(kotlin("test"))
 }
 
 val exclusions = listOf(

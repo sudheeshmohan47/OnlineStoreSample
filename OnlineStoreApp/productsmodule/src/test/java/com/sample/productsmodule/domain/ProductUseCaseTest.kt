@@ -25,19 +25,15 @@ class ProductUseCaseTest {
     @Test
     fun `getProducts returns list of products`() = runBlocking {
         productRepository.products = getFakeProducts()
-
-        productUseCase.getProducts { success, response ->
-            assertTrue(success)
-            assertEquals(10, response.data?.size)
-        }
+        val response = productUseCase.getProducts()
+        assertEquals(10, response.data?.size)
     }
 
     @Test(expected = DomainException::class)
     fun `getProducts throws exception when exception is set`() = runBlocking {
         val domainException = NetworkException()
         productRepository.exception = domainException
-
-        productUseCase.getProducts { _, _ -> }
+        val products = productUseCase.getProducts()
     }
 
     @Test
@@ -45,22 +41,17 @@ class ProductUseCaseTest {
         val productId = "5"
         productRepository.products = getFakeProducts()
 
-        productUseCase.getProductDetail(productId) { success, response ->
-            assertTrue(success)
-            assertNotNull(response.data)
-            assertEquals(productId, response.data?.productId)
-        }
+        val productDetailResponse = productUseCase.getProductDetail(productId)
+        assertNotNull(productDetailResponse.data)
+        assertEquals(productId, productDetailResponse.data?.productId)
     }
 
-    @Test (expected = DomainException::class)
+    @Test(expected = DomainException::class)
     fun `getProductDetail throws error for non-existent product`() = runBlocking {
         val productId = "100"
         productRepository.products = getFakeProducts()
-
-        productUseCase.getProductDetail(productId) { success, response ->
-            assertTrue(success)
-            assertNull(response.data)
-        }
+       val response =  productUseCase.getProductDetail(productId)
+        assertNull(response.data)
     }
 
     @Test
@@ -85,29 +76,24 @@ class ProductUseCaseTest {
     fun `removeFromWishlist removes product from wishlist`() = runBlocking {
         val productId = "1"
         productRepository.wishlist.add(productId)
-
-        productUseCase.removeFromWishlist(productId) { success ->
-            assertTrue(success)
-            assertFalse(productRepository.wishlist.contains(productId))
-        }
+        productUseCase.removeFromWishlist(productId)
+        assertFalse(productRepository.wishlist.contains(productId))
     }
 
     @Test(expected = DomainException::class)
-    fun `removeFromWishlist throws exception when product is not added to wishlist`() = runBlocking {
-        val productId = "1"
-        productRepository.wishlist = mutableListOf()
+    fun `removeFromWishlist throws exception when product is not added to wishlist`() =
+        runBlocking {
+            val productId = "1"
+            productRepository.wishlist = mutableListOf()
 
-        productUseCase.removeFromWishlist(productId) { success ->
-            assertFalse(success)
+            val isRemovedFromWishlist = productUseCase.removeFromWishlist(productId)
+            assertFalse(isRemovedFromWishlist)
         }
-    }
 
     @Test
     fun `addProductToCart adds product to cart`() = runBlocking {
         val productId = "3"
-        productUseCase.addToCart(productId, onCompletion = {
-            assertTrue(productRepository.cart.contains(productId))
-        })
-
+        productUseCase.addToCart(productId)
+        assertTrue(productRepository.cart.contains(productId))
     }
 }

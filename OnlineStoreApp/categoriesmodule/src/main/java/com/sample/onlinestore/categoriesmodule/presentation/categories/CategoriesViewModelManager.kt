@@ -39,22 +39,19 @@ class CategoriesViewModelManager(
                 // Send loading state to UI while fetching the categories
                 sendState(UiState.Loading(currentState.data))
                 // Fetch categories from the use case
-                categoriesUseCase.fetchCategories { isSuccessFul, domainResponse ->
-                    if (isSuccessFul) {
-                        domainResponse.data?.let {
-                            // If data fetch is successful, update the UI state with the new categories
-                            sendState(
-                                UiState.Result(
-                                    currentState.data?.copy(
-                                        categories = it,
-                                        // Set swipe refreshing to false after data is fetched
-                                        isSwipeRefreshing = false,
-                                        isInitialLoadingCompleted = true
-                                    )
-                                )
+                val categoriesResponse = categoriesUseCase.fetchCategories()
+                categoriesResponse.data?.let {
+                    // If data fetch is successful, update the UI state with the new categories
+                    sendState(
+                        UiState.Result(
+                            currentState.data?.copy(
+                                categories = it,
+                                // Set swipe refreshing to false after data is fetched
+                                isSwipeRefreshing = false,
+                                isInitialLoadingCompleted = true
                             )
-                        }
-                    }
+                        )
+                    )
                 }
             } catch (exception: DomainException) {
                 // Handle exceptions and update the UI with appropriate error messages
