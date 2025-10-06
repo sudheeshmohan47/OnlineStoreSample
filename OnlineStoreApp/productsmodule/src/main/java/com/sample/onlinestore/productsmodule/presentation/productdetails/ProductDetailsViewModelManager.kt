@@ -79,14 +79,13 @@ class ProductDetailsViewModelManager(
                 sendState(UiState.Result(updatedProductItem))
 
                 if (isAdding) {
-                    productsUseCase.addToWishlist(originalProductItem.productId) { isSuccess ->
+                    productsUseCase.addToWishlist(originalProductItem.productId)
                         handleRemoveWishlistApiResponseStatus(
                             currentState,
-                            isSuccess,
+                            true,
                             originalProductItem,
                             wishlistErrorMessageResId
                         )
-                    }
                 } else {
                     val isRemovedFromWishlist = productsUseCase.removeFromWishlist(originalProductItem.productId)
                     handleRemoveWishlistApiResponseStatus(

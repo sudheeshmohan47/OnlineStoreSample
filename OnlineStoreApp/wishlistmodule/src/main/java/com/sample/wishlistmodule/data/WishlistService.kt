@@ -14,9 +14,12 @@ import com.sample.wishlistmodule.domain.WishlistRepository
 import javax.inject.Inject
 
 /**
- * Service class for managing wishlist operations, interacting with local storage,
- * remote API, and the cart repository to add, remove, fetch wishlist items, and move
- * items to the cart.
+ * Service class for managing wishlist operations.
+ *
+ * Responsibilities:
+ * - Add, fetch, remove wishlist items.
+ * - Move items from wishlist to cart.
+ * - Integrates with local database ([WishlistDao]), remote API ([WishlistApiService]), and [CartRepository].
  *
  * @param wishlistDao DAO interface for performing local wishlist database operations.
  * @param cartRepository Repository for handling cart operations.
@@ -27,30 +30,30 @@ class WishlistService @Inject constructor(
     private val wishlistDao: WishlistDao,
     private val cartRepository: CartRepository,
     private val wishlistApiService: WishlistApiService
-) :
-    WishlistRepository {
+) : WishlistRepository {
 
     /**
      * Adds a product to the wishlist.
      *
-     * @param productId The ID of the product to be added to the wishlist.
+     * @param productId The ID of the product to be added.
      */
     override suspend fun addToWishlist(productId: String) {
-        wishlistDao.addToWishlist(productId = productId)
+        wishlistDao.addToWishlist(productId)
     }
 
     /**
-     * Fetches the list of products for the wishlist from the remote server and maps them
-     * to the local wishlist items.
+     * Fetches wishlist items from the remote server and maps them to [WishListResponse].
      *
-     * @param onCompletion A callback to return the success status and a list of wishlist items.
+     * Combines remote product details with locally stored wishlist items.
+     *
+     * @return List of [WishListResponse] representing wishlist items.
+     * @throws Exception If API or mapping errors occur.
      */
     override suspend fun getWishlistListingItems(): List<WishListResponse> {
         try {
             val response = wishlistApiService.getProducts()
             if (response.isSuccessful) {
                 response.body()?.let { products ->
-                    // Fetch cart items from the database and map them to CartResponse
                     val wishlistItems = wishlistDao.getWishlistItems().mapNotNull { wishlistItem ->
                         products.find { it.id == wishlistItem.productId }?.let { product ->
                             WishListResponse(
@@ -74,16 +77,16 @@ class WishlistService @Inject constructor(
     }
 
     /**
-     * Retrieves the list of wishlist items from the local database.
+     * Retrieves wishlist items from the local database.
      *
-     * @return A list of wishlist items.
+     * @return List of [Wishlist] representing local wishlist items.
      */
     override suspend fun getWishlistItemsLocal(): List<Wishlist> = wishlistDao.getWishlistItems()
 
     /**
-     * Retrieves the list of wishlist items from the local database and returns their IDs.
+     * Retrieves IDs of wishlist items stored locally.
      *
-     * @return A list of ids of wishListed items.
+     * @return List of product IDs in the wishlist.
      */
     override suspend fun getWishlistItemsIds(): List<String> {
         return getWishlistItemsLocal().map { it.productId }
@@ -92,7 +95,7 @@ class WishlistService @Inject constructor(
     /**
      * Moves an item from the wishlist to the cart.
      *
-     * @param productId The ID of the product to be moved from wishlist to cart.
+     * @param productId The ID of the product to move.
      */
     override suspend fun moveItemToCart(productId: String) {
         wishlistDao.removeFromWishlist(productId)
@@ -107,12 +110,10 @@ class WishlistService @Inject constructor(
     /**
      * Removes a product from the wishlist.
      *
-     * @param productId The ID of the product to be removed from the wishlist.
-     * @param onCompletion A callback to return the success status of the removal operation.
+     * @param productId The ID of the product to remove.
+     * @return True if the removal was successful, false otherwise.
      */
-    override suspend fun removeFromWishlist(
-        productId: String
-    ): Boolean {
+    override suspend fun removeFromWishlist(productId: String): Boolean {
         return wishlistDao.removeFromWishlist(productId) == 1
     }
 }

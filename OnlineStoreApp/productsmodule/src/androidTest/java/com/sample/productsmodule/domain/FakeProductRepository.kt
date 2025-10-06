@@ -12,52 +12,43 @@ class FakeProductRepository : ProductsRepository {
     var cart: MutableList<String> = mutableListOf()
     var exception: DomainException? = null
 
-    override suspend fun getProducts(onCompletion: (Boolean, DomainResponse<List<ProductResponse>>) -> Unit) {
-        exception?.let {
-            throw it
-        } ?: run {
-            onCompletion(true, DomainResponse(data = products))
-        }
+    override suspend fun getProducts(): DomainResponse<List<ProductResponse>> {
+        exception?.let { throw it }
+        return DomainResponse(data = products)
     }
 
-    override suspend fun getProductDetail(
-        productId: String,
-        onCompletion: (Boolean, DomainResponse<ProductResponse>) -> Unit
-    ) {
+    override suspend fun getProductDetail(productId: String): DomainResponse<ProductResponse> {
         exception?.let {
             throw it
-        } ?: run {
-            if(products.find { productId == it.id } != null){
-                onCompletion(true, DomainResponse(data = products.find { it.id == productId }))
-            } else throw NotFoundException()
         }
+        if (products.find { productId == it.id } != null) {
+            return DomainResponse(data = products.find { it.id == productId })
+        } else throw NotFoundException()
     }
 
     override suspend fun addToWishlist(productId: String) {
         exception?.let {
             throw it
-        } ?: run {
-            wishlist.add(productId)
         }
+        wishlist.add(productId)
     }
 
-    override suspend fun removeFromWishlist(productId: String, onCompletion: (Boolean) -> Unit) {
-        exception?.let {
-            throw it
-        } ?: run {
-            if (wishlist.contains(productId)) {
-                wishlist.remove(productId)
-                onCompletion(true)
-            } else throw NotFoundException()
+    override suspend fun removeFromWishlist(productId: String): Boolean {
+        exception?.let { throw it }
+
+        return if (wishlist.contains(productId)) {
+            wishlist.remove(productId)
+            true
+        } else {
+            throw NotFoundException()
         }
     }
 
     override suspend fun addProductToCart(productId: String) {
         exception?.let {
             throw it
-        } ?: run {
-            cart.add(productId)
         }
+        cart.add(productId)
     }
 }
 

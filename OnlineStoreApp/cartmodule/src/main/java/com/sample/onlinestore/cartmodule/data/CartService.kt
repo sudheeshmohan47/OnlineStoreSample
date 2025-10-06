@@ -15,9 +15,10 @@ import javax.inject.Inject
 /**
  * Service class for managing cart operations in the online store module.
  *
- * This class integrates with the local database (`CartDao`) and remote API (`CartApiService`)
- * to handle adding, fetching, and removing items in the cart. It ensures error handling
- * and synchronization between local and remote data sources.
+ * Responsibilities:
+ * - Add, fetch, and remove items in the cart.
+ * - Integrate with local database ([CartDao]) and remote API ([CartApiService]).
+ * - Map errors and exceptions to domain-specific formats.
  *
  * @param cartDao DAO interface for performing local cart-related database operations.
  * @param cartApiService API service for fetching product data from the remote server.
@@ -26,13 +27,12 @@ import javax.inject.Inject
 class CartService @Inject constructor(
     private val cartDao: CartDao,
     private val cartApiService: CartApiService
-) :
-    CartRepository {
+) : CartRepository {
 
     /**
      * Adds an item to the cart.
      *
-     * Converts a `CartRequest` to a `Cart` entity and stores it in the local database.
+     * Converts a [CartRequest] to a [Cart] entity and stores it in the local database.
      *
      * @param item The item to be added to the cart.
      */
@@ -41,24 +41,22 @@ class CartService @Inject constructor(
             productId = item.productId,
             quantity = item.quantity
         )
-        cartDao.addToCart(item = cart)
+        cartDao.addToCart(cart)
     }
 
     /**
-     * Fetches cart listing items from the database and supplements them with remote API product details.
+     * Fetches cart items from the database and supplements them with remote product details.
      *
-     * Combines locally stored cart items with remote product details to build a comprehensive cart list.
+     * Combines local cart items with remote product data to create a detailed list of [CartResponse].
      *
-     * @param onCompletion Callback to return the success status and the list of `CartResponse` items.
-     *                     If successful, returns `true` and the list of cart items.
-     *                     On failure, throws an exception.
+     * @return List of [CartResponse] representing the cart items with product details.
+     * @throws Exception If API or mapping errors occur.
      */
     override suspend fun getCartListingItems(): List<CartResponse> {
         try {
             val response = cartApiService.getProducts()
             if (response.isSuccessful) {
                 response.body()?.let { products ->
-                    // Fetch cart items from the database and map them to CartResponse
                     val cartItems = cartDao.getCartItems().mapNotNull { cartItem ->
                         products.find { it.id == cartItem.productId }?.let { product ->
                             CartResponse(
@@ -83,11 +81,9 @@ class CartService @Inject constructor(
     }
 
     /**
-     * Retrieves locally stored cart items.
+     * Retrieves locally stored cart items without remote product details.
      *
-     * Maps database `Cart` entities to `CartResponse` objects.
-     *
-     * @return A list of `CartResponse` objects representing cart items.
+     * @return List of [CartResponse] representing the local cart items.
      */
     override suspend fun getCartItemsLocal(): List<CartResponse> = cartDao.getCartItems().map {
         CartResponse(
@@ -97,16 +93,12 @@ class CartService @Inject constructor(
     }
 
     /**
-     * Removes an item from the cart by its product ID.
+     * Removes an item from the cart by product ID.
      *
-     * Invokes a callback with the success status.
-     *
-     * @param productId The ID of the product to be removed.
-     * @param onCompletion Callback to indicate whether the item was successfully removed.
+     * @param productId The ID of the product to remove.
+     * @return True if the item was removed successfully, false otherwise.
      */
-    override suspend fun removeFromCart(
-        productId: String
-    ): Boolean {
+    override suspend fun removeFromCart(productId: String): Boolean {
         return cartDao.removeFromCart(productId) == 1
     }
 }

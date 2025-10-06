@@ -5,32 +5,32 @@ import com.sample.onlinestore.productsmodule.domain.model.ProductItem
 import javax.inject.Inject
 
 /**
- * Use case for handling product-related operations and integrating wishlist functionality.
+ * Use case for managing products, wishlist, and cart operations.
  *
- * Responsibilities:
- * - Fetch products and filter out invalid ones.
- * - Map API product data to [ProductItem] domain model.
- * - Manage product wishlist operations (add/remove).
- * - Provide product details with validation.
+ * Provides methods to fetch products, fetch product details, manage wishlist items,
+ * and add products to the cart.
  *
  * Dependencies:
- * - [ProductsRepository] for product data and wishlist management.
+ * - [ProductsRepository] for product data and wishlist/cart management.
  */
 class ProductsUseCase @Inject constructor(
     private val productsRepository: ProductsRepository
 ) {
 
+    /**
+     * Fetches all products, filters out invalid items, and maps them to [ProductItem].
+     *
+     * @return [DomainResponse] containing a list of valid [ProductItem] objects.
+     */
     suspend fun getProducts(): DomainResponse<List<ProductItem>> {
-
         val productsResponse = productsRepository.getProducts()
         val products = productsResponse.data
-            ?.filter { productResponse ->
-                !productResponse.id.isNullOrEmpty() // Ensure id is not null or empty
-            }?.map { productResponse ->
+            ?.filter { !it.id.isNullOrEmpty() }
+            ?.map { productResponse ->
                 ProductItem(
                     name = productResponse.title,
                     price = productResponse.price,
-                    productId = productResponse.id!!, // Safe to use `!!` as we've filtered for non-null ids
+                    productId = productResponse.id!!,
                     category = productResponse.category,
                     description = productResponse.description,
                     image = productResponse.image,
@@ -40,6 +40,12 @@ class ProductsUseCase @Inject constructor(
         return DomainResponse(data = products)
     }
 
+    /**
+     * Fetches detailed information for a specific product.
+     *
+     * @param productId The ID of the product to fetch.
+     * @return [DomainResponse] containing [ProductItem] if found, or null otherwise.
+     */
     suspend fun getProductDetail(productId: String): DomainResponse<ProductItem> {
         val productData = productsRepository.getProductDetail(productId).data
 
@@ -59,16 +65,32 @@ class ProductsUseCase @Inject constructor(
         return DomainResponse(data = productDetail)
     }
 
-    suspend fun addToWishlist(productId: String, onCompletion: (Boolean) -> Unit) {
+    /**
+     * Adds a product to the wishlist.
+     *
+     * @param productId The ID of the product to add.
+     */
+    suspend fun addToWishlist(productId: String) {
         productsRepository.addToWishlist(productId)
-        onCompletion(true)
     }
 
+    /**
+     * Adds a product to the cart.
+     *
+     * @param productId The ID of the product to add.
+     * @return `true` if the operation was successful.
+     */
     suspend fun addToCart(productId: String): Boolean {
         productsRepository.addProductToCart(productId)
         return true
     }
 
+    /**
+     * Removes a product from the wishlist.
+     *
+     * @param productId The ID of the product to remove.
+     * @return `true` if the removal was successful.
+     */
     suspend fun removeFromWishlist(productId: String): Boolean {
         return productsRepository.removeFromWishlist(productId)
     }

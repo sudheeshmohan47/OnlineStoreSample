@@ -7,8 +7,11 @@ import javax.inject.Inject
 /**
  * Use case for managing cart operations.
  *
- * Provides methods to fetch and manipulate cart items, acting as an intermediary
- * between the UI layer and the repository.
+ * Responsibilities:
+ * - Fetch and map cart items from the repository.
+ * - Remove items from the cart.
+ *
+ * Acts as an intermediary between the UI layer and [CartRepository].
  *
  * @param cartRepository Repository for performing cart-related operations.
  */
@@ -17,13 +20,12 @@ class CartUseCase @Inject constructor(
 ) {
 
     /**
-     * Fetches cart items and provides them as domain response.
+     * Fetches cart items and maps them to domain models.
      *
-     * @param onCompletion Callback with success status and the list of cart items.
+     * @return [DomainResponse] containing a list of [CartItem] objects.
      */
     suspend fun getCartItems(): DomainResponse<List<CartItem>> {
         val cartItems = cartRepository.getCartListingItems()
-
         return DomainResponse(
             data = cartItems.map { cartItem ->
                 CartItem(
@@ -40,10 +42,10 @@ class CartUseCase @Inject constructor(
     }
 
     /**
-     * Removes an item from the cart by its product ID.
+     * Removes an item from the cart by product ID.
      *
      * @param productId The ID of the product to remove.
-     * @param onCompletion Callback with success status.
+     * @return True if the item was removed successfully, false otherwise.
      */
     suspend fun removeFromCart(productId: String): Boolean {
         return cartRepository.removeFromCart(productId)

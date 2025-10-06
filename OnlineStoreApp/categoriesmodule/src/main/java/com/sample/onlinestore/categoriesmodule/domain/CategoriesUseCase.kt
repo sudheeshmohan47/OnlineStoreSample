@@ -7,20 +7,24 @@ import javax.inject.Inject
 
 /**
  * Use case for managing categories.
- * It provides methods to update selected categories in the database and
- * fetch categories from the repository.
+ *
+ * Responsibilities:
+ * - Update selected categories in the database.
+ * - Fetch categories and map them to domain models.
  *
  * @param categoriesRepository Repository that handles category data operations.
  */
 class CategoriesUseCase @Inject constructor(
     private val categoriesRepository: CategoriesRepository,
 ) {
+
     /**
-     * Updates the list of selected categories in the database.
-     * Converts the given list of CategoryItem objects into a list of SelectedCategory objects
-     * and then updates the repository.
+     * Updates the selected categories in the database.
      *
-     * @param selectedCategories A list of CategoryItem objects that represent selected categories.
+     * Converts the provided list of [CategoryItem] objects into [SelectedCategory]
+     * entities and updates the repository.
+     *
+     * @param selectedCategories List of categories selected by the user.
      */
     suspend fun updateSelectedCategories(selectedCategories: List<CategoryItem>) {
         val selectedCategoryList = selectedCategories.map {
@@ -30,11 +34,9 @@ class CategoriesUseCase @Inject constructor(
     }
 
     /**
-     * Fetches the categories from the repository and returns the result through a callback.
-     * It maps the repository's response to a list of CategoryItem objects.
+     * Fetches categories from the repository and maps them to domain models.
      *
-     * @param onCompletion A callback that receives a success flag and a
-     * DomainResponse containing a list of CategoryItem objects.
+     * @return [DomainResponse] containing a list of [CategoryItem] objects.
      */
     suspend fun fetchCategories(): DomainResponse<List<CategoryItem>> {
         val categoriesResponse = categoriesRepository.fetchCategories()

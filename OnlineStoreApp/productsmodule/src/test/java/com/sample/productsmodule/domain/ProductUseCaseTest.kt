@@ -57,10 +57,8 @@ class ProductUseCaseTest {
     @Test
     fun `addToWishlist adds product to wishlist`() = runBlocking {
         val productId = "1"
-        productUseCase.addToWishlist(productId, onCompletion = {
-            assertTrue(productRepository.wishlist.contains(productId))
-        })
-
+        productUseCase.addToWishlist(productId)
+        assertTrue(productRepository.wishlist.contains(productId))
     }
 
     @Test(expected = DomainException::class)
@@ -68,8 +66,7 @@ class ProductUseCaseTest {
         val productId = "1"
         val domainException = NetworkException()
         productRepository.exception = domainException
-
-        productUseCase.addToWishlist(productId, onCompletion = {})
+        productUseCase.addToWishlist(productId)
     }
 
     @Test

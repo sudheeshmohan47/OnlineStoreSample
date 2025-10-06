@@ -15,17 +15,13 @@ import com.sample.wishlistmodule.domain.WishlistRepository
 import javax.inject.Inject
 
 /**
- * Implementation of [ProductsRepository] for managing product data and wishlist integration.
+ * Implementation of [ProductsRepository] that manages product data and wishlist/cart integration.
  *
  * Responsibilities:
- * - Fetch products and their details from the API.
+ * - Fetch products and product details from the API.
  * - Mark products as wishListed based on [WishlistRepository].
- * - Handle wishlist operations (add/remove).
- * - Map API errors and exceptions to domain-specific formats.
- *
- * Dependencies:
- * - [ProductsApiService] for product data.
- * - [WishlistRepository] for wishlist operations.
+ * - Handle wishlist and cart operations.
+ * - Map API errors and exceptions to domain-specific exceptions.
  */
 @SuppressWarnings("TooGenericExceptionCaught")
 class ProductsService @Inject constructor(
@@ -37,21 +33,16 @@ class ProductsService @Inject constructor(
 
     /**
      * Fetches the list of products from the API and marks them as wishListed if applicable.
-     *
-     * containing the list of products.
-     * @throws Exception If an error occurs during the API call or wishlist operations.
+     * Filters products by selected categories if any are chosen.
      */
     override suspend fun getProducts(): DomainResponse<List<ProductResponse>> {
         try {
             val response = productsApiService.getProducts()
             if (response.isSuccessful) {
                 response.body()?.let { products ->
-                    val wishListItems: List<String> = wishlistRepository.getWishlistItemsIds()
+                    val wishListItems = wishlistRepository.getWishlistItemsIds()
                     val selectedCategories = categoriesRepository.getSelectedCategories()
-
-                    // Call to update products based on wishList and selectedCategories
-                    val updatedProducts =
-                        updateProducts(products, wishListItems, selectedCategories)
+                    val updatedProducts = updateProducts(products, wishListItems, selectedCategories)
                     return DomainResponse(data = updatedProducts)
                 }
             }
@@ -63,12 +54,9 @@ class ProductsService @Inject constructor(
     }
 
     /**
-     * Fetches the details of a specific product from the API.
+     * Fetches details of a specific product and marks it as wishListed or added to cart if applicable.
      *
-     * @param productId The ID of the product to fetch details for.
-     * @param onCompletion A callback invoked with the success status and the [DomainResponse]
-     * containing the product details.
-     * @throws Exception If an error occurs during the API call.
+     * @param productId The ID of the product to fetch.
      */
     override suspend fun getProductDetail(productId: String): DomainResponse<ProductResponse> {
         try {
@@ -78,12 +66,9 @@ class ProductsService @Inject constructor(
                     val wishListItemIds = wishlistRepository.getWishlistItemsIds()
                     val cartItems = cartRepository.getCartItemsLocal()
 
-                    val isWishListed = wishListItemIds.any { it == product.id }
-                    val isAddedToCart = cartItems.any { it.productId == product.id }
-
                     val updatedProduct = product.copy(
-                        isWishListed = isWishListed,
-                        isAddedToCart = isAddedToCart
+                        isWishListed = wishListItemIds.contains(product.id),
+                        isAddedToCart = cartItems.any { it.productId == product.id }
                     )
 
                     return DomainResponse(data = updatedProduct)
@@ -97,9 +82,9 @@ class ProductsService @Inject constructor(
     }
 
     /**
-     * Adds a product to the wishlist using the [WishlistRepository].
+     * Adds a product to the wishlist.
      *
-     * @param productId The ID of the product to add to the wishlist.
+     * @param productId The ID of the product to add.
      */
     override suspend fun addToWishlist(productId: String) {
         try {
@@ -110,10 +95,10 @@ class ProductsService @Inject constructor(
     }
 
     /**
-     * Removes a product from the wishlist using the [WishlistRepository].
+     * Removes a product from the wishlist.
      *
-     * @param productId The ID of the product to remove from the wishlist.
-     * @param onCompletion A callback invoked with the success status of the operation.
+     * @param productId The ID of the product to remove.
+     * @return True if removed successfully, false otherwise.
      */
     override suspend fun removeFromWishlist(productId: String): Boolean {
         try {
@@ -123,6 +108,11 @@ class ProductsService @Inject constructor(
         }
     }
 
+    /**
+     * Adds a product to the cart with a default quantity of 1.
+     *
+     * @param productId The ID of the product to add.
+     */
     override suspend fun addProductToCart(productId: String) {
         try {
             cartRepository.addToCart(CartRequest(productId = productId, quantity = 1))
@@ -132,7 +122,12 @@ class ProductsService @Inject constructor(
     }
 
     /**
-     * Update products based on the selected categories and wishlist items.
+     * Updates products based on selected categories and wishlist items.
+     *
+     * @param products List of products from the API.
+     * @param wishListItemIds List of product IDs that are wishListed.
+     * @param selectedCategories List of selected categories to filter by.
+     * @return List of updated products.
      */
     private fun updateProducts(
         products: List<ProductResponse>,
@@ -141,17 +136,12 @@ class ProductsService @Inject constructor(
     ): List<ProductResponse> {
         return products
             .let { productList ->
-                // Filter products based on selected categories if any
                 if (selectedCategories.isNotEmpty()) {
-                    productList.filter { product -> selectedCategories.contains(product.category) }
-                } else {
-                    productList
-                }
+                    productList.filter { selectedCategories.contains(it.category) }
+                } else productList
             }
             .map { product ->
-                // Mark products as wishListed if they exist in the wishlist
-                val isWishListed = wishListItemIds.any { it == product.id }
-                product.copy(isWishListed = isWishListed)
+                product.copy(isWishListed = wishListItemIds.contains(product.id))
             }
     }
 }

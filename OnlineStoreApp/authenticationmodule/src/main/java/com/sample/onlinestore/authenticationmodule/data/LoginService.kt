@@ -10,26 +10,29 @@ import com.sample.onlinestore.commonmodule.domain.model.DomainResponse
 import com.sample.onlinestore.commonmodule.utils.parseErrorBody
 import javax.inject.Inject
 
+/**
+ * Implementation of [LoginRepository] for handling user login.
+ *
+ * Responsibilities:
+ * - Performs login via [AuthenticationApiService].
+ * - Maps API errors and exceptions to domain-specific exceptions.
+ */
 @SuppressWarnings("TooGenericExceptionCaught")
 class LoginService @Inject constructor(
     private val authenticationApiService: AuthenticationApiService
 ) : LoginRepository {
 
     /**
-     * Attempts to log in the user with the provided login credentials.
+     * Logs in a user with the provided credentials.
      *
-     * @param loginRequest The login request object containing user credentials.
-     * @param onComplete A callback function that is invoked upon completion of the login process.
-     *        - `Boolean`: Indicates success (true) or failure (false) of the login attempt.
-     *        - `DomainResponse<String>`: Contains the login token if successful, or error details if failed.
+     * @param loginRequest The login request object containing email/username and password.
+     * @return [DomainResponse] containing the authentication token if successful.
      *
-     * The function makes a network call to the authentication API to perform the login operation.
-     * - If the login is successful, the callback is invoked with `true` and a `DomainResponse` containing the token.
-     * - If unsuccessful, the error is parsed, mapped, and an exception is thrown, which can be handled by the caller.
-     *
-     * @throws Exception Mapped exceptions for API errors or any other failures encountered during login.
+     * The function performs a network call to the authentication API:
+     * - On success, returns a [DomainResponse] with the token.
+     * - On failure, parses the error and throws a mapped exception.
      */
-    override suspend fun loginUser(loginRequest: LoginRequest) :DomainResponse<String> {
+    override suspend fun loginUser(loginRequest: LoginRequest): DomainResponse<String> {
         try {
             val response = authenticationApiService.login(loginRequest)
             if (response.isSuccessful) {
